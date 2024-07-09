@@ -1,6 +1,6 @@
 package com.game.graphics.texture;
 
-import com.game.graphics.IGraphicsCachable;
+import com.game.caches.graphics.IGraphicsCachable;
 import com.game.utils.enums.EGraphicsCache;
 import lombok.Data;
 import lombok.experimental.Accessors;

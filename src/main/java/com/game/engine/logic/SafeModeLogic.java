@@ -1,5 +1,6 @@
 package com.game.engine.logic;
 
+import com.game.engine.EngineSettings;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.window.Window;
@@ -16,12 +17,17 @@ public class SafeModeLogic extends AbstractLogic {
   Entity skyBox;
   Entity blueShape;
 
-  public SafeModeLogic(GameEngineSettings settings) {
+  public SafeModeLogic(EngineSettings settings) {
     super(settings);
 
     viewMovement = new Vector3f();
     viewRotation = new Vector2f();
     log.info("Safe Mode Logic");
+  }
+
+  @Override
+  public String windowTitle() {
+    return "SAFE MODE";
   }
 
   @Override
@@ -46,11 +52,14 @@ public class SafeModeLogic extends AbstractLogic {
     scene.lighting().pointLight("test_A").move(0.75f);
     scene.lighting().spotLight("test_B").pointConeToward(0.5f);
 
+
     // frog this works....
 //    scene.entities().loadTestQuad("test");
-    scene
-      .entities()
-      .load2DSprite("sprite", "src/main/resources/textures/plaster_wall/plaster_wall.jpg");
+
+    // This don't...
+//    scene
+//      .entities()
+//      .load2DSprite("sprite", "src/main/resources/textures/plaster_wall/plaster_wall.jpg");
 //    skyBox = scene.entities().loadSkyBoxModel("skybox", EModel.BASIC_SKYBOX.path());
 //    blueShape = scene.entities()
 //                     .load3DModel("test", EModel.BLUE_SHAPE.path(), EModel.BLUE_SHAPE.animated())
@@ -76,10 +85,5 @@ public class SafeModeLogic extends AbstractLogic {
     Camera camera = scene.camera();
     camera.move(viewMovement.x, viewMovement.y, viewMovement.z);
     camera.rotate(viewRotation.x, viewRotation.y, 0f);
-  }
-
-  @Override
-  public void render() {
-    renderer.render(scene);
   }
 }

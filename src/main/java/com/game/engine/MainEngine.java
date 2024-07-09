@@ -2,18 +2,19 @@ package com.game.engine;
 
 import com.game.engine.logic.ILogic;
 import com.game.engine.logic.LogicFactory;
-import com.game.utils.enums.ELogic;
 
 public class MainEngine implements Runnable {
   private final EngineTimer timer;
+  private final EngineSettings settings;
   private ILogic logic;
 
   public MainEngine() {
-    timer = new EngineTimer(60, 0.25);
+    settings = new EngineSettings();
+    timer = new EngineTimer(settings.targetUPS(), settings.stepSize());
   }
 
-  public void init(boolean threaded) {
-    if (threaded) {
+  public void init() {
+    if (settings.threaded()) {
       Thread loop = new Thread(this);
       loop.start();
     }
@@ -23,8 +24,7 @@ public class MainEngine implements Runnable {
 
   @Override
   public void run() {
-    logic = LogicFactory.create(ELogic.TEST_RENDER.value());
-//    logic = LogicFactory.create(ELogic.SAFE_MODE.value());
+    logic = LogicFactory.create(settings);
     logic.onStart();
 
     while (logic.isRunning()) onLoop();

@@ -7,6 +7,6 @@ public class Main {
     System.out.println("Hello world!");
 
     MainEngine engine = new MainEngine();
-    engine.init(true);
+    engine.init();
   }
 }

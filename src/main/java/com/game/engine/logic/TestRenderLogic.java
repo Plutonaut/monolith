@@ -1,6 +1,7 @@
 package com.game.engine.logic;
 
 import com.game.caches.GlobalCache;
+import com.game.engine.EngineSettings;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.mesh.vertices.AttribInfo;
@@ -25,22 +26,24 @@ public class TestRenderLogic extends AbstractLogic {
   int colorVbo;
   int indexVbo;
 
-  public TestRenderLogic(GameEngineSettings settings) {
+  public TestRenderLogic(EngineSettings settings) {
     super(settings);
-
     log.info("Test Render Logic");
   }
 
   private void setupVAO() {
-    GlobalCache.instance().meshInfo(new Quad());
-    mesh = new Mesh(Quad.ID);
+    Quad quad = new Quad();
+    GlobalCache.instance().cacheItem(quad.createMeshInfo());
+//    MeshInfo info = GlobalCache.instance().meshInfo(quad.name(), n -> quad.create());
+//    mesh = info.create();
+    mesh = new Mesh(quad.name());
     mesh.bind();
   }
 
   // Enabling and disabling vertex attributes does not break anything, but it is also not necessary for this test.
   private void drawVao() {
     mesh.bind();
-    mesh.complexDraw(GL46.GL_TRIANGLES, numVertices);
+    mesh.drawComplex(GL46.GL_TRIANGLES, numVertices);
     mesh.unbind();
   }
 
@@ -74,10 +77,9 @@ public class TestRenderLogic extends AbstractLogic {
     GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA);
   }
 
-  void attachVAO() {
-    program.bind();
-    mesh.attach(program);
-    program.unbind();
+  @Override
+  public String windowTitle() {
+    return "TEST Render Logic";
   }
 
   @Override
@@ -85,7 +87,6 @@ public class TestRenderLogic extends AbstractLogic {
     setupGl();
     setupShader();
     setupVAO();
-//    attachVAO();
     positionVbo = setupVBO(positionAttrib, Quad.POSITIONS);
     colorVbo = setupVBO(colorAttrib, Quad.COLORS);
     setupIndexVBO();

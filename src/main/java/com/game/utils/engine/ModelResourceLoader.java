@@ -1,19 +1,15 @@
-package com.game.utils.engine.entity;
+package com.game.utils.engine;
 
 import com.game.caches.GlobalCache;
-import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.animations.AnimInfo;
 import com.game.engine.render.mesh.animations.Bone;
-import com.game.engine.scene.entities.Entity;
-import com.game.engine.scene.entities.controllers.AnimationController;
+import com.game.engine.render.models.Model;
 import com.game.graphics.materials.Material;
 import com.game.utils.application.LoaderUtils;
-import com.game.utils.engine.MaterialUtils;
-import com.game.utils.engine.MeshInfoUtils;
+import com.game.utils.engine.entity.AnimationInfoUtils;
+import com.game.utils.engine.entity.AnimationUtils;
 import com.game.utils.enums.EAttribute;
-import com.game.utils.enums.EModifier;
-import com.game.utils.enums.ERenderer;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIScene;
@@ -25,13 +21,11 @@ import java.util.List;
 
 import static org.lwjgl.assimp.Assimp.*;
 
-public class EntityLoaderUtils {
+public class ModelResourceLoader {
   public static final int BASE_FLAGS = aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace | aiProcess_LimitBoneWeights;
 
-  public Entity load(String id, String path, boolean animated, ERenderer shader) {
-    Entity entity = new Entity(id);
-    entity.addShaders(shader);
-
+  public static Model load(String path, boolean animated) {
+    Model model = new Model(path);
     int flags = BASE_FLAGS;
     if (animated) flags |= aiProcess_PreTransformVertices;
 
@@ -50,38 +44,36 @@ public class EntityLoaderUtils {
       for (int i = 0; i < meshCount; i++) {
         AIMesh aiMesh = AIMesh.create(aiMeshes.get(i));
         int materialIndex = aiMesh.mMaterialIndex();
-        Material material = materialIndex >= 0 && materialIndex < materialCount ? materials.get(i) : new Material();
-        Mesh mesh = processMesh(aiMesh, material, bones);
-        entity.addMesh(mesh);
+        MeshInfo meshInfo = processMesh(aiMesh, bones);
+        Material material = materialIndex >= 0 && materialIndex < materialCount
+                            ? materials.get(i)
+                            : null;
+        if (material != null) {
+          meshInfo.material(material.name());
+        }
       }
 
-      if (animated) {
-        AnimationController animationController = AnimationUtils.process(scene, bones);
-        entity.addController(animationController);
-        entity.toggleModifier(EModifier.ANIMATED);
-      }
+      if (animated)
+        model.addAnimations(AnimationUtils.process(scene, bones));
     }
 
     Assimp.aiReleaseImport(scene);
 
-    return entity;
+    return model;
   }
 
-  Mesh processMesh(AIMesh aiMesh, Material material, List<Bone> bones) {
+  static MeshInfo processMesh(AIMesh aiMesh, List<Bone> bones) {
     String meshId = aiMesh.mName().dataString();
-    MeshInfo meshInfo = GlobalCache.instance().meshInfo(meshId);
-    if (meshInfo == null) {
-      meshInfo = MeshInfoUtils.process(aiMesh);
+    return GlobalCache.instance().meshInfo(meshId, name -> {
+      MeshInfo meshInfo = MeshInfoUtils.process(aiMesh);
       AnimInfo animInfo = AnimationInfoUtils.process(aiMesh, bones);
 
-      if (animInfo != null) meshInfo.addVertices(animInfo.boneIds(), GL46.GL_INT, 4, EAttribute.BON.getValue(), 1)
-                                    .addVertices(animInfo.weights(), GL46.GL_FLOAT, 4, EAttribute.WGT.getValue(), 1);
-      GlobalCache.instance().meshInfo(meshInfo);
-    }
+      if (animInfo != null)
+        meshInfo.addVertices(animInfo.boneIds(), GL46.GL_INT, 4, EAttribute.BON.getValue(), 1)
+                .addVertices(animInfo.weights(), GL46.GL_FLOAT, 4, EAttribute.WGT.getValue(), 1);
+      GlobalCache.instance().cacheItem(meshInfo);
 
-    // frog attach
-    Mesh mesh = new Mesh(meshId);
-    mesh.material(material);
-    return mesh;
+      return meshInfo;
+    });
   }
 }

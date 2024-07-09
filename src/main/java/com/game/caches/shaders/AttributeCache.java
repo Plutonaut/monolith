@@ -15,11 +15,14 @@ public class AttributeCache extends AbstractShaderCache {
 
   public void point(String attribute, int size, int stride, int offset, int glType, int instances) {
     int location = get(attribute);
+    if (location < 0) return;
+
     boolean instanced = instances > 1;
     int glBytes = glBytes(glType);
+    int glStride = stride * glBytes * instances;
     for (int i = 0; i < instances; i++) {
       location += i;
-      GL46.glVertexAttribPointer(location, size, glType, false, stride * glBytes * instances, (long) offset * glBytes);
+      GL46.glVertexAttribPointer(location, size, glType, false, glStride, (long) offset * glBytes);
       if (instanced) GL46.glVertexBindingDivisor(location, 1);
       offset += size;
     }
