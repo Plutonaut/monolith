@@ -53,8 +53,8 @@ public class TestRenderLogic extends AbstractLogic {
     GL46.glBindBuffer(GL46.GL_ARRAY_BUFFER, vbo);
     GL46.glBufferData(GL46.GL_ARRAY_BUFFER, vertexData, GL46.GL_STATIC_DRAW);
     MemoryUtil.memFree(vertexData);
-    program.enableAttribute(info.key());
-    program.point(List.of(info), GL46.GL_FLOAT);
+    program.attributes().enable(info.key());
+    program.attributes().point(List.of(info), GL46.GL_FLOAT);
     return vbo;
   }
 

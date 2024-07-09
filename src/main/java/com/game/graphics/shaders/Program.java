@@ -3,8 +3,6 @@ package com.game.graphics.shaders;
 import com.game.caches.graphics.IGraphicsCachable;
 import com.game.caches.shaders.AttributeCache;
 import com.game.caches.shaders.UniformCache;
-import com.game.engine.render.mesh.vertices.AttribInfo;
-import com.game.utils.application.LambdaCounter;
 import com.game.utils.engine.ShaderUtils;
 import com.game.utils.enums.EGraphicsCache;
 import com.game.utils.enums.ERenderer;
@@ -13,10 +11,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.opengl.GL46;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 @Accessors(fluent = true)
 @Data
@@ -48,46 +43,6 @@ public class Program implements IGraphicsCachable {
     status(GL46.GL_LINK_STATUS, "Failed to link shader code", true, shaders);
     Arrays.stream(shaders).forEach(this::detach);
     status(GL46.GL_VALIDATE_STATUS, "Failed to validate shader code", false, shaders);
-  }
-
-  public boolean hasAttribute(String key) {
-    return attributes.has(key);
-  }
-
-  public void enableAttribute(String key) {
-    attributes.enable(key);
-  }
-
-  public void disableAttribute(String key) {
-    attributes.disable(key);
-  }
-
-  public boolean hasUniform(String key) {
-    return uniforms.has(key);
-  }
-
-  public List<String> point(Collection<AttribInfo> attributes, int glType) {
-    List<String> vaas = new ArrayList<>();
-    LambdaCounter lambdaOffset = new LambdaCounter();
-    int stride = attributes.size() == 1 ? 0 : attributes.stream().mapToInt(AttribInfo::size).sum();
-    int offset = lambdaOffset.value();
-    attributes.forEach(attribute -> {
-      if (hasAttribute(attribute.key())) {
-        enableAttribute(attribute.key());
-        this.attributes.point(
-          attribute.key(),
-          attribute.size(),
-          stride,
-          offset,
-          glType,
-          attribute.instances()
-        );
-        lambdaOffset.add(attribute.size() * attribute.instances());
-        vaas.add(attribute.key());
-      }
-    });
-
-    return vaas;
   }
 
   void attach(Shader shader) {
