@@ -24,7 +24,7 @@
         <lombok.version>1.18.30</lombok.version>
 
         <!-- Apache Commons Validator -->
-        <commons-validator.version>1.8.0</commons-validator.version>
+        <commons-validator.version>1.9.0</commons-validator.version>
     </properties>
     <!-- LWJGL maven import management -->
     <dependencyManagement>
@@ -41,12 +41,13 @@
 
     <dependencies>
         <!-- Commons Validator -->
+        <!-- URL Validator dictates object source when loading -->
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>${commons-validator.version}</version>
         </dependency>
-        <!-- lombok suuport -->
+        <!-- lombok support -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -67,11 +68,18 @@
             <version>0.24.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- Apache Commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.14.0</version>
-        </dependency><!-- LightWeight Java Game Library -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <!-- LightWeight Java Game Library -->
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>

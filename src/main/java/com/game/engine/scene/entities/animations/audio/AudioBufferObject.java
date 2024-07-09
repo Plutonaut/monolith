@@ -1,6 +1,6 @@
 package com.game.engine.scene.entities.animations.audio;
 
-import com.game.graphics.IGraphicsCachable;
+import com.game.caches.graphics.IGraphicsCachable;
 import com.game.utils.enums.EGraphicsCache;
 import lombok.Getter;
 import lombok.experimental.Accessors;

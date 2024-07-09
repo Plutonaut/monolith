@@ -1,7 +1,8 @@
 package com.game.utils.engine;
 
-import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.MeshInfo;
+import com.game.engine.render.mesh.MeshInfoBuilder;
+import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.utils.application.ValueStore;
 import com.game.utils.enums.EAttribute;
@@ -13,27 +14,38 @@ import org.lwjgl.opengl.GL46;
 import java.nio.IntBuffer;
 
 public class MeshInfoUtils {
+  public static final int MAX_VERTEX_DATA = 9;
+
   public static MeshInfo process(AIMesh aiMesh) {
-    return new MeshInfo(aiMesh.mName().dataString()).addVertices(process(aiMesh.mVertices(),
-                                                                         3,
-                                                                         EAttribute.POS.getValue()))
-                                                    .addVertices(process(aiMesh.mNormals(),
-                                                                         3,
-                                                                         EAttribute.NRM.getValue()))
-                                                    .addVertices(process(aiMesh.mTextureCoords(0),
-                                                                         2,
-                                                                         EAttribute.TXC.getValue()))
-                                                    .addVertices(process(aiMesh.mTangents(),
-                                                                         2,
-                                                                         EAttribute.TAN.getValue()))
-                                                    .addVertices(process(aiMesh.mBitangents(),
-                                                                         3,
-                                                                         EAttribute.BTA.getValue()))
-                                                    .setIndices(process(aiMesh.mFaces(),
-                                                                        aiMesh.mNumFaces()));
+    return new MeshInfoBuilder()
+      .use(aiMesh.mName().dataString())
+      .positions(process(aiMesh.mVertices()))
+      .normals(process(aiMesh.mNormals()))
+      .textureCoordinates(process(
+        aiMesh.mTextureCoords(0),
+        2
+      ))
+      .vertices(process(
+        aiMesh.mTangents(),
+        2,
+        EAttribute.TAN.getValue()
+      ))
+      .vertices(process(
+        aiMesh.mBitangents(),
+        3,
+        EAttribute.BTA.getValue()
+      ))
+      .indices(process(
+        aiMesh.mFaces(),
+        aiMesh.mNumFaces()
+      )).build();
   }
 
-  static VertexInfo process(AIVector3D.Buffer buffer, int size, String attribute) {
+  static ValueStore process(AIVector3D.Buffer buffer) {
+    return process(buffer, 3);
+  }
+
+  static ValueStore process(AIVector3D.Buffer buffer, int size) {
     if (buffer == null || size == 0) return null;
 
     ValueStore vertices = new ValueStore();
@@ -41,6 +53,12 @@ public class MeshInfoUtils {
     while (buffer.hasRemaining()) {
       vertices.add(buffer.get(), size > 2);
     }
+
+    return vertices;
+  }
+
+  static VertexInfo process(AIVector3D.Buffer buffer, int size, String attribute) {
+    ValueStore vertices = process(buffer, size);
     AttribInfo attribInfo = new AttribInfo(attribute, size, 1);
 
     return new VertexInfo(vertices, GL46.GL_FLOAT, attribInfo);

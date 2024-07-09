@@ -1,9 +1,6 @@
 package com.game.engine.render.mesh.definitions;
 
-import com.game.engine.render.mesh.MeshInfo;
-import com.game.utils.enums.EAttribute;
-
-public class Quad extends MeshInfo {
+public class Quad extends MeshDefinition {
   public static final float[] POSITIONS = {
     -0.5f, 0.5f, 0.5f,
     -0.5f, -0.5f, 0.5f,
@@ -22,12 +19,20 @@ public class Quad extends MeshInfo {
   public static final int[] INDICES = {
     0, 1, 3, 3, 1, 2
   };
-  public static final String ID = "quad";
+
+  @Override
+  public String name() {
+    return "QUAD";
+  }
 
   public Quad() {
-    super(ID);
-    addVertices(POSITIONS, 3, EAttribute.POS.getValue()).addVertices(TEXTURE_COORDINATES, 2, EAttribute.TXC.getValue())
-                                                        .addVertices(COLORS, 3, EAttribute.CLR.getValue())
-                                                        .setIndices(INDICES);
+    super();
+  }
+
+  @Override
+  protected void init() {
+    positions(POSITIONS).textureCoordinates(TEXTURE_COORDINATES)
+                        .colors(COLORS)
+                        .indices(INDICES);
   }
 }

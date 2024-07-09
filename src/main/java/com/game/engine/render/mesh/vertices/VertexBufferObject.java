@@ -4,6 +4,7 @@ import com.game.graphics.IGL;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.lwjgl.opengl.GL46;
+import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -24,12 +25,44 @@ public class VertexBufferObject implements IGL {
     glId = GL46.glGenBuffers();
   }
 
+  public void buffer(float[] values, int usage) {
+    FloatBuffer buffer = MemoryUtil.memAllocFloat(values.length).put(values).flip();
+    bind();
+    upload(buffer, usage);
+    MemoryUtil.memFree(buffer);
+  }
+
+  public void buffer(int[] values, int usage) {
+    IntBuffer buffer = MemoryUtil.memAllocInt(values.length).put(values).flip();
+    bind();
+    upload(buffer, usage);
+    MemoryUtil.memFree(buffer);
+  }
+
   public void upload(FloatBuffer buffer, int usage) {
     GL46.glBufferData(target, buffer, usage);
   }
 
   public void upload(IntBuffer buffer, int usage) {
     GL46.glBufferData(target, buffer, usage);
+  }
+
+  public void upload(long size, int usage) { GL46.glBufferData(target, size, usage); }
+
+  public void subUpload(FloatBuffer buffer, int offset) {
+    GL46.glBufferSubData(
+      target,
+      offset,
+      buffer
+    );
+  }
+
+  public void subUpload(IntBuffer buffer, int offset) {
+    GL46.glBufferSubData(
+      target,
+      offset,
+      buffer
+    );
   }
 
   public void bind() {

@@ -1,6 +1,8 @@
 package com.game.graphics.materials;
 
+import com.game.caches.models.IModelCachable;
 import com.game.utils.engine.ColorUtils;
+import com.game.utils.enums.EModelCache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector4f;
@@ -11,17 +13,23 @@ import java.util.HashMap;
 
 @Accessors(fluent = true)
 @Data
-public class Material {
+public class Material implements IModelCachable {
   protected final MaterialTexturePack textures;
   protected final HashMap<String, Vector4f> colors;
+  protected String name;
   protected float reflectance;
 
-  public Material() {
+  public Material(String name) {
+    this.name = name;
+
     textures = new MaterialTexturePack();
     colors = new HashMap<>();
 
     reflectance = 0f;
   }
+
+  @Override
+  public EModelCache type() { return EModelCache.MATERIAL; }
 
   public String texture(int type) {
     return textures.get(type);

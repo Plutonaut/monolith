@@ -7,7 +7,12 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.lwjgl.assimp.Assimp.*;
+import static org.lwjgl.assimp.Assimp.aiProcess_LimitBoneWeights;
+
 public class LoaderUtils {
+  public static final int BASE_FLAGS = aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace | aiProcess_LimitBoneWeights;
+
   static final String[] RESOURCE_DIR_ARR = new String[]{
     "resources", "main", "src"
   };

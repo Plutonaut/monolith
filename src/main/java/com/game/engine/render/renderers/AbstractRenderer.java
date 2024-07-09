@@ -3,7 +3,10 @@ package com.game.engine.render.renderers;
 import com.game.caches.GlobalCache;
 import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.Mesh;
-import com.game.engine.render.mesh.vertices.VertexInfo;
+import com.game.engine.render.mesh.MeshInfo;
+import com.game.engine.render.mesh.vertices.IndexBufferObject;
+import com.game.engine.render.mesh.vertices.VertexBufferObject;
+import com.game.engine.render.models.Model;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
 import com.game.graphics.materials.MaterialTexturePack;
@@ -14,14 +17,21 @@ import com.game.utils.enums.EMaterialTexture;
 import com.game.utils.enums.ERenderer;
 import com.game.utils.enums.EUniform;
 import org.lwjgl.opengl.GL46;
+import org.lwjgl.system.MemoryStack;
 
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class AbstractRenderer implements IRenderer {
   protected final Program program;
+  protected final List<String> entityIds;
 
   public AbstractRenderer() {
-    this.program = GlobalCache.instance().program(type().key());
+    program = GlobalCache.instance().program(type().key());
+    entityIds = new ArrayList<>();
   }
 
   public abstract ERenderer type();
@@ -29,7 +39,7 @@ public abstract class AbstractRenderer implements IRenderer {
   protected abstract void render(IRenderable item, Scene scene);
 
   public void render(Scene scene) {
-    ArrayBlockingQueue<Entity> queue = scene.subQueue(type());
+    ArrayBlockingQueue<Entity> queue = scene.renderQueue(type());
 
     if (queue.isEmpty()) return;
 
@@ -38,22 +48,92 @@ public abstract class AbstractRenderer implements IRenderer {
     program.unbind();
   }
 
-  protected void draw(Mesh mesh) {
+  public List<Mesh> associate(Model model) {
+    return model
+      .meshInfo()
+      .stream()
+      .map(this::associate).toList();
+  }
+
+  Mesh associateTest(MeshInfo info) {
+    program.bind();
+    Mesh mesh = info.create();
     mesh.bind();
-    mesh.info().vertices().forEach(info -> handleVertexInfo(info, program::enableAttribute));
-    draw(mesh, GL46.GL_TRIANGLES);
-    mesh.info().vertices().forEach(info -> handleVertexInfo(info, program::disableAttribute));
+    try (MemoryStack stack = MemoryStack.stackPush()) {
+      info.vertices().forEach(vertex -> {
+        VertexBufferObject vbo = new VertexBufferObject();
+        mesh.vbos().add(vbo);
+        FloatBuffer buffer = stack.callocFloat(vertex.vertices().size());
+        buffer.put(0, vertex.vertices().asArray());
+        vbo.bind();
+        vbo.upload(buffer, GL46.GL_STATIC_DRAW);
+        vertex.attributes().values().forEach(attribInfo -> {
+          int location = GL46.glGetAttribLocation(program.glId(), attribInfo.key());
+          if (location >= 0) {
+            GL46.glEnableVertexAttribArray(location);
+            GL46.glVertexAttribPointer(location, attribInfo.size(), vertex.glType(), false, 0, 0);
+            mesh.vaas().add(attribInfo.key());
+          }
+        });
+      });
+
+      if (mesh.isComplex()) {
+        IndexBufferObject ibo = new IndexBufferObject();
+        mesh.vbos().add(ibo);
+        IntBuffer buffer = stack.callocInt(info.indices().size());
+        buffer.put(0, info.indices().asIntArray());
+        ibo.bind();
+        ibo.upload(buffer, GL46.GL_STATIC_DRAW);
+      }
+
+      mesh.unbind();
+    }
+    program.unbind();
+    return mesh;
+  }
+
+  Mesh associate(MeshInfo info) {
+    Mesh mesh = info.create();
+    mesh.bind();
+    info.vertices().forEach(vertex -> {
+      VertexBufferObject vbo = vertex.create(info.vboUsage());
+      mesh.vbos().add(vbo);
+      List<String> vaas = program.point(vertex.attributes().values(), vertex.glType());
+      mesh.vaas().addAll(vaas);
+    });
+    if (mesh.isComplex()) {
+      IndexBufferObject ibo = new IndexBufferObject();
+      mesh.vbos().add(ibo);
+      ibo.buffer(info.indices().asIntArray(), info.vboUsage());
+    }
     mesh.unbind();
+    return mesh;
+  }
+
+  protected void draw(Mesh mesh) {
+    draw(mesh, GL46.GL_TRIANGLES);
   }
 
   protected void draw(Mesh mesh, int mode) {
+    mesh.bind();
+    mesh.vaas().forEach(program::enableAttribute);
     mesh.draw(mode);
+    mesh.vaas().forEach(program::disableAttribute);
+    mesh.unbind();
   }
 
   protected void setMaterialTextureUniform(MaterialTexturePack textures) {
-    program.uniforms().set(EUniform.MATERIAL_HAS_TEXTURE.value(), textures.hasTexture(EMaterialTexture.DIF.getValue()));
+    program
+      .uniforms()
+      .set(
+        EUniform.MATERIAL_HAS_TEXTURE.value(),
+        textures.hasTexture(EMaterialTexture.DIF.getValue())
+      );
     program.uniforms()
-           .set(EUniform.MATERIAL_HAS_NORMAL_MAP.value(), textures.hasTexture(EMaterialTexture.NRM.getValue()));
+           .set(
+             EUniform.MATERIAL_HAS_NORMAL_MAP.value(),
+             textures.hasTexture(EMaterialTexture.NRM.getValue())
+           );
 
     LambdaCounter counter = new LambdaCounter();
     textures.pack().forEach((type, path) -> {
@@ -71,15 +151,7 @@ public abstract class AbstractRenderer implements IRenderer {
     });
   }
 
-  protected void handleVertexInfo(VertexInfo info, IAttribInfoHandler handler) {
-    info.attributes().keySet().stream().filter(program::hasAttribute).forEach(handler::handle);
-  }
-
   public void dispose() {
     program.dispose();
-  }
-
-  public interface IAttribInfoHandler {
-    void handle(String key);
   }
 }

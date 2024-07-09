@@ -1,10 +1,9 @@
 package com.game.utils.engine.entity;
 
-import com.game.engine.scene.entities.animations.Animation;
-import com.game.engine.scene.entities.animations.Frame;
-import com.game.engine.scene.entities.controllers.AnimationController;
 import com.game.engine.render.mesh.animations.Bone;
 import com.game.engine.render.mesh.animations.Node;
+import com.game.engine.scene.entities.animations.Animation;
+import com.game.engine.scene.entities.animations.Frame;
 import com.game.utils.math.MatrixUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -17,9 +16,12 @@ import java.util.List;
 
 public class AnimationUtils {
   public static final int MAX_BONES = 150;
-  public static AnimationController process(AIScene scene, List<Bone> bones) {
-    AnimationController animationController = new AnimationController();
-      AINode aiNode = scene.mRootNode();
+
+  //  public static AnimationController process(AIScene scene, List<Bone> bones) {
+  public static List<Animation> process(AIScene scene, List<Bone> bones) {
+//    AnimationController animationController = new AnimationController();
+    ArrayList<Animation> animations = new ArrayList<>();
+    AINode aiNode = scene.mRootNode();
 
     if (scene.mNumAnimations() > 0 && aiNode != null) {
       Node root = process(aiNode, null);
@@ -28,20 +30,27 @@ public class AnimationUtils {
       int count = scene.mNumAnimations();
       PointerBuffer aiAnimations = scene.mAnimations();
 
-      if (aiAnimations == null) return animationController;
+//      if (aiAnimations == null) return animationController;
+      if (aiAnimations == null) return animations;
 
       for (int i = 0; i < count; i++) {
         long aiAnimationPointer = aiAnimations.get(i);
         AIAnimation aiAnimation = AIAnimation.create(aiAnimationPointer);
         Animation animation = process(aiAnimation, bones, root, globalInverseTransform);
-        animationController.add(animation);
+        animations.add(animation);
+//        animationController.add(animation);
       }
     }
-
-    return animationController;
+    return animations;
+//    return animationController;
   }
 
-  static Animation process(AIAnimation aiAnimation, List<Bone> bones, Node root, Matrix4f globalTransform) {
+  static Animation process(
+    AIAnimation aiAnimation,
+    List<Bone> bones,
+    Node root,
+    Matrix4f globalTransform
+  ) {
     int maxFrames = calculateMaxAnimationFrames(aiAnimation);
 
     List<Frame> frames = new ArrayList<>();
@@ -49,9 +58,17 @@ public class AnimationUtils {
     for (int j = 0; j < maxFrames; j++) {
       Matrix4f[] boneTransforms = new Matrix4f[MAX_BONES];
       Arrays.fill(boneTransforms, new Matrix4f());
-      Frame frame= new Frame(boneTransforms);
+      Frame frame = new Frame(boneTransforms);
 
-      buildAnimationFrameMatrices(aiAnimation, bones, frame, j, root, root.transform(), globalTransform);
+      buildAnimationFrameMatrices(
+        aiAnimation,
+        bones,
+        frame,
+        j,
+        root,
+        root.transform(),
+        globalTransform
+      );
 
       frames.add(frame);
     }
@@ -84,8 +101,10 @@ public class AnimationUtils {
 
     for (int i = 0; i < numNodeAnims; i++) {
       final AINodeAnim aiNodeAnim = AINodeAnim.create(aiChannels.get(i));
-      final int numFrames = Math.max(Math.max(aiNodeAnim.mNumPositionKeys(), aiNodeAnim.mNumScalingKeys()),
-                                     aiNodeAnim.mNumRotationKeys());
+      final int numFrames = Math.max(
+        Math.max(aiNodeAnim.mNumPositionKeys(), aiNodeAnim.mNumScalingKeys()),
+        aiNodeAnim.mNumRotationKeys()
+      );
       maxFrames = Math.max(maxFrames, numFrames);
     }
 
@@ -147,7 +166,8 @@ public class AnimationUtils {
     int frame,
     Node node,
     Matrix4f parentTransformation,
-    Matrix4f globalInverseTransform) {
+    Matrix4f globalInverseTransform
+  ) {
     final String nodeName = node.name();
     final AINodeAnim aiNodeAnim = findAIAnimNode(aiAnimation, nodeName);
 
@@ -156,7 +176,10 @@ public class AnimationUtils {
                                    : node.transform();
 
     final Matrix4f nodeGlobalTransform = new Matrix4f(parentTransformation).mul(nodeTransform);
-    final List<Bone> affectedBones = bones.stream().filter(b -> b.boneName().equals(nodeName)).toList();
+    final List<Bone> affectedBones = bones
+      .stream()
+      .filter(b -> b.boneName().equals(nodeName))
+      .toList();
 
     for (final Bone bone : affectedBones)
       animatedFrame.boneMatrices()[bone.boneId()] = new Matrix4f(globalInverseTransform)
@@ -171,7 +194,8 @@ public class AnimationUtils {
         frame,
         child,
         nodeGlobalTransform,
-        globalInverseTransform);
+        globalInverseTransform
+      );
 
   }
 }

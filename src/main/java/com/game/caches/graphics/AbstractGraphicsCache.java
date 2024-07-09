@@ -1,7 +1,5 @@
 package com.game.caches.graphics;
 
-import com.game.graphics.IGraphicsCachable;
-
 import java.util.HashMap;
 
 public abstract class AbstractGraphicsCache implements IGraphicsCache {
@@ -17,11 +15,10 @@ public abstract class AbstractGraphicsCache implements IGraphicsCache {
   public IGraphicsCachable use(String key) {
     if (key == null) return null;
 
-    return cache.computeIfAbsent(key, this::generate);
-  }
+    IGraphicsCachable entry = cache.getOrDefault(key, generate(key));
+    if (entry != null) cache.putIfAbsent(key, entry);
 
-  public boolean has(String key) {
-    return cache.containsKey(key);
+    return entry;
   }
 
   protected abstract IGraphicsCachable generate(String key);

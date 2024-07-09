@@ -22,6 +22,8 @@ public class ValueStore {
     return values.size();
   }
 
+  public boolean isEmpty() { return values.isEmpty(); }
+
   public Stream<Float> asStreamf() {
     return values.stream();
   }
@@ -32,23 +34,28 @@ public class ValueStore {
 
   public float[] asArray() {
     float[] values = new float[size()];
-
     for (int i = 0; i < values.length; i++) values[i] = this.values.get(i);
-
     return values;
   }
 
   public int[] asIntArray() {
     int[] values = new int[size()];
-
     for (int i = 0; i < values.length; i++) values[i] = Math.round(this.values.get(i));
-
     return values;
   }
 
-  public void set(ValueStore store) {
-    values.clear();
+  public void set(float[] values) {
+    clear();
+    add(values);
+  }
 
+  public void set(int[] values) {
+    clear();
+    add(values);
+  }
+
+  public void set(ValueStore store) {
+    clear();
     add(store);
   }
 
@@ -61,10 +68,12 @@ public class ValueStore {
   }
 
   public void add(float... values) {
+    if (values == null) return;
     for (float v : values) this.values.add(v);
   }
 
   public void add(int[] values) {
+    if (values == null) return;
     for (float value : values) add(value);
   }
 
@@ -105,5 +114,9 @@ public class ValueStore {
 //    add(invertY ? 1 - value.y() : value.y());
 
     if (addZ) add(value.z());
+  }
+
+  public void clear() {
+    values.clear();
   }
 }

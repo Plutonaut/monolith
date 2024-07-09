@@ -1,9 +1,9 @@
 package com.game.graphics.shaders;
 
+import com.game.caches.graphics.IGraphicsCachable;
 import com.game.caches.shaders.AttributeCache;
 import com.game.caches.shaders.UniformCache;
 import com.game.engine.render.mesh.vertices.AttribInfo;
-import com.game.graphics.IGraphicsCachable;
 import com.game.utils.application.LambdaCounter;
 import com.game.utils.engine.ShaderUtils;
 import com.game.utils.enums.EGraphicsCache;
@@ -13,8 +13,10 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.opengl.GL46;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Accessors(fluent = true)
 @Data
@@ -64,28 +66,28 @@ public class Program implements IGraphicsCachable {
     return uniforms.has(key);
   }
 
-  public void point(Collection<AttribInfo> attributes, int glType) {
+  public List<String> point(Collection<AttribInfo> attributes, int glType) {
+    List<String> vaas = new ArrayList<>();
     LambdaCounter lambdaOffset = new LambdaCounter();
     int stride = attributes.size() == 1 ? 0 : attributes.stream().mapToInt(AttribInfo::size).sum();
     int offset = lambdaOffset.value();
-    attributes.forEach(attrib -> {
-      if (hasAttribute(attrib.key())) {
-        enableAttribute(attrib.key());
-        point(stride, attrib, offset, glType);
-        lambdaOffset.add(attrib.size() * attrib.instances());
+    attributes.forEach(attribute -> {
+      if (hasAttribute(attribute.key())) {
+        enableAttribute(attribute.key());
+        this.attributes.point(
+          attribute.key(),
+          attribute.size(),
+          stride,
+          offset,
+          glType,
+          attribute.instances()
+        );
+        lambdaOffset.add(attribute.size() * attribute.instances());
+        vaas.add(attribute.key());
       }
     });
-  }
 
-  public void point(int stride, AttribInfo attribute, int offset, int glType) {
-    attributes.point(
-      attribute.key(),
-      attribute.size(),
-      stride,
-      offset,
-      glType,
-      attribute.instances()
-    );
+    return vaas;
   }
 
   void attach(Shader shader) {

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialUtils {
+  public static final String DFLT = "default";
+
   public static List<Material> process(String path, AIScene scene) {
     List<Material> materials = new ArrayList<>();
     PointerBuffer aiMaterials = scene.mMaterials();
@@ -23,7 +25,7 @@ public class MaterialUtils {
       int materialCount = scene.mNumMaterials();
       for (int i = 0; i < materialCount; i++) {
         AIMaterial aiMaterial = AIMaterial.create(aiMaterials.get(i));
-        Material material = process(aiMaterial, directory);
+        Material material = process(aiMaterial, i, directory);
         materials.add(material);
       }
     }
@@ -31,8 +33,8 @@ public class MaterialUtils {
     return materials;
   }
 
-  public static Material process(AIMaterial aiMaterial, String directory) {
-    Material material = new Material();
+  public static Material process(AIMaterial aiMaterial, int index, String directory) {
+    Material material = new Material(directory + "_" + index);
 
     try (MemoryStack stack = MemoryStack.stackPush()) {
       AIColor4D color = AIColor4D.create();
