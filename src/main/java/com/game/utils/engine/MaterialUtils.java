@@ -40,7 +40,7 @@ public class MaterialUtils {
       AIColor4D color = AIColor4D.create();
       EMaterialColor.types().forEach(type -> {
         int result = color(aiMaterial, type.getValue(), color);
-        if (result == Assimp.aiReturn_SUCCESS) material.color(type.getValue(), color);
+        if (result == Assimp.aiReturn_SUCCESS) material.colors().add(type.getValue(), color);
       });
       float reflectance = reflectance(aiMaterial);
       material.reflectance(reflectance);

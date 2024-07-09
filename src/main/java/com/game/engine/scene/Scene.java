@@ -8,7 +8,6 @@ import com.game.engine.render.models.Model;
 import com.game.engine.render.pipeline.RenderPacket;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
-import com.game.engine.scene.entities.EntityManager;
 import com.game.engine.scene.lighting.LightingManager;
 import com.game.engine.scene.projection.Projection;
 import com.game.engine.window.Window;
@@ -32,7 +31,7 @@ public class Scene {
   private final Projection projection;
   private final AudioManager audio;
   private final LightingManager lighting;
-  private final EntityManager entities;
+//  private final EntityManager entities;
   private final HashMap<ERenderer, RenderPacket> packets;
 
   public Scene(EngineSettings settings, String name) {
@@ -52,7 +51,7 @@ public class Scene {
     );
     projection = new Projection();
 
-    entities = new EntityManager();
+//    entities = new EntityManager();
     audio = new AudioManager();
     lighting = new LightingManager();
     packets = new HashMap<>();

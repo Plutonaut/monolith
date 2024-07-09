@@ -1,6 +1,12 @@
 package com.game.caches.shaders;
 
+import com.game.engine.render.mesh.vertices.AttribInfo;
+import com.game.utils.application.LambdaCounter;
 import org.lwjgl.opengl.GL46;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class AttributeCache extends AbstractShaderCache {
   public AttributeCache(int programId) {
@@ -11,6 +17,30 @@ public class AttributeCache extends AbstractShaderCache {
   protected int glLocation(String key) {
     int location = GL46.glGetAttribLocation(programId, key);
     return check(location, "Attribute", key);
+  }
+
+  public List<String> point(Collection<AttribInfo> attributes, int glType) {
+    List<String> vaas = new ArrayList<>();
+    LambdaCounter lambdaOffset = new LambdaCounter();
+    int stride = attributes.size() == 1 ? 0 : attributes.stream().mapToInt(AttribInfo::size).sum();
+    int offset = lambdaOffset.value();
+    attributes.forEach(attribute -> {
+      if (has(attribute.key())) {
+        enable(attribute.key());
+        point(
+          attribute.key(),
+          attribute.size(),
+          stride,
+          offset,
+          glType,
+          attribute.instances()
+        );
+        lambdaOffset.add(attribute.size() * attribute.instances());
+        vaas.add(attribute.key());
+      }
+    });
+
+    return vaas;
   }
 
   public void point(String attribute, int size, int stride, int offset, int glType, int instances) {
