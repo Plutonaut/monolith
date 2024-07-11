@@ -1,5 +1,6 @@
 package com.game.utils.engine;
 
+import com.game.caches.GlobalCache;
 import com.game.graphics.materials.Material;
 import com.game.utils.enums.EMaterialColor;
 import com.game.utils.enums.EMaterialTexture;
@@ -18,7 +19,6 @@ public class MaterialUtils {
   public static List<Material> process(String path, AIScene scene) {
     List<Material> materials = new ArrayList<>();
     PointerBuffer aiMaterials = scene.mMaterials();
-
     if (aiMaterials != null) {
       File file = new File(path);
       String directory = file.getParent();
@@ -29,12 +29,11 @@ public class MaterialUtils {
         materials.add(material);
       }
     }
-
     return materials;
   }
 
   public static Material process(AIMaterial aiMaterial, int index, String directory) {
-    Material material = new Material(directory + "_" + index);
+    Material material = GlobalCache.instance().material(directory + "_" + index);
 
     try (MemoryStack stack = MemoryStack.stackPush()) {
       AIColor4D color = AIColor4D.create();

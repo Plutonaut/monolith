@@ -1,6 +1,5 @@
 package com.game.engine.render.renderers;
 
-import com.game.caches.GlobalCache;
 import com.game.engine.scene.lighting.Attenuation;
 import com.game.engine.scene.lighting.lights.DirectionalLight;
 import com.game.engine.scene.lighting.lights.Light;
@@ -8,23 +7,25 @@ import com.game.engine.scene.lighting.lights.PointLight;
 import com.game.engine.scene.lighting.lights.SpotLight;
 import com.game.graphics.materials.Material;
 import com.game.graphics.materials.MaterialTexturePack;
-import com.game.graphics.texture.Texture;
-import com.game.utils.application.LambdaCounter;
 import com.game.utils.enums.EMaterialColor;
-import com.game.utils.enums.EMaterialTexture;
 import com.game.utils.enums.EUniform;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.opengl.GL46;
 
 import java.util.List;
 
 public abstract class AbstractLitRenderer extends AbstractRenderer {
   protected void setMaterialUniform(Material material) {
-    program.uniforms().set(EUniform.MATERIAL_AMBIENT.value(), material.color(EMaterialColor.AMB.getValue()));
-    program.uniforms().set(EUniform.MATERIAL_DIFFUSE.value(), material.color(EMaterialColor.DIF.getValue()));
-    program.uniforms().set(EUniform.MATERIAL_SPECULAR.value(), material.color(EMaterialColor.SPC.getValue()));
+    program
+      .uniforms()
+      .set(EUniform.MATERIAL_AMBIENT.value(), material.color(EMaterialColor.AMB.getValue()));
+    program
+      .uniforms()
+      .set(EUniform.MATERIAL_DIFFUSE.value(), material.color(EMaterialColor.DIF.getValue()));
+    program
+      .uniforms()
+      .set(EUniform.MATERIAL_SPECULAR.value(), material.color(EMaterialColor.SPC.getValue()));
     program.uniforms().set(EUniform.MATERIAL_REFLECTANCE.value(), material.reflectance());
 
     MaterialTexturePack textures = material.textures();
@@ -113,8 +114,14 @@ public abstract class AbstractLitRenderer extends AbstractRenderer {
     program.uniforms().set(uniform + EUniform.POSITION.value(), lightPosition);
     program.uniforms().set(uniform + EUniform.COLOR.value(), color);
     program.uniforms().set(uniform + EUniform.INTENSITY.value(), intensity);
-    program.uniforms().set(uniform + EUniform.ATTENUATION.value() + EUniform.CONSTANT.value(), constant);
-    program.uniforms().set(uniform + EUniform.ATTENUATION.value() + EUniform.LINEAR.value(), linear);
-    program.uniforms().set(uniform + EUniform.ATTENUATION.value() + EUniform.EXPONENT.value(), exponent);
+    program
+      .uniforms()
+      .set(uniform + EUniform.ATTENUATION.value() + EUniform.CONSTANT.value(), constant);
+    program
+      .uniforms()
+      .set(uniform + EUniform.ATTENUATION.value() + EUniform.LINEAR.value(), linear);
+    program
+      .uniforms()
+      .set(uniform + EUniform.ATTENUATION.value() + EUniform.EXPONENT.value(), exponent);
   }
 }

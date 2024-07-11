@@ -5,7 +5,7 @@ import com.game.engine.EngineSettings;
 import com.game.engine.audio.AudioManager;
 import com.game.engine.render.mesh.definitions.MeshDefinition;
 import com.game.engine.render.models.Model;
-import com.game.engine.render.pipeline.RenderPacket;
+import com.game.engine.render.pipeline.packets.PacketManager;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.lighting.LightingManager;
@@ -17,11 +17,9 @@ import com.game.utils.enums.ERenderer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-
-import java.util.HashMap;
-import java.util.concurrent.ArrayBlockingQueue;
 
 @Accessors(fluent = true)
 @Data
@@ -31,8 +29,7 @@ public class Scene {
   private final Projection projection;
   private final AudioManager audio;
   private final LightingManager lighting;
-//  private final EntityManager entities;
-  private final HashMap<ERenderer, RenderPacket> packets;
+  private final PacketManager packets;
 
   public Scene(EngineSettings settings, String name) {
     window = new Window(
@@ -49,37 +46,24 @@ public class Scene {
       settings.mouseSensitivity(),
       settings.movementSpeed()
     );
-    projection = new Projection();
+    projection = new Projection(settings.fov(), settings.zNear(), settings.zFar());
 
-//    entities = new EntityManager();
     audio = new AudioManager();
     lighting = new LightingManager();
-    packets = new HashMap<>();
+    packets = new PacketManager();
   }
 
   public Scene load(ERenderer shader, String path, boolean animated) {
-    return bind(shader, ModelResourceLoader.load(path, animated));
+    return pipe(shader, ModelResourceLoader.load(path, animated));
   }
 
-  public Scene bind(ERenderer shader, String modelName, MeshDefinition meshDefinition) {
-    return bind(shader, meshDefinition.createModel(modelName));
+  public Scene pipe(ERenderer shader, String modelName, MeshDefinition meshDefinition) {
+    return pipe(shader, meshDefinition.createModel(modelName));
   }
 
-  public Scene bind(ERenderer shader, Model model) {
-    packet(shader).queue(model);
+  public Scene pipe(ERenderer shader, Model model) {
+    packets.bind(shader, model);
     return this;
-  }
-
-  public RenderPacket packet(ERenderer shader) {
-    return packets.computeIfAbsent(shader, RenderPacket::new);
-  }
-
-  public void addPacket(RenderPacket packet) {
-    packets.put(packet.destination(), packet);
-  }
-
-  public ArrayBlockingQueue<Entity> renderQueue(ERenderer renderer) {
-    return packets.get(renderer).renderQueue();
   }
 
   public Matrix4f modelViewMat(Entity entity) {
@@ -97,6 +81,13 @@ public class Scene {
     viewPoint.w = 0.0f;
 
     return viewPoint;
+  }
+
+  public Vector2f screenSpace(Vector3f point) {
+    float x = (point.x + point.x * 0.5f) * window.width();
+    float y = (point.y - point.y * 0.5f) * window.height();
+
+    return new Vector2f(x, y);
   }
 
   public Matrix4f projectionMat(EProjection type) {

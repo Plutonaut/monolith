@@ -14,12 +14,12 @@ public class Projection {
   private float zNear;
   private float zFar;
 
-  public Projection() {
+  public Projection(float fov, float zNear, float zFar) {
     transform = new Matrix4f();
 
-    fov = 60f;
-    zNear = 0.01f;
-    zFar = 1000f;
+    this.fov = fov;
+    this.zNear = zNear;
+    this.zFar = zFar;
   }
 
   public Matrix4f modelView(Matrix4f model, Camera camera) {

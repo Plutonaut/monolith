@@ -2,7 +2,7 @@ package com.game.engine.render;
 
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.models.Model;
-import com.game.engine.render.pipeline.RenderPacket;
+import com.game.engine.render.pipeline.packets.RenderPacket;
 import com.game.engine.render.renderers.AbstractRenderer;
 import com.game.engine.render.renderers.IRenderer;
 import com.game.engine.scene.Scene;
@@ -14,6 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RenderManager implements IRenderer {
+  // The order of each renderer matters
+  protected static final List<ERenderer> orderedShaderRenderArray = List.of(
+    ERenderer.BASIC,
+    ERenderer.SKYBOX,
+    ERenderer.SPRITE,
+    ERenderer.MESH,
+    ERenderer.SCENE
+  );
+
   protected final HashMap<ERenderer, AbstractRenderer> renderers;
   protected final RendererFactory factory;
 
@@ -24,24 +33,6 @@ public class RenderManager implements IRenderer {
 
   AbstractRenderer getRenderer(ERenderer type) {
     return renderers.computeIfAbsent(type, factory::create);
-  }
-
-  public void init(ERenderer... shaders) {
-    for (ERenderer shader : shaders)
-      renderers.putIfAbsent(shader, factory.create(shader));
-  }
-
-  public RenderPacket bind(ERenderer shader, Model... models) {
-    RenderPacket packet = new RenderPacket(shader);
-    AbstractRenderer renderer = getRenderer(packet.destination());
-//    ArrayBlockingQueue<Model> queue = new ArrayBlockingQueue<>(16);
-    for (Model model : models) {
-      List<Mesh> meshes = renderer.associate(model);
-      Entity entity = model.create(model.name() + "_" + packet.destination());
-      entity.addMeshes(meshes);
-      packet.add(entity);
-    }
-    return packet;
   }
 
   void bind(ERenderer shader, RenderPacket packet) {
@@ -56,12 +47,15 @@ public class RenderManager implements IRenderer {
   }
 
   public void bind(Scene scene) {
-    scene.packets().forEach(this::bind);
+    scene.packets().stream(this::bind);
   }
 
   public void render(Scene scene) {
     scene.enter();
-    renderers.values().forEach(renderer -> renderer.render(scene));
+    // Only bother attempting to render if a renderer object already exists.
+    orderedShaderRenderArray.forEach(shader -> {
+      if (renderers.containsKey(shader)) getRenderer(shader).render(scene);
+    });
     scene.exit();
   }
 

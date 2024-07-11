@@ -12,7 +12,6 @@ import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.EModelCache;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.lwjgl.opengl.GL46;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,6 @@ public class MeshInfo implements IModelCachable {
   protected String material;
   protected int vertexCount;
   protected int instances;
-  protected int vboUsage;
 
   public MeshInfo(String name) {
     this.name = name;
@@ -36,7 +34,6 @@ public class MeshInfo implements IModelCachable {
     material = MaterialUtils.DFLT;
     instances = 1;
     vertexCount = 0;
-    vboUsage = GL46.GL_STATIC_DRAW;
   }
 
   @Override
@@ -72,17 +69,14 @@ public class MeshInfo implements IModelCachable {
     return this;
   }
 
-  public MeshInfo addVertices(ValueStore store, int size, String attribute) {
-    return addVertices(store, GL46.GL_FLOAT, size, attribute);
-  }
-
-  public MeshInfo addVertices(ValueStore values, int glType, int size, String attribute) {
-    return addVertices(values, glType, size, attribute, 1);
+  public MeshInfo addVertices(ValueStore values, int glType, int glUsage, int size, String attribute) {
+    return addVertices(values, glType, glUsage, size, attribute, 1);
   }
 
   public MeshInfo addVertices(
     ValueStore values,
     int glType,
+    int glUsage,
     int size,
     String attribute,
     int instances
@@ -91,7 +85,7 @@ public class MeshInfo implements IModelCachable {
 
     if (!values.isEmpty() && size > 0) {
       AttribInfo attribInfo = new AttribInfo(attribute, size, instances);
-      VertexInfo vertexInfo = new VertexInfo(values, glType, attribInfo);
+      VertexInfo vertexInfo = new VertexInfo(values, glType, glUsage, attribInfo);
 
       addVertices(vertexInfo);
     }

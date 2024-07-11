@@ -49,6 +49,10 @@ public class Entity implements IRenderable {
     this.meshes.addAll(meshes);
   }
 
+  public void addMesh(Mesh mesh) {
+    this.meshes.add(mesh);
+  }
+
   public void addController(AbstractController controller) {
     controllers.put(controller.type(), controller.onAttach(this));
   }

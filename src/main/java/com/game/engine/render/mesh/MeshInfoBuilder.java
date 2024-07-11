@@ -167,18 +167,21 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfoBuilder vertices(ValueStore store, int size, int glType, String attribute) {
-    return vertices(store, size, glType, attribute, 1);
+    return vertices(store, size, glType, GL46.GL_STATIC_DRAW, attribute);
+  }
+  public MeshInfoBuilder vertices(ValueStore store, int size, int glType, int glUsage, String attribute) {
+    return vertices(store, size, glType, glUsage, attribute, 1);
   }
 
   public MeshInfoBuilder vertices(
-    ValueStore store, int size, int glType, String attribute, int instances
+    ValueStore store, int size, int glType, int glUsage, String attribute, int instances
   ) {
     if (attributes.contains(attribute)) {
       log.error("{} already contains attribute: {}!", name, attribute);
       return null;
     } else if (!store.isEmpty()) {
       AttribInfo attribInfo = new AttribInfo(attribute, size, instances);
-      VertexInfo vertexInfo = new VertexInfo(store, glType, attribInfo);
+      VertexInfo vertexInfo = new VertexInfo(store, glType, glUsage, attribInfo);
       vertices.add(vertexInfo);
       attributes.add(attribute);
       this.instances = Math.max(this.instances, instances);

@@ -31,7 +31,7 @@ public class LoggingUtils {
   }
 
   public static int compareLogDates(Path pathA, Path pathB) {
-    return getDateOfLog(pathA).compareTo(getDateOfLog(pathB));
+    return getDateOfLog(pathB).compareTo(getDateOfLog(pathA));
   }
 
   public static List<Path> getFileSet(String dir) throws IOException {
