@@ -57,8 +57,8 @@ public class TestPipelineLogic extends AbstractLogic {
     viewMovement.set(window.keyboard().movementVec());
 
     window.mouse().input();
-    viewRotation.set(0f);
     if (window.mouse().isRightButtonPressed()) viewRotation.set(window.mouse().displVec());
+    else viewRotation.set(0f);
   }
 
   @Override

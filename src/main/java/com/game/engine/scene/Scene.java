@@ -67,7 +67,7 @@ public class Scene {
   }
 
   public Matrix4f modelViewMat(Entity entity) {
-    return projection.modelView(entity.transform().worldModelMat(), camera);
+    return new Matrix4f().set(camera.view()).mul(entity.transform().worldModelMat());
   }
 
   public Matrix4f modelOrthoMat(Entity entity) {
