@@ -61,7 +61,7 @@ public class MeshInfoUtils {
     ValueStore vertices = process(buffer, size);
     AttribInfo attribInfo = new AttribInfo(attribute, size, 1);
 
-    return new VertexInfo(vertices, GL46.GL_FLOAT, attribInfo);
+    return new VertexInfo(vertices, GL46.GL_FLOAT, GL46.GL_STATIC_DRAW, attribInfo);
   }
 
   static ValueStore process(AIFace.Buffer aiFaces, int count) {

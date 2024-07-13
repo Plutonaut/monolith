@@ -3,9 +3,9 @@ package com.game.caches;
 import com.game.caches.audio.AudioBufferCache;
 import com.game.caches.graphics.*;
 import com.game.caches.models.*;
-import com.game.engine.render.models.Model;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.MeshInfo;
+import com.game.engine.render.models.Model;
 import com.game.engine.scene.entities.animations.audio.AudioBufferObject;
 import com.game.graphics.materials.Material;
 import com.game.graphics.shaders.Program;
@@ -20,15 +20,25 @@ public class GlobalCache {
   private static GlobalCache CACHE;
   private final HashMap<EGraphicsCache, AbstractGraphicsCache> graphicsCache;
   private final HashMap<EModelCache, AbstractModelCache> modelCache;
+  private final EntityNameResolver entityNameResolver;
 
   private GlobalCache() {
     graphicsCache = new HashMap<>();
     modelCache = new HashMap<>();
+    entityNameResolver = new EntityNameResolver();
   }
 
   public synchronized static GlobalCache instance() {
     if (CACHE == null) CACHE = new GlobalCache();
     return CACHE;
+  }
+
+  public String resolveEntityName(String entityName) {
+    return entityNameResolver.getAvailable(entityName);
+  }
+
+  public void removeEntityName(String entityName) {
+    entityNameResolver.removeName(entityName);
   }
 
   public MeshInfo meshInfo(String name, IModelGenerator generator) {

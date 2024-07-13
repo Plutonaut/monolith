@@ -36,7 +36,9 @@ public class Window {
   private int width;
   private int height;
 
-  public Window(int width, int height, String title, boolean debugMode, boolean safeMode, boolean vSync) {
+  public Window(
+    int width, int height, String title, boolean debugMode, boolean safeMode, boolean vSync
+  ) {
     // Creating an instance of WindowUtils rather than using a static class for thread safety.
     EngineGLVersion glVersion = new WindowService().initializeWindow(debugMode, safeMode);
     String windowTitle = String.format("%s OpenGL %s", title, glVersion);
@@ -63,7 +65,8 @@ public class Window {
                                                  LoggingUtils.WINDOW_LOG_DIRECTORY,
                                                  ".log",
                                                  5,
-                                                 true);
+                                                 true
+      );
       debugCallback = GLUtil.setupDebugMessageCallback(printStream);
     }
   }
@@ -72,25 +75,25 @@ public class Window {
     GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
   }
 
-  public void viewport() {viewport(0, 0);}
+  public void viewport() { viewport(0, 0); }
 
   public void viewport(int x, int y) {
     GL46.glViewport(x, y, width, height);
   }
 
-  public void update() {GLFW.glfwSwapBuffers(handle);}
+  public void update() { GLFW.glfwSwapBuffers(handle); }
 
-  public void poll() {GLFW.glfwPollEvents();}
+  public void poll() { GLFW.glfwPollEvents(); }
 
-  public void maximize() {GLFW.glfwMaximizeWindow(handle);}
+  public void maximize() { GLFW.glfwMaximizeWindow(handle); }
 
-  public void restore() {GLFW.glfwRestoreWindow(handle);}
+  public void restore() { GLFW.glfwRestoreWindow(handle); }
 
-  public float ratio() {return (float) width / height;}
+  public float ratio() { return (float) width / height; }
 
-  public boolean windowShouldClose() {return GLFW.glfwWindowShouldClose(handle);}
+  public boolean windowShouldClose() { return GLFW.glfwWindowShouldClose(handle); }
 
-  public void setWindowShouldClose(boolean close) {GLFW.glfwSetWindowShouldClose(handle, close);}
+  public void setWindowShouldClose(boolean close) { GLFW.glfwSetWindowShouldClose(handle, close); }
 
   public boolean areKeysPressed(boolean all, int... keyCodes) {
     for (int key : keyCodes) {

@@ -36,7 +36,7 @@ public abstract class AbstractRenderer implements IRenderer {
   protected abstract void render(IRenderable item, Scene scene);
 
   public void render(Scene scene) {
-    ArrayBlockingQueue<Entity> queue = scene.renderQueue(type());
+    ArrayBlockingQueue<Entity> queue = scene.packets().renderQueue(type());
 
     if (queue.isEmpty()) return;
 
@@ -56,7 +56,7 @@ public abstract class AbstractRenderer implements IRenderer {
     Mesh mesh = info.create();
     mesh.bind();
     info.vertices().forEach(vertex -> {
-      VertexBufferObject vbo = vertex.create(info.vboUsage());
+      VertexBufferObject vbo = vertex.create();
       mesh.vbos().add(vbo);
       List<String> vaas = program.attributes().point(vertex.attributes().values(), vertex.glType());
       mesh.vaas().addAll(vaas);
@@ -64,7 +64,7 @@ public abstract class AbstractRenderer implements IRenderer {
     if (mesh.isComplex()) {
       IndexBufferObject ibo = new IndexBufferObject();
       mesh.vbos().add(ibo);
-      ibo.buffer(info.indices().asIntArray(), info.vboUsage());
+      ibo.buffer(info.indices().asIntArray());
     }
     mesh.unbind();
     return mesh;

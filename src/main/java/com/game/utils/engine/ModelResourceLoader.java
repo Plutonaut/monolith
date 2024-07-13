@@ -46,11 +46,12 @@ public class ModelResourceLoader {
         int materialIndex = aiMesh.mMaterialIndex();
         MeshInfo meshInfo = processMesh(aiMesh, bones);
         Material material = materialIndex >= 0 && materialIndex < materialCount
-                            ? materials.get(i)
+                            ? materials.get(materialIndex)
                             : null;
         if (material != null) {
           meshInfo.material(material.name());
         }
+        model.addMeshData(meshInfo.name());
       }
 
       if (animated)
@@ -69,9 +70,24 @@ public class ModelResourceLoader {
       AnimInfo animInfo = AnimationInfoUtils.process(aiMesh, bones);
 
       if (animInfo != null)
-        meshInfo.addVertices(animInfo.boneIds(), GL46.GL_INT, 4, EAttribute.BON.getValue(), 1)
-                .addVertices(animInfo.weights(), GL46.GL_FLOAT, 4, EAttribute.WGT.getValue(), 1);
-      GlobalCache.instance().cacheItem(meshInfo);
+        meshInfo
+          .addVertices(animInfo.boneIds(),
+                       GL46.GL_INT,
+                       GL46.GL_STATIC_DRAW,
+                       4,
+                       EAttribute.BON.getValue(),
+                       1
+          )
+          .addVertices(
+            animInfo.weights(),
+            GL46.GL_FLOAT,
+            GL46.GL_STATIC_DRAW,
+            4,
+            EAttribute.WGT.getValue(),
+            1
+          );
+      // MeshInfo gets cached when build is called.
+//      GlobalCache.instance().cacheItem(meshInfo);
 
       return meshInfo;
     });

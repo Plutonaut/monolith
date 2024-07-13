@@ -1,4 +1,4 @@
-package com.game.engine.render.pipeline;
+package com.game.engine.render.pipeline.packets;
 
 import com.game.utils.enums.ERenderer;
 

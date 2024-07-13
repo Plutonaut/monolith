@@ -1,5 +1,8 @@
 package com.game.utils.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum EAttribute {
   POS("position"),
   NRM("normal"),
@@ -17,7 +20,4 @@ public enum EAttribute {
     this.value = value;
   }
 
-  public String getValue() {
-    return value;
-  }
 }

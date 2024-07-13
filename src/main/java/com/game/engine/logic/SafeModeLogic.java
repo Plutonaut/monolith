@@ -4,7 +4,6 @@ import com.game.engine.EngineSettings;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.window.Window;
-import com.game.utils.enums.ERenderer;
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -34,13 +33,13 @@ public class SafeModeLogic extends AbstractLogic {
   public void onStart() {
     renderer.blend(true);
     renderer.depth(true);
-    renderer.init(
-      ERenderer.SCENE,
-      ERenderer.MESH,
-      ERenderer.SKYBOX,
-      ERenderer.SPRITE,
-      ERenderer.BASIC
-    );
+//    renderer.init(
+//      ERenderer.SCENE,
+//      ERenderer.MESH,
+//      ERenderer.SKYBOX,
+//      ERenderer.SPRITE,
+//      ERenderer.BASIC
+//    );
     scene.lighting()
          .addAmbientLight()
          .addDirectionalLight()

@@ -4,20 +4,14 @@ layout (location=0) in vec3 position;
 layout (location=1) in vec3 color;
 layout (location=2) in vec2 texcoord;
 
-out vec3 vPosition;
 out vec4 vColor;
 out vec2 vTextureCoord;
-out mat4 mView;
 
 uniform mat4 projection;
 uniform mat4 modelview;
 
 void main() {
-	vec4 mvPos 		= modelview * vec4(position, 1.0);
-
 	vColor 			= vec4(color, 1.0);
 	vTextureCoord 	= texcoord;
-	mView			= modelview;
-	vPosition 		= mvPos.xyz;
-	gl_Position 	= projection * mvPos;
+	gl_Position 	= projection * modelview * vec4(position, 1.0);
 }

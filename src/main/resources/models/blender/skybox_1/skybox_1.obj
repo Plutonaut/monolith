@@ -1,6 +1,6 @@
 # Blender 4.1.1
 # www.blender.org
-mtllib skybox_1_flipped_normals.mtl
+mtllib skybox_1.mtl
 o Sphere
 v 0.000000 24.944088 -16.667107
 v 0.000000 16.667107 -24.944088

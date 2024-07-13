@@ -1,6 +1,5 @@
 package com.game.engine.scene.projection;
 
-import com.game.engine.scene.camera.Camera;
 import com.game.engine.window.Window;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -14,16 +13,12 @@ public class Projection {
   private float zNear;
   private float zFar;
 
-  public Projection() {
+  public Projection(float fov, float zNear, float zFar) {
     transform = new Matrix4f();
 
-    fov = 60f;
-    zNear = 0.01f;
-    zFar = 1000f;
-  }
-
-  public Matrix4f modelView(Matrix4f model, Camera camera) {
-    return transform.identity().set(camera.view()).mul(model);
+    this.fov = (float) Math.toRadians(fov);
+    this.zNear = zNear;
+    this.zFar = zFar;
   }
 
   public Matrix4f orthographic(Window window) {
@@ -35,7 +30,6 @@ public class Projection {
   }
 
   public Matrix4f perspective(Window window) {
-    float aspectRatio = window.ratio();
-    return transform.identity().perspective(fov, aspectRatio, zNear, zFar);
+    return transform.identity().perspective(fov, window.ratio(), zNear, zFar);
   }
 }
