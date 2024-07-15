@@ -1,6 +1,6 @@
 package com.game.engine.logic;
 
-import com.game.engine.EngineSettings;
+import com.game.engine.settings.EngineSettings;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.window.Window;

@@ -19,6 +19,7 @@ public class RendererFactory {
       case SCENE -> new SceneRenderer();
       case SKYBOX -> new SkyBoxRenderer();
       case SPRITE -> new SpriteRenderer();
+      case FONT -> new FontRenderer();
       case BASIC -> new BasicRenderer();
     };
   }

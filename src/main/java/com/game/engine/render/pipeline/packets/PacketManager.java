@@ -1,12 +1,15 @@
 package com.game.engine.render.pipeline.packets;
 
+import com.game.engine.render.IRenderable;
 import com.game.engine.render.models.Model;
 import com.game.engine.scene.entities.Entity;
+import com.game.engine.scene.entities.TextEntity;
 import com.game.utils.enums.ERenderer;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 public class PacketManager {
   private final HashMap<ERenderer, RenderPacket> packets;
@@ -14,6 +17,24 @@ public class PacketManager {
   public PacketManager() {
     packets = new HashMap<>();
   }
+
+  public Entity getEntity(String key) {
+    return packetStream()
+      .map(p -> p.getEntity(key))
+      .filter(Objects::nonNull)
+      .findFirst()
+      .orElse(null);
+  }
+
+  public TextEntity getGameText(String key) {
+    return packetStream()
+      .map(p -> p.getGameText(key))
+      .filter(Objects::nonNull)
+      .findFirst()
+      .orElse(null);
+  }
+
+  Stream<RenderPacket> packetStream() { return packets.values().stream(); }
 
   public void bind(ERenderer shader, Model model) {
     packet(shader).queue(model);
@@ -27,11 +48,11 @@ public class PacketManager {
     packets.put(packet.destination(), packet);
   }
 
-  public ArrayBlockingQueue<Entity> renderQueue(ERenderer renderer) {
+  public ArrayBlockingQueue<IRenderable> renderQueue(ERenderer renderer) {
     return packets.get(renderer).renderQueue();
   }
 
-  public void stream(BiConsumer<ERenderer, RenderPacket> consumer) {
-    packets.forEach(consumer);
+  public void bindQueue(ModelBinder binder) {
+    packets.values().forEach((packet) -> packet.flush(binder));
   }
 }

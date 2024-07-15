@@ -4,7 +4,8 @@ import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.definitions.MeshDefinition;
 import com.game.engine.scene.entities.animations.Animation;
-import com.game.engine.scene.entities.animations.Frame;
+import com.game.engine.scene.entities.animations.Animation3D;
+import com.game.engine.scene.entities.animations.BoneMatrixFrame;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -31,12 +32,12 @@ public class ModelBuilder {
     return this;
   }
 
-  public ModelBuilder addAnimation(String name, double duration, List<Frame> frames) {
-    return addAnimation(new Animation(name, duration, frames));
+  public ModelBuilder addAnimation(String name, double duration, List<BoneMatrixFrame> boneMatrixFrames) {
+    return addAnimation(new Animation3D(name, duration, boneMatrixFrames));
   }
 
-  public ModelBuilder addAnimation(Animation animation) {
-    if (animation != null) animations.add(animation);
+  public ModelBuilder addAnimation(Animation animation3D) {
+    if (animation3D != null) animations.add(animation3D);
     return this;
   }
 

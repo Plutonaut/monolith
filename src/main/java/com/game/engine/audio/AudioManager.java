@@ -1,8 +1,8 @@
 package com.game.engine.audio;
 
 import com.game.caches.GlobalCache;
-import com.game.engine.scene.entities.animations.audio.AudioBufferObject;
-import com.game.engine.scene.entities.animations.audio.AudioSourceObject;
+import com.game.engine.scene.audio.AudioBufferObject;
+import com.game.engine.scene.audio.AudioSourceObject;
 import org.joml.Vector3f;
 import org.lwjgl.openal.*;
 import org.lwjgl.system.MemoryUtil;

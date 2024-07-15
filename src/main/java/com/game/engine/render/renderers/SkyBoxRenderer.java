@@ -18,7 +18,7 @@ public class SkyBoxRenderer extends AbstractLitRenderer {
   protected void render(IRenderable item, Scene scene) {
     Entity entity = (Entity) item;
     program.uniforms().set(EUniform.PROJECTION.value(), scene.projectionMat(EProjection.PERSPECTIVE));
-    program.uniforms().set(EUniform.VIEW.value(), scene.camera().view());
+    program.uniforms().set(EUniform.VIEW.value(), scene.camera().view3D());
     program.uniforms().set(EUniform.MODEL.value(), entity.transform().worldModelMat());
     setAmbientLightUniform(scene.lighting().ambientLight());
 

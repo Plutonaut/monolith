@@ -3,7 +3,8 @@ package com.game.utils.engine.entity;
 import com.game.engine.render.mesh.animations.Bone;
 import com.game.engine.render.mesh.animations.Node;
 import com.game.engine.scene.entities.animations.Animation;
-import com.game.engine.scene.entities.animations.Frame;
+import com.game.engine.scene.entities.animations.Animation3D;
+import com.game.engine.scene.entities.animations.BoneMatrixFrame;
 import com.game.utils.math.MatrixUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -17,10 +18,8 @@ import java.util.List;
 public class AnimationUtils {
   public static final int MAX_BONES = 150;
 
-  //  public static AnimationController process(AIScene scene, List<Bone> bones) {
   public static List<Animation> process(AIScene scene, List<Bone> bones) {
-//    AnimationController animationController = new AnimationController();
-    ArrayList<Animation> animations = new ArrayList<>();
+    ArrayList<Animation> animation3DS = new ArrayList<>();
     AINode aiNode = scene.mRootNode();
 
     if (scene.mNumAnimations() > 0 && aiNode != null) {
@@ -30,22 +29,19 @@ public class AnimationUtils {
       int count = scene.mNumAnimations();
       PointerBuffer aiAnimations = scene.mAnimations();
 
-//      if (aiAnimations == null) return animationController;
-      if (aiAnimations == null) return animations;
+      if (aiAnimations == null) return animation3DS;
 
       for (int i = 0; i < count; i++) {
         long aiAnimationPointer = aiAnimations.get(i);
         AIAnimation aiAnimation = AIAnimation.create(aiAnimationPointer);
-        Animation animation = process(aiAnimation, bones, root, globalInverseTransform);
-        animations.add(animation);
-//        animationController.add(animation);
+        Animation3D animation3D = process(aiAnimation, bones, root, globalInverseTransform);
+        animation3DS.add(animation3D);
       }
     }
-    return animations;
-//    return animationController;
+    return animation3DS;
   }
 
-  static Animation process(
+  static Animation3D process(
     AIAnimation aiAnimation,
     List<Bone> bones,
     Node root,
@@ -53,28 +49,28 @@ public class AnimationUtils {
   ) {
     int maxFrames = calculateMaxAnimationFrames(aiAnimation);
 
-    List<Frame> frames = new ArrayList<>();
+    List<BoneMatrixFrame> boneMatrixFrames = new ArrayList<>();
 
     for (int j = 0; j < maxFrames; j++) {
       Matrix4f[] boneTransforms = new Matrix4f[MAX_BONES];
       Arrays.fill(boneTransforms, new Matrix4f());
-      Frame frame = new Frame(boneTransforms);
+      BoneMatrixFrame boneMatrixFrame = new BoneMatrixFrame(boneTransforms);
 
       buildAnimationFrameMatrices(
         aiAnimation,
         bones,
-        frame,
+        boneMatrixFrame,
         j,
         root,
         root.transform(),
         globalTransform
       );
 
-      frames.add(frame);
+      boneMatrixFrames.add(boneMatrixFrame);
     }
     String animationName = aiAnimation.mName().dataString();
     double duration = aiAnimation.mDuration();
-    return new Animation(animationName, duration, frames);
+    return new Animation3D(animationName, duration, boneMatrixFrames);
   }
 
   static Node process(AINode aiNode, Node parent) {
@@ -162,7 +158,7 @@ public class AnimationUtils {
   static void buildAnimationFrameMatrices(
     AIAnimation aiAnimation,
     List<Bone> bones,
-    Frame animatedFrame,
+    BoneMatrixFrame animatedBoneMatrixFrame,
     int frame,
     Node node,
     Matrix4f parentTransformation,
@@ -182,7 +178,7 @@ public class AnimationUtils {
       .toList();
 
     for (final Bone bone : affectedBones)
-      animatedFrame.boneMatrices()[bone.boneId()] = new Matrix4f(globalInverseTransform)
+      animatedBoneMatrixFrame.boneMatrices()[bone.boneId()] = new Matrix4f(globalInverseTransform)
         .mul(nodeGlobalTransform)
         .mul(bone.offsetMatrix());
 
@@ -190,7 +186,7 @@ public class AnimationUtils {
       buildAnimationFrameMatrices(
         aiAnimation,
         bones,
-        animatedFrame,
+        animatedBoneMatrixFrame,
         frame,
         child,
         nodeGlobalTransform,

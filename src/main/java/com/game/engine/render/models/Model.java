@@ -47,10 +47,12 @@ public class Model implements IModelCachable {
   }
 
   public void addMeshData(String meshInfo) { this.meshData.add(meshInfo); }
-  public void addAnimation(Animation animation) {
-    this.animations.add(animation);
+
+  public void addAnimation(Animation animation3D) {
+    this.animations.add(animation3D);
   }
-  public void addAnimations(List<Animation> animations) {
+
+  public void addAnimations(List<? extends Animation> animations) {
     this.animations.addAll(animations);
   }
 

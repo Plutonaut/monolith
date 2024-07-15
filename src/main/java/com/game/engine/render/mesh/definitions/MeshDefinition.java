@@ -61,7 +61,7 @@ public abstract class MeshDefinition {
     return builder().build();
   }
 
-  public Model createModel(String name) {
-    return builder().model(name).build();
+  public Model createModel() {
+    return builder().model(name()).build();
   }
 }

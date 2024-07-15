@@ -1,4 +1,4 @@
-package com.game.utils.engine;
+package com.game.utils.engine.loaders;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.MeshInfo;
@@ -6,7 +6,9 @@ import com.game.engine.render.mesh.animations.AnimInfo;
 import com.game.engine.render.mesh.animations.Bone;
 import com.game.engine.render.models.Model;
 import com.game.graphics.materials.Material;
-import com.game.utils.application.LoaderUtils;
+import com.game.utils.application.PathSanitizer;
+import com.game.utils.engine.MaterialUtils;
+import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.entity.AnimationInfoUtils;
 import com.game.utils.engine.entity.AnimationUtils;
 import com.game.utils.enums.EAttribute;
@@ -24,12 +26,16 @@ import static org.lwjgl.assimp.Assimp.*;
 public class ModelResourceLoader {
   public static final int BASE_FLAGS = aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace | aiProcess_LimitBoneWeights;
 
-  public static Model load(String path, boolean animated) {
-    Model model = new Model(path);
+  public static Model load(String name, String path, boolean animated) {
+    return GlobalCache.instance().model(name, n -> loadModel(n, path, animated));
+  }
+
+  static Model loadModel(String name, String path, boolean animated) {
+    Model model = new Model(name);
     int flags = BASE_FLAGS;
     if (animated) flags |= aiProcess_PreTransformVertices;
 
-    String sanitizedPath = LoaderUtils.sanitizeFilePath(path);
+    String sanitizedPath = PathSanitizer.sanitizeFilePath(path);
 
     AIScene scene = Assimp.aiImportFile(sanitizedPath, flags);
     if (scene == null)
@@ -71,12 +77,13 @@ public class ModelResourceLoader {
 
       if (animInfo != null)
         meshInfo
-          .addVertices(animInfo.boneIds(),
-                       GL46.GL_INT,
-                       GL46.GL_STATIC_DRAW,
-                       4,
-                       EAttribute.BON.getValue(),
-                       1
+          .addVertices(
+            animInfo.boneIds(),
+            GL46.GL_INT,
+            GL46.GL_STATIC_DRAW,
+            4,
+            EAttribute.BON.getValue(),
+            1
           )
           .addVertices(
             animInfo.weights(),

@@ -3,10 +3,13 @@ package com.game.engine.render.renderers;
 import com.game.engine.render.IRenderable;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
+import com.game.graphics.materials.Material;
+import com.game.utils.enums.EProjection;
 import com.game.utils.enums.ERenderer;
 import com.game.utils.enums.EUniform;
+import org.joml.Matrix4f;
 
-public class SpriteRenderer extends AbstractRenderer {
+public class SpriteRenderer extends AbstractLitRenderer {
   @Override
   public ERenderer type() {
     return ERenderer.SPRITE;
@@ -14,11 +17,15 @@ public class SpriteRenderer extends AbstractRenderer {
 
   @Override
   protected void render(IRenderable item, Scene scene) {
+    EProjection projectionType = EProjection.ORTHOGRAPHIC_FONT_2D;
     Entity entity = (Entity) item;
-    program.uniforms().set(EUniform.PROJECTION.value(), scene.modelOrthoMat(entity));
-
+    Matrix4f mat = new Matrix4f()
+      .set(scene.projectionMat(projectionType))
+      .mul(scene.modelViewMat2D(entity));
+    program.uniforms().set(EUniform.PROJECTION.value(), mat);
     entity.meshes().forEach(mesh -> {
-      setMaterialTextureUniform(mesh.material().textures());
+      Material material = mesh.material();
+      setMaterialUniform(material);
       draw(mesh);
     });
   }

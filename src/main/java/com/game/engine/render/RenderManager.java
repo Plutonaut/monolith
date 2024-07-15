@@ -1,12 +1,10 @@
 package com.game.engine.render;
 
-import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.models.Model;
-import com.game.engine.render.pipeline.packets.RenderPacket;
+import com.game.engine.render.pipeline.packets.PacketResult;
 import com.game.engine.render.renderers.AbstractRenderer;
 import com.game.engine.render.renderers.IRenderer;
 import com.game.engine.scene.Scene;
-import com.game.engine.scene.entities.Entity;
 import com.game.utils.enums.ERenderer;
 import org.lwjgl.opengl.GL46;
 
@@ -17,6 +15,7 @@ public class RenderManager implements IRenderer {
   // The order of each renderer matters
   protected static final List<ERenderer> orderedShaderRenderArray = List.of(
     ERenderer.BASIC,
+    ERenderer.FONT,
     ERenderer.SKYBOX,
     ERenderer.SPRITE,
     ERenderer.MESH,
@@ -35,25 +34,18 @@ public class RenderManager implements IRenderer {
     return renderers.computeIfAbsent(type, factory::create);
   }
 
-  void bind(ERenderer shader, RenderPacket packet) {
-    AbstractRenderer renderer = getRenderer(packet.destination());
-    while (packet.queue().peek() != null) {
-      Model model = packet.queue().poll();
-      List<Mesh> meshes = renderer.associate(model);
-      Entity entity = model.create(model.name() + "_" + packet.destination());
-      entity.addMeshes(meshes);
-      packet.add(entity);
-    }
+  PacketResult bind(ERenderer shader, Model model) {
+    return getRenderer(shader).associate(model);
   }
 
   public void bind(Scene scene) {
-    scene.packets().stream(this::bind);
+    scene.packets().bindQueue(this::bind);
   }
 
   public void render(Scene scene) {
     scene.enter();
-    // Only bother attempting to render if a renderer object already exists.
     orderedShaderRenderArray.forEach(shader -> {
+      // Only bother attempting to render if a renderer object already exists.
       if (renderers.containsKey(shader)) getRenderer(shader).render(scene);
     });
     scene.exit();

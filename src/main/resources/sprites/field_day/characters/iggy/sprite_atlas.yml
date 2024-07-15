@@ -1,0 +1,7 @@
+name: "iggy"
+atlas:
+  - name: "profile"
+    animated: false
+    sprites:
+      - name: "default"
+        path: "Iggy_v05_A.png"

@@ -36,7 +36,7 @@ public class UniformCache extends AbstractShaderCache {
 
   public void set(String uniform, Vector3f value) {
     final int location = get(uniform);
-    if (location < 0) return;
+    if (location < 0 || value == null) return;
     try (MemoryStack stack = MemoryStack.stackPush()) {
       final FloatBuffer buffer = stack.mallocFloat(3);
       value.get(buffer);
@@ -46,7 +46,7 @@ public class UniformCache extends AbstractShaderCache {
 
   public void set(String uniform, Vector4f value) {
     final int location = get(uniform);
-    if (location < 0) return;
+    if (location < 0 || value == null) return;
     try (MemoryStack stack = MemoryStack.stackPush()) {
       final FloatBuffer buffer = stack.mallocFloat(4);
       value.get(buffer);
@@ -56,8 +56,7 @@ public class UniformCache extends AbstractShaderCache {
 
   public void set(String uniform, Matrix4f... values) {
     int location = get(uniform);
-    if (location < 0) return;
-    if (values == null || values.length == 0) return;
+    if (location < 0 || values == null || values.length == 0) return;
     int length = values.length;
     try (MemoryStack stack = MemoryStack.stackPush()) {
       FloatBuffer buffer = stack.mallocFloat(16 * values.length);
