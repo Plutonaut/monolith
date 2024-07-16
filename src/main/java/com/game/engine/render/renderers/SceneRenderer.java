@@ -18,7 +18,7 @@ public class SceneRenderer extends AbstractLitRenderer {
   protected void render(IRenderable item, Scene scene) {
     Entity entity = (Entity) item;
     program.uniforms().set(EUniform.PROJECTION.value(), scene.projectionMat(EProjection.PERSPECTIVE));
-    program.uniforms().set(EUniform.MODEL_VIEW.value(), scene.modelViewMat(entity));
+    program.uniforms().set(EUniform.MODEL_VIEW.value(), scene.modelViewMat3D(entity));
     // Possible alternative to the explicit calls being made below
 //    entity.modifiers().forEach(mod -> program.uniforms().set(mod.uniform(), entity.isModifierActive(mod)));
     program.uniforms().set(EUniform.SELECTED.value(), entity.isModifierActive(EModifier.SELECTED));
@@ -31,7 +31,7 @@ public class SceneRenderer extends AbstractLitRenderer {
     }
 
     LightingManager lighting = scene.lighting();
-    Matrix4f viewMatrix = scene.camera().view();
+    Matrix4f viewMatrix = scene.camera().view3D();
 
     if (lighting.hasAmbientLight()) setAmbientLightUniform(lighting.ambientLight());
     if (lighting.hasDirectionalLight()) setDirectionalLightUniform(lighting.directionalLight(), viewMatrix);

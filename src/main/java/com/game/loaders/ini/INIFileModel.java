@@ -1,6 +1,7 @@
-package com.game.loaders;
+package com.game.loaders.ini;
 
-import com.game.utils.application.LoaderUtils;
+import com.game.engine.settings.INIModelSection;
+import com.game.utils.application.PathSanitizer;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.INIConfiguration;
@@ -26,7 +27,11 @@ public class INIFileModel {
     return contents.isEmpty() || contents.values().stream().allMatch(Map::isEmpty);
   }
 
-  public Map<String, String> section(String section) {
+  public INIModelSection modelSection(String section) {
+    return new INIModelSection(this.section(section));
+  }
+
+  protected Map<String, String> section(String section) {
     return contents.computeIfAbsent(section, s -> new HashMap<>());
   }
 
@@ -57,7 +62,7 @@ public class INIFileModel {
   public static INIFileModel load(String path) {
     INIConfiguration config = new INIConfiguration();
     INIFileModel model = new INIFileModel();
-    String fullPath = LoaderUtils.sanitizeFilePath(path);
+    String fullPath = PathSanitizer.sanitizeFilePath(path);
     try (FileReader in = new FileReader(fullPath)) {
       config.read(in);
       model.readConfig(config);

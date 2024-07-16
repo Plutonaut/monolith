@@ -7,8 +7,9 @@ import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.vertices.IndexBufferObject;
 import com.game.engine.render.mesh.vertices.VertexBufferObject;
 import com.game.engine.render.models.Model;
+import com.game.engine.render.pipeline.packets.EntityPacketResult;
+import com.game.engine.render.pipeline.packets.PacketResult;
 import com.game.engine.scene.Scene;
-import com.game.engine.scene.entities.Entity;
 import com.game.graphics.materials.MaterialTexturePack;
 import com.game.graphics.shaders.Program;
 import com.game.graphics.texture.Texture;
@@ -36,7 +37,7 @@ public abstract class AbstractRenderer implements IRenderer {
   protected abstract void render(IRenderable item, Scene scene);
 
   public void render(Scene scene) {
-    ArrayBlockingQueue<Entity> queue = scene.packets().renderQueue(type());
+    ArrayBlockingQueue<IRenderable> queue = scene.packets().renderQueue(type());
 
     if (queue.isEmpty()) return;
 
@@ -45,11 +46,10 @@ public abstract class AbstractRenderer implements IRenderer {
     program.unbind();
   }
 
-  public List<Mesh> associate(Model model) {
-    return model
-      .meshInfo()
-      .stream()
-      .map(this::associate).toList();
+  public PacketResult associate(Model model) {
+    EntityPacketResult result = new EntityPacketResult();
+    model.meshInfo().forEach(info -> result.addMesh(associate(info)));
+    return result;
   }
 
   Mesh associate(MeshInfo info) {

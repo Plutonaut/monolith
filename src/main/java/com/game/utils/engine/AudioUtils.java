@@ -1,7 +1,7 @@
 package com.game.utils.engine;
 
-import com.game.engine.scene.entities.animations.audio.AudioBufferObject;
-import com.game.utils.application.LoaderUtils;
+import com.game.engine.scene.audio.AudioBufferObject;
+import com.game.utils.application.PathSanitizer;
 import org.lwjgl.stb.STBVorbis;
 import org.lwjgl.stb.STBVorbisInfo;
 import org.lwjgl.system.MemoryStack;
@@ -13,7 +13,7 @@ import java.nio.ShortBuffer;
 public class AudioUtils {
   public static AudioBufferObject load(String path) {
     try (STBVorbisInfo info = STBVorbisInfo.malloc(); MemoryStack stack = MemoryStack.stackPush()) {
-      String filePath = LoaderUtils.sanitizeFilePath(path, "sounds");
+      String filePath = PathSanitizer.sanitizeFilePath(path, "sounds");
 
       IntBuffer error = stack.mallocInt(1);
       long decoder = STBVorbis.stb_vorbis_open_filename(filePath, error, null);

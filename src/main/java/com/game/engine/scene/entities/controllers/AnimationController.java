@@ -1,6 +1,8 @@
 package com.game.engine.scene.entities.controllers;
 
 import com.game.engine.scene.entities.animations.Animation;
+import com.game.engine.scene.entities.animations.Animation2D;
+import com.game.engine.scene.entities.animations.Animation3D;
 import com.game.utils.enums.EController;
 import org.joml.Matrix4f;
 
@@ -19,13 +21,13 @@ public class AnimationController extends AbstractController {
   }
 
   @Override
-  public void onUpdate() {
-    animation.move(speed);
+  public String type() {
+    return EController.ANIM.getValue();
   }
 
   @Override
-  public String type() {
-    return EController.ANIM.getValue();
+  public void onUpdate() {
+    animation.move(speed);
   }
 
   public void add(Animation... animations) {
@@ -47,7 +49,11 @@ public class AnimationController extends AbstractController {
   }
 
   public Matrix4f[] frameBoneMatrices() {
-    return animation.frame().boneMatrices();
+    return ((Animation3D) animation).frame().boneMatrices();
+  }
+
+  public String frameSpriteTexture() {
+    return ((Animation2D) animation).frame().path();
   }
 
   protected Animation get() {

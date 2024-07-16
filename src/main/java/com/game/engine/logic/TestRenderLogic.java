@@ -1,7 +1,7 @@
 package com.game.engine.logic;
 
 import com.game.caches.GlobalCache;
-import com.game.engine.EngineSettings;
+import com.game.engine.settings.EngineSettings;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.mesh.vertices.AttribInfo;

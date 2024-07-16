@@ -1,10 +1,9 @@
 package com.game.engine.logic;
 
-import com.game.engine.EngineSettings;
 import com.game.engine.scene.camera.Camera;
+import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
 import com.game.utils.enums.EModel;
-import com.game.utils.enums.ERenderer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -19,13 +18,14 @@ public class TestPipelineLogic extends AbstractLogic {
   }
 
   void loadLights() {
-    scene.lighting()
-         .addAmbientLight()
-         .addDirectionalLight()
-         .addPointLight("test_A")
-         .addSpotLight("test_A")
-         .addPointLight("test_B")
-         .addSpotLight("test_B");
+    scene
+      .lighting()
+      .addAmbientLight()
+      .addDirectionalLight()
+      .addPointLight("test_A")
+      .addSpotLight("test_A")
+      .addPointLight("test_B")
+      .addSpotLight("test_B");
     scene.lighting().directionalLight().factor(0.5f);
     scene.lighting().pointLight("test_A").move(0.75f);
     scene.lighting().spotLight("test_B").pointConeToward(0.5f);
@@ -38,15 +38,27 @@ public class TestPipelineLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-    renderer.cull(true);
+//    renderer.cull(true);
     renderer.blend(true);
     renderer.depth(true);
-    scene.load(
-           ERenderer.MESH,
-           EModel.CUBE.path(),
-           EModel.CUBE.animated()
-         );
+    loadLights();
+//    scene.load3D(ERenderer.SCENE, EModel.CUBE);
+//    scene.load3D(ERenderer.MESH, EModel.CUBE);
+//    scene.load3D(ERenderer.SCENE, EModel.RAILWAY_PART);
+    scene.loadSkyBox3D(EModel.BASIC_SKYBOX).loadText("test", "Sample Text!");
+//    scene.loadSkyBox3D(EModel.BASIC_SKYBOX).load3D(EModel.CUBE);
+//    scene.load3D(EModel.CUBE).load3D(EModel.CUBE).load2D(ESprite.IGGY).loadText("test_text", "TEST");
+
     renderer.bind(scene);
+//
+//    scene.entity(EModel.CUBE.name()).move(0f, 0.5f, 0f).scale(0.5f);
+//    scene
+//      .entity(ESprite.IGGY.atlasName())
+//      .move(scene.window().width() / 2f, scene.window().height() / 2f)
+//      .scale(32);
+//
+    scene.entity(EModel.BASIC_SKYBOX.name()).scale(50f);
+//    scene.gameText("test").move(25, 100);
   }
 
   @Override

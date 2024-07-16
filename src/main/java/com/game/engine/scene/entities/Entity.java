@@ -7,6 +7,7 @@ import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EModifier;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,35 @@ public class Entity implements IRenderable {
     transform = new ModelTransform();
     modifiers = new ArrayList<>();
     controllers = new HashMap<>();
+  }
+
+  public Entity move(Vector3f position) {
+    transform.position().set(position);
+    return this;
+  }
+
+  public Entity move(float x, float y) {
+    return move(x, y, 0f);
+  }
+
+  public Entity move(float x, float y, float z) {
+    transform.position().set(x, y, z);
+    return this;
+  }
+
+  public Entity moveToward(Vector3f position) {
+    transform.position().add(position);
+    return this;
+  }
+
+  public Entity moveToward(float x, float y, float z) {
+    transform.position().add(x, y, z);
+    return this;
+  }
+
+  public Entity scale(float scale) {
+    transform.scale(scale);
+    return this;
   }
 
   public void toggleModifier(EModifier modifier) {

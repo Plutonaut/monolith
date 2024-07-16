@@ -1,4 +1,4 @@
-package com.game.engine.scene.entities.animations.audio;
+package com.game.engine.scene.audio;
 
 import com.game.caches.graphics.IGraphicsCachable;
 import com.game.utils.enums.EGraphicsCache;

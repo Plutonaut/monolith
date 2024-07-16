@@ -6,10 +6,10 @@ import org.joml.Matrix4f;
 
 @Accessors(fluent = true)
 @Data
-public class Frame {
+public class BoneMatrixFrame {
   private Matrix4f[] boneMatrices;
 
-  public Frame(Matrix4f... boneMatrices) {
+  public BoneMatrixFrame(Matrix4f... boneMatrices) {
     this.boneMatrices = boneMatrices;
   }
 }

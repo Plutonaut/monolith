@@ -195,7 +195,19 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfo build() {
-    MeshInfo meshInfo = GlobalCache.instance().meshInfo(name);
+    final MeshInfo meshInfo = GlobalCache.instance().meshInfo(name);
+    constructMeshInfo(meshInfo);
+    return meshInfo;
+  }
+
+  public FontMeshInfo build(String text) {
+    final FontMeshInfo meshInfo = new FontMeshInfo(name, text);
+    constructMeshInfo(meshInfo);
+    GlobalCache.instance().cacheItem(meshInfo);
+    return meshInfo;
+  }
+
+  void constructMeshInfo(MeshInfo meshInfo) {
     vertices.forEach(meshInfo::addVertices);
     meshInfo.indices.set(indices);
     meshInfo.instances(instances);
@@ -207,7 +219,6 @@ public class MeshInfoBuilder {
     meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material.name());
     dispose();
-    return meshInfo;
   }
 
   public ModelBuilder model(String name) {

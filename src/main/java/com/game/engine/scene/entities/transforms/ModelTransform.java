@@ -25,13 +25,6 @@ public class ModelTransform {
 
   public Matrix4f worldModelMat() {
     return model.identity().translationRotateScale(position, rotation, scale);
-//    return new Matrix4f(model).identity().translationRotateScale(position, rotation, scale);
-//    return model.identity().translate(position)
-//    return new Matrix4f(model).identity().translate(position)
-//                    .rotateX((float) Math.toRadians(rotationV.x))
-//                    .rotateY((float) Math.toRadians(rotationV.y))
-//                    .rotateZ((float) Math.toRadians(rotationV.z))
-//                    .scale(scale);
   }
 
   public void set(ModelTransform transform) {

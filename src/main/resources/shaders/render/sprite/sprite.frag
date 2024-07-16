@@ -1,12 +1,25 @@
-#version 330
+#version 460 core
 
+struct Material
+{
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
+    float reflectance;
+    int hasTexture;
+    int hasNormalMap;
+};
+
+in vec4 vColor;
 in vec2 vTextureCoord;
-in vec3 vColor;
+
+uniform sampler2D textureSampler;
+uniform Material material;
 
 out vec4 fragColor;
 
-uniform sampler2D textureSampler;
-
 void main() {
-	fragColor = texture(textureSampler, vTextureCoord) * vec4(vColor, 1.0);
+    vec4 color = vColor;
+    if (material.hasTexture == 1) color = texture(textureSampler, vTextureCoord);
+    fragColor = color;
 }

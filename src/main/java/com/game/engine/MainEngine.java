@@ -2,6 +2,7 @@ package com.game.engine;
 
 import com.game.engine.logic.ILogic;
 import com.game.engine.logic.LogicFactory;
+import com.game.engine.settings.EngineSettings;
 
 public class MainEngine implements Runnable {
   private final EngineTimer timer;

@@ -25,8 +25,18 @@ public class Projection {
     return transform.identity().ortho(0, window.width(), 0, window.height(), zNear, zFar);
   }
 
-  public Matrix4f fontOrthographic(Window window) {
+  public Matrix4f orthographic2D(Window window) {
+    return transform.identity().ortho2D(0, window.width(), 0, window.height());
+  }
+
+  public Matrix4f fontOrthographic2D(Window window) {
     return transform.identity().ortho2D(0, window.width(), window.height(), 0);
+  }
+
+  public Matrix4f centerOrthographic2D(Window window) {
+    float halfWidth = window.width() / 2f;
+    float halfHeight = window.height() / 2f;
+    return transform.identity().ortho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
   }
 
   public Matrix4f perspective(Window window) {

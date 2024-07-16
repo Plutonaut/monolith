@@ -9,6 +9,7 @@ import org.joml.Vector4f;
 @Accessors(fluent = true)
 @Getter
 public class Camera {
+  final Matrix4f view;
   final Vector3f position;
   final Vector3f rotation;
 
@@ -16,9 +17,9 @@ public class Camera {
   float cameraSpeed;
 
   public Camera(Vector3f position, Vector3f rotation, float mouseSensitivity, float cameraSpeed) {
+    this.view = new Matrix4f();
     this.position = position;
     this.rotation = rotation;
-
     this.mouseSensitivity = mouseSensitivity;
     this.cameraSpeed = cameraSpeed;
   }
@@ -49,13 +50,24 @@ public class Camera {
   }
 
   public Vector4f worldPosition(Vector4f point) {
-    return new Vector4f(point).mul(view().invert());
+    return new Vector4f(point).mul(view3D().invert());
   }
 
-  public Matrix4f view() {
-    return new Matrix4f().identity()
-                         .rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
-                         .rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0))
-                         .translate(position.negate(new Vector3f()));
+  public Matrix4f view3D() {
+    return view(false);
+  }
+
+  public Matrix4f view2D() {
+    return view(true);
+  }
+
+  Matrix4f view(boolean is2D) {
+    Vector3f negatedPosition = position.negate(new Vector3f());
+    view.identity();
+    if (is2D) negatedPosition.z = 0;
+    else view
+      .rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
+      .rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
+    return view.translate(negatedPosition);
   }
 }

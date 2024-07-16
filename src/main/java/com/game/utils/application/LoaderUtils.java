@@ -7,19 +7,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.lwjgl.assimp.Assimp.*;
-import static org.lwjgl.assimp.Assimp.aiProcess_LimitBoneWeights;
-
 public class LoaderUtils {
-  public static final int BASE_FLAGS = aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace | aiProcess_LimitBoneWeights;
-
   static final String[] RESOURCE_DIR_ARR = new String[]{
     "resources", "main", "src"
   };
-
-  public static boolean isSanitizedResourcePath(String path) {
-    return isResourcePath(sanitizeFilePath(path));
-  }
 
   public static boolean isResourcePath(String path) {
     return path != null && !path.isEmpty() && Files.exists(Path.of(path));
@@ -27,6 +18,14 @@ public class LoaderUtils {
 
   public static boolean isUrl(String path) {
     return new UrlValidator().isValid(path);
+  }
+
+  static String parsePathParentName(String path) {
+    return !path.contains(File.separator) ? path : path.substring(0, path.lastIndexOf(File.separator));
+  }
+
+  public static String getParentDirectory(String path) {
+    return !Files.exists(Path.of(path)) ? parsePathParentName(path) : new File(path).getParent();
   }
 
   public static String getFileType(String path) {
@@ -60,7 +59,7 @@ public class LoaderUtils {
   public static String load(String path, String subDirectory) {
     if (isUrl(path))
       throw new UnsupportedOperationException("Could not load data from " + path + " as urls are not yet supported!");
-    return loadResourceAsStr(sanitizeFilePath(path, subDirectory));
+    return loadResourceAsStr(PathSanitizer.sanitizeFilePath(path, subDirectory));
   }
 
   static String loadResourceAsStr(String path) {
@@ -68,28 +67,5 @@ public class LoaderUtils {
 
     readFromFile(path, builder::append);
     return builder.toString();
-  }
-
-  public static String sanitizeFilePath(String path) {
-    return sanitizeFilePath(path, "");
-  }
-
-  public static String sanitizeFilePath(String path, String subDirectory) {
-    if (isResourcePath(path)) return path;
-
-    StringBuilder builder = new StringBuilder(path);
-
-    prependDirectory(subDirectory, builder);
-
-    for (String directory : RESOURCE_DIR_ARR) prependDirectory(directory, builder);
-
-    return builder.toString();
-  }
-
-  static void prependDirectory(String directory, StringBuilder builder) {
-    if (!builder.toString().startsWith(directory)) {
-      if (!builder.toString().startsWith(File.separator)) builder.insert(0, File.separator);
-      builder.insert(0, directory);
-    }
   }
 }

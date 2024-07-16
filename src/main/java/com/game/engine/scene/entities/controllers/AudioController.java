@@ -1,6 +1,6 @@
 package com.game.engine.scene.entities.controllers;
 
-import com.game.engine.scene.entities.animations.audio.AudioSourceObject;
+import com.game.engine.scene.audio.AudioSourceObject;
 import com.game.utils.enums.EController;
 
 import java.util.HashMap;

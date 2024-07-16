@@ -1,4 +1,4 @@
-package com.game.engine.scene.entities.animations.audio;
+package com.game.engine.scene.audio;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

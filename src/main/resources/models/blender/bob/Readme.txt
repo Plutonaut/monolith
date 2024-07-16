@@ -1,5 +1,5 @@
 #############################
-MD5 sample mesh and animation
+MD5 sample mesh and animation3D
 #############################
 
 INFORMATION & USAGE
@@ -17,7 +17,7 @@ Files and media are provided "as is" without any warranties of functionality.
 
 COPYRIGHT & DISTRIBUTION
 ========================
-Copyright © 2014 KatsBits. All Rights Reserved.
+Copyright ï¿½ 2014 KatsBits. All Rights Reserved.
 For more information visit http://www.katsbits.com/ or email info@katsbits.com
 
 For NON-COMMERCIAL USE ONLY. This file and/or its contents and/or associated materials may not be reproduced, duplicated, distributed or otherwise 'monetised' without prior consent.

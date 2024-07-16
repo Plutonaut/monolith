@@ -13,9 +13,13 @@ public abstract class AbstractGraphicsCache implements IGraphicsCache {
   }
 
   public IGraphicsCachable use(String key) {
+    return use(key, this::generate);
+  }
+
+  public IGraphicsCachable use(String key, IGraphicsGenerator generator) {
     if (key == null) return null;
 
-    IGraphicsCachable entry = cache.getOrDefault(key, generate(key));
+    IGraphicsCachable entry = cache.getOrDefault(key, generator.generate(key));
     if (entry != null) cache.putIfAbsent(key, entry);
 
     return entry;

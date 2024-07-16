@@ -18,7 +18,7 @@ public class MeshRenderer extends AbstractLitRenderer {
   protected void render(IRenderable item, Scene scene) {
     Entity entity = (Entity) item;
     program.uniforms().set(EUniform.PROJECTION.value(), scene.projectionMat(EProjection.PERSPECTIVE));
-    program.uniforms().set(EUniform.MODEL_VIEW.value(), scene.modelViewMat(entity));
+    program.uniforms().set(EUniform.MODEL_VIEW.value(), scene.modelViewMat3D(entity));
 
     entity.meshes().forEach(mesh -> {
       Material material = mesh.material();

@@ -9,11 +9,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class LogPrintStreamFactory {
-  public static PrintStream create(String logFileName, String directory, String fileType, int maxLogFiles, boolean appendDate) {
+  public static PrintStream create(
+    String logFileName,
+    String directory,
+    String fileType,
+    int maxLogFiles,
+    boolean appendDate
+  ) {
     try {
       prune(directory, maxLogFiles);
-      StringBuilder builder = new StringBuilder(directory).append(File.separator).append(logFileName);
-      if (appendDate) builder.append("_").append(LocalDateTime.now().format(LoggingUtils.LOG_DATE_TIME_FORMATTER));
+      StringBuilder builder = new StringBuilder(directory)
+        .append(File.separator)
+        .append(logFileName);
+      if (appendDate) builder
+        .append("_")
+        .append(LocalDateTime.now().format(LoggingUtils.LOG_DATE_TIME_FORMATTER));
       String fileName = builder.append(fileType).toString();
       return new PrintStream(new FileOutputStream(fileName));
     } catch (IOException e) {
@@ -26,7 +36,9 @@ public class LogPrintStreamFactory {
     int size = files.size();
 
     if (size > maxLogFiles)
-      files.subList(maxLogFiles, size).forEach(LogPrintStreamFactory::deleteIfMaxFileCountReached);
+      files
+        .subList(0, size - maxLogFiles)
+        .forEach(LogPrintStreamFactory::deleteIfMaxFileCountReached);
     else files.forEach(LogPrintStreamFactory::deleteLogFileOlderThan);
   }
 

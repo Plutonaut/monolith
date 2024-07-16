@@ -66,6 +66,10 @@ public class Mesh implements IGraphicsCachable {
     GL46.glDrawArrays(mode, 0, vertexCount);
   }
 
+  public VertexBufferObject vbo(int glId) {
+    return vbos.stream().filter(vbo -> vbo.glId() == glId).findFirst().orElse(null);
+  }
+
   public void unbind() {
     // unbind textures
     GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);

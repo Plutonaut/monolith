@@ -1,7 +1,9 @@
 package com.game.utils.enums;
 
 public enum EModelCache {
-  MATERIAL,
+  SPRITE_ATLAS,
+  FONT_INFO,
   MESH_INFO,
+  MATERIAL,
   MODEL,
 }
