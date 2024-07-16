@@ -60,6 +60,18 @@ public class Scene {
     packets = new PacketManager();
   }
 
+  public Scene loadSkyBox3D(EModel model) {
+    return loadSkyBox3D(model.name(), model.path());
+  }
+
+  public Scene loadSkyBox3D(String path) {
+    return loadSkyBox3D(path, path);
+  }
+
+  public Scene loadSkyBox3D(String name, String path) {
+    return load3D(ERenderer.SKYBOX, name, path, false);
+  }
+
   public Scene loadText(String name, String text) {
     return loadText(name, text, false);
   }

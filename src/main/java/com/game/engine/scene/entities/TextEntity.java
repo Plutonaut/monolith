@@ -10,7 +10,6 @@ import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EAttribute;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL46;
 import org.lwjgl.system.MemoryUtil;
 
@@ -33,10 +32,6 @@ public class TextEntity implements IRenderable {
     this.name = name;
     this.mesh = mesh;
     this.text = text;
-  }
-
-  public Matrix4f projModelMatrix(Matrix4f orthographic2D) {
-    return new Matrix4f().set(orthographic2D).mul(transform.worldModelMat());
   }
 
   public TextEntity move(float x, float y) {

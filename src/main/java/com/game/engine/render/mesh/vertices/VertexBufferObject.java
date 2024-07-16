@@ -50,19 +50,11 @@ public class VertexBufferObject implements IGL {
   public void upload(long size, int usage) { GL46.glBufferData(target, size, usage); }
 
   public void subUpload(FloatBuffer buffer, int offset) {
-    GL46.glBufferSubData(
-      target,
-      offset,
-      buffer
-    );
+    GL46.glBufferSubData(target, offset, buffer);
   }
 
   public void subUpload(IntBuffer buffer, int offset) {
-    GL46.glBufferSubData(
-      target,
-      offset,
-      buffer
-    );
+    GL46.glBufferSubData(target, offset, buffer);
   }
 
   public void bind() {

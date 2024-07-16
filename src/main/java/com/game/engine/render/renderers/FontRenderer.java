@@ -29,8 +29,10 @@ public class FontRenderer extends AbstractLitRenderer {
   @Override
   protected void render(IRenderable item, Scene scene) {
     TextEntity text = (TextEntity) item;
-    Matrix4f projection = scene.projectionMat(EProjection.ORTHOGRAPHIC_FONT_2D);
-    program.uniforms().set(EUniform.PROJECTION.value(), text.projModelMatrix(projection));
+    Matrix4f projection = new Matrix4f()
+      .set(scene.projectionMat(EProjection.ORTHOGRAPHIC_FONT_2D))
+      .mul(text.transform().worldModelMat());
+    program.uniforms().set(EUniform.PROJECTION.value(), projection);
     Mesh mesh = text.mesh();
     Material material = mesh.material();
     setMaterialUniform(material);
@@ -40,42 +42,42 @@ public class FontRenderer extends AbstractLitRenderer {
   @Override
   public TextPacketResult associate(Model model) {
     TextPacketResult result = new TextPacketResult();
-
     model.meshInfo().forEach(info -> {
       FontMeshInfo fontMeshInfo = (FontMeshInfo) info;
       result.text(fontMeshInfo.text());
+//      Mesh mesh = associate(info);
       Mesh mesh = info.create();
       mesh.bind();
       info.vertices().forEach(vertex -> {
         VertexBufferObject vbo = new VertexBufferObject();
         int vboId = vbo.glId();
-        mesh.vbos().add(vbo);
-
         if (vertex.hasAttribute(EAttribute.POS.getValue())) result.positionVboId(vboId);
         else if (vertex.hasAttribute(EAttribute.TXC.getValue()))
           result.textureCoordinateVboId(vboId);
-
         float[] values = vertex.vertices().asArray();
         int size = values.length;
-        vbo.bind();
-        vbo.upload(size, GL46.GL_DYNAMIC_DRAW);
         FloatBuffer buffer = MemoryUtil.memAllocFloat(size).put(values).flip();
+        vbo.bind();
+        vbo.upload((long) size * GL46.GL_FLOAT, GL46.GL_DYNAMIC_DRAW);
         vbo.subUpload(buffer, 0);
+        mesh.vbos().add(vbo);
         List<String> vaas = program
           .attributes()
           .point(vertex.attributes().values(), vertex.glType());
         mesh.vaas().addAll(vaas);
+        MemoryUtil.memFree(buffer);
       });
       if (mesh.isComplex()) {
         IndexBufferObject ibo = new IndexBufferObject();
-        mesh.vbos().add(ibo);
         result.indexVboId(ibo.glId());
         int[] indices = info.indices().asIntArray();
         int size = indices.length;
-        ibo.bind();
-        ibo.upload(size, GL46.GL_DYNAMIC_DRAW);
         IntBuffer buffer = MemoryUtil.memAllocInt(size).put(indices).flip();
+        ibo.bind();
+        ibo.upload((long) size * GL46.GL_INT, GL46.GL_DYNAMIC_DRAW);
         ibo.subUpload(buffer, 0);
+        mesh.vbos().add(ibo);
+        MemoryUtil.memFree(buffer);
       }
       mesh.unbind();
       result.addMesh(mesh);

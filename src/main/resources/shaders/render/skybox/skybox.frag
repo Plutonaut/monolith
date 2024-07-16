@@ -33,6 +33,6 @@ vec4 _calc_ambient_light(AmbientLight ambientLight, vec4 materialAmbientColor) {
 void main()
 {
 	vec4 textureColor = texture(textureSampler, vTexCoord);
-	vec4 ambient = _calc_ambient_light(ambientLight, textureColor + material.ambient);
-	fragColor = ambient;
+	vec4 ambient = _calc_ambient_light(ambientLight, material.ambient);
+	fragColor = textureColor + ambient;
 }

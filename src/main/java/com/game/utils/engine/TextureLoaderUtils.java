@@ -1,5 +1,6 @@
 package com.game.utils.engine;
 
+import com.game.caches.GlobalCache;
 import com.game.graphics.texture.Texture;
 import com.game.loaders.ITextureReader;
 import com.game.utils.application.PathSanitizer;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class TextureLoaderUtils {
   public static void readTexture(String path, ITextureReader reader) {
@@ -37,6 +40,8 @@ public class TextureLoaderUtils {
   }
 
   public static Texture generate(String path, BufferedImage image, boolean save) {
+    if (Files.exists(Path.of(path))) return GlobalCache.instance().texture(path);
+
     if (save) {
       try {
         File f = new File(PathSanitizer.sanitizeFilePath(path));
@@ -61,6 +66,8 @@ public class TextureLoaderUtils {
   }
 
   public static Texture generate(String path, ByteBuffer buffer) {
+    if (Files.exists(Path.of(path))) return GlobalCache.instance().texture(path);
+
     Texture texture = new Texture(path);
     texture.bind();
     texture.store();
@@ -78,8 +85,7 @@ public class TextureLoaderUtils {
       // Decode texture image into a byte buffer
       decodedImage = STBImage.stbi_load_from_memory(buffer, w, h, avChannels, 4);
       if (decodedImage == null)
-        throw new RuntimeException("Failed to load texture from memory!" + System.lineSeparator()
-                                     + STBImage.stbi_failure_reason());
+        throw new RuntimeException("Failed to load texture from memory!" + System.lineSeparator() + STBImage.stbi_failure_reason());
       width = w.get();
       height = h.get();
       texture.width(width);
