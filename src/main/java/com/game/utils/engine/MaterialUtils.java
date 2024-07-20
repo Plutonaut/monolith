@@ -46,10 +46,10 @@ public class MaterialUtils {
 
       EMaterialTexture.types().forEach(type -> {
         AIString aiPath = AIString.calloc(stack);
-        int result = texture(aiMaterial, type.getValue(), aiPath);
+        int result = texture(aiMaterial, type.value(), aiPath);
         if (result == Assimp.aiReturn_SUCCESS) {
           String texturePath = directory + File.separatorChar + aiPath.dataString();
-          material.texture(type.getValue(), texturePath);
+          material.texture(type.value(), texturePath);
         }
       });
     }
@@ -72,7 +72,7 @@ public class MaterialUtils {
 
     int result = Assimp.aiGetMaterialFloatArray(aiMaterial,
                                                 Assimp.AI_MATKEY_SHININESS_STRENGTH,
-                                                EMaterialTexture.NON.getValue(),
+                                                EMaterialTexture.NON.value(),
                                                 0,
                                                 shininessFactor,
                                                 pMax);

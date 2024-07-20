@@ -20,7 +20,6 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 
 public class FontRenderer extends AbstractLitRenderer {
   @Override
@@ -45,7 +44,6 @@ public class FontRenderer extends AbstractLitRenderer {
     model.meshInfo().forEach(info -> {
       FontMeshInfo fontMeshInfo = (FontMeshInfo) info;
       result.text(fontMeshInfo.text());
-//      Mesh mesh = associate(info);
       Mesh mesh = info.create();
       mesh.bind();
       info.vertices().forEach(vertex -> {
@@ -61,10 +59,7 @@ public class FontRenderer extends AbstractLitRenderer {
         vbo.upload((long) size * GL46.GL_FLOAT, GL46.GL_DYNAMIC_DRAW);
         vbo.subUpload(buffer, 0);
         mesh.vbos().add(vbo);
-        List<String> vaas = program
-          .attributes()
-          .point(vertex.attributes().values(), vertex.glType());
-        mesh.vaas().addAll(vaas);
+        mesh.setVertexAttributeArrays(program.attributes().point(vertex));
         MemoryUtil.memFree(buffer);
       });
       if (mesh.isComplex()) {

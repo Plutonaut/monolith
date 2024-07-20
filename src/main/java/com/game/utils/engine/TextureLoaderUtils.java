@@ -2,8 +2,10 @@ package com.game.utils.engine;
 
 import com.game.caches.GlobalCache;
 import com.game.graphics.texture.Texture;
-import com.game.loaders.ITextureReader;
+import com.game.loaders.ITextureBufferReader;
+import com.game.utils.application.LoaderUtils;
 import com.game.utils.application.PathSanitizer;
+import com.game.utils.application.ValueStore2D;
 import org.lwjgl.opengl.GL46;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
@@ -19,7 +21,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class TextureLoaderUtils {
-  public static void readTexture(String path, ITextureReader reader) {
+  public static Texture load(String path) {
+    Texture texture = new Texture(path);
+    texture.bind();
+    texture.store();
+    texture.clamp();
+    texture.mipmap();
+
+    String fileType = LoaderUtils.getFileType(path);
+    int format = fileType != null ? TextureLoaderUtils.formatByFileType(fileType) : GL46.GL_RGBA;
+
+    TextureLoaderUtils.readTexture(path, ((buffer, width, height) -> {
+      texture.width(width);
+      texture.height(height);
+      texture.upload(GL46.GL_RGBA, format, GL46.GL_UNSIGNED_BYTE, buffer);
+    }));
+
+    return texture;
+  }
+
+  public static void readTexture(String path, ITextureBufferReader reader) {
     ByteBuffer buffer;
 
     try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -39,6 +60,32 @@ public class TextureLoaderUtils {
     }
   }
 
+  /**
+   * Convert two-dimensional array of floats into color data and create a texture from the resulting
+   * buffered image.
+   *
+   * @param path Relative file path of the texture to be generated.
+   * @param grid 2D array of floats to be converted into pixel color data.
+   * @param save flag denoting whether the resulting texture should be saved to the file system.
+   *
+   * @return resulting texture.
+   */
+  public static Texture generate(String path, ValueStore2D grid, boolean save) {
+    int rows = grid.height();
+    int columns = grid.width();
+
+    BufferedImage image = new BufferedImage(columns, rows, BufferedImage.TYPE_INT_ARGB);
+    for (int y = 0; y < rows; y++) {
+      for (int x = 0; x < columns; x++) {
+        float heightValue = grid.get(y, x);
+        int colorValue = ColorUtils.interpolate(heightValue);
+        image.setRGB(x, y, colorValue);
+      }
+    }
+
+    return generate(path, image, save);
+  }
+
   public static Texture generate(String path, BufferedImage image, boolean save) {
     if (Files.exists(Path.of(path))) return GlobalCache.instance().texture(path);
 
@@ -50,7 +97,7 @@ public class TextureLoaderUtils {
         throw new RuntimeException(ex);
       }
     }
-    ByteBuffer buf = null;
+    ByteBuffer buf;
     try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
       ImageIO.write(image, "png", out);
       out.flush();

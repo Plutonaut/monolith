@@ -10,6 +10,9 @@ import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.TextEntity;
 import com.game.engine.scene.lighting.LightingManager;
 import com.game.engine.scene.projection.Projection;
+import com.game.engine.scene.terrain.procedural.ProceduralNoiseData;
+import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerationData;
+import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerator;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
 import com.game.utils.engine.loaders.FontResourceLoader;
@@ -58,6 +61,43 @@ public class Scene {
     audio = new AudioManager();
     lighting = new LightingManager();
     packets = new PacketManager();
+  }
+
+  // TODO: Create texture pack DAO object. Load all textures in a given directory and separate them based on file name.
+  public Scene generateProceduralTerrain(
+    ERenderer shader,
+    String id,
+    int width,
+    int height,
+    String texturePath,
+    String heightMapTexturePath,
+    float scale
+  ) {
+    ProceduralNoiseData noise = new ProceduralNoiseData(
+      new Vector2f(0f),
+      0.25f,
+      5,
+      scale,
+      2,
+      0,
+      false
+    );
+    ProceduralTerrainGenerationData data = new ProceduralTerrainGenerationData(
+      id,
+      width,
+      height,
+      0f,
+      0.1f,
+      texturePath,
+      heightMapTexturePath,
+      noise
+    );
+    return generateProceduralTerrain(shader, data);
+  }
+
+  public Scene generateProceduralTerrain(ERenderer shader, ProceduralTerrainGenerationData data) {
+    pipe(shader, ProceduralTerrainGenerator.generate(data));
+    return this;
   }
 
   public Scene loadSkyBox3D(EModel model) {

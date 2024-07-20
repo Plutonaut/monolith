@@ -3,7 +3,7 @@ package com.game.engine.logic;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
-import com.game.utils.enums.EModel;
+import com.game.utils.enums.ERenderer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -45,7 +45,16 @@ public class TestPipelineLogic extends AbstractLogic {
 //    scene.load3D(ERenderer.SCENE, EModel.CUBE);
 //    scene.load3D(ERenderer.MESH, EModel.CUBE);
 //    scene.load3D(ERenderer.SCENE, EModel.RAILWAY_PART);
-    scene.loadSkyBox3D(EModel.BASIC_SKYBOX).loadText("test", "Sample Text!");
+    scene.generateProceduralTerrain(
+      ERenderer.SCENE,
+      "proc_terrain",
+      128,
+      128,
+      "src/main/resources/textures/moss_surface/moss_surface_albedo.png",
+      "src/main/resources/textures/moss_surface/moss_surface_height.png",
+      1
+    );
+//    scene.loadSkyBox3D(EModel.BASIC_SKYBOX).loadText("test", "Sample Text!");
 //    scene.loadSkyBox3D(EModel.BASIC_SKYBOX).load3D(EModel.CUBE);
 //    scene.load3D(EModel.CUBE).load3D(EModel.CUBE).load2D(ESprite.IGGY).loadText("test_text", "TEST");
 
@@ -57,7 +66,8 @@ public class TestPipelineLogic extends AbstractLogic {
 //      .move(scene.window().width() / 2f, scene.window().height() / 2f)
 //      .scale(32);
 //
-    scene.entity(EModel.BASIC_SKYBOX.name()).scale(50f);
+//    scene.entity(EModel.BASIC_SKYBOX.name()).scale(50f);
+//    scene.entity("proc_terrain").move(0f, 0f, 0f).scale(20f);
 //    scene.gameText("test").move(25, 100);
   }
 

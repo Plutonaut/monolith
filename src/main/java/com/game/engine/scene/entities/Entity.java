@@ -2,7 +2,7 @@ package com.game.engine.scene.entities;
 
 import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.Mesh;
-import com.game.engine.scene.entities.controllers.AbstractController;
+import com.game.engine.scene.entities.controllers.AbstractEntityController;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EModifier;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
 @Accessors(fluent = true)
 @Data
 public class Entity implements IRenderable {
-  protected final HashMap<String, AbstractController> controllers;
+  protected final HashMap<String, AbstractEntityController> controllers;
   protected final ArrayList<EModifier> modifiers;
   protected final ModelTransform transform;
   protected final ArrayList<Mesh> meshes;
@@ -83,11 +83,11 @@ public class Entity implements IRenderable {
     this.meshes.add(mesh);
   }
 
-  public void addController(AbstractController controller) {
+  public void addController(AbstractEntityController controller) {
     controllers.put(controller.type(), controller.onAttach(this));
   }
 
-  public AbstractController controller(String type) {
+  public AbstractEntityController controller(String type) {
     return controllers.get(type);
   }
 }

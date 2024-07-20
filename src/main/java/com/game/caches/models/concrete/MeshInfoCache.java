@@ -1,5 +1,6 @@
-package com.game.caches.models;
+package com.game.caches.models.concrete;
 
+import com.game.caches.models.AbstractModelCache;
 import com.game.engine.render.mesh.MeshInfo;
 
 public class MeshInfoCache extends AbstractModelCache {

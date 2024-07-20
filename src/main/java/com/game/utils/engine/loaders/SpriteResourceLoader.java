@@ -25,7 +25,7 @@ public class SpriteResourceLoader {
     Sprite sprite = profile.get();
     String spritePath = LoaderUtils.getParentDirectory(path) + File.separator + sprite.path();
     Material material = GlobalCache.instance().material(path + "_mat");
-    material.texture(EMaterialTexture.DIF.getValue(), PathSanitizer.sanitizeFilePath(spritePath));
+    material.texture(EMaterialTexture.DIF.value(), PathSanitizer.sanitizeFilePath(spritePath));
     MeshInfo meshInfo = new Quad().createMeshInfo();
     meshInfo.material(material.name());
     Model model = new Model(atlas.name());

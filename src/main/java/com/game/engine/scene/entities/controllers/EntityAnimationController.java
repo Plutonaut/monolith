@@ -8,13 +8,13 @@ import org.joml.Matrix4f;
 
 import java.util.HashMap;
 
-public class AnimationController extends AbstractController {
+public class EntityAnimationController extends AbstractEntityController {
   protected final HashMap<String, Animation> animations;
   protected Animation animation;
 
   protected int speed;
 
-  public AnimationController() {
+  public EntityAnimationController() {
     this.animations = new HashMap<>();
 
     animation = get();

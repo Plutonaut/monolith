@@ -1,17 +1,17 @@
 package com.game.engine;
 
-import com.game.engine.logic.ILogic;
-import com.game.engine.logic.LogicFactory;
+import com.game.engine.logic.EngineLogicRunner;
 import com.game.engine.settings.EngineSettings;
 
-public class MainEngine implements Runnable {
+public class GameEngine implements Runnable {
   private final EngineTimer timer;
   private final EngineSettings settings;
-  private ILogic logic;
+  private final EngineLogicRunner logic;
 
-  public MainEngine() {
+  public GameEngine() {
     settings = new EngineSettings();
     timer = new EngineTimer(settings.targetUPS(), settings.stepSize());
+    logic = new EngineLogicRunner();
   }
 
   public void init() {
@@ -25,25 +25,22 @@ public class MainEngine implements Runnable {
 
   @Override
   public void run() {
-    logic = LogicFactory.create(settings);
-    logic.onStart();
-
-    while (logic.isRunning()) onLoop();
-
-    logic.onEnd();
+    logic.use(settings);
+    while (logic.running()) onLoop();
+    logic.dispose();
   }
 
   private void onLoop() {
     float delta = timer.deltaTime();
 
-    logic.input();
+    logic.current().input();
 
     while (timer.isUpdateReady()) {
-      logic.update();
+      logic.current().update();
       timer.onUpdate();
     }
 
-    logic.render();
+    logic.current().render();
     timer.onFrameRendered();
   }
 }

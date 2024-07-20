@@ -5,10 +5,10 @@ import com.game.utils.enums.EController;
 
 import java.util.HashMap;
 
-public class AudioController extends AbstractController {
+public class EntityAudioController extends AbstractEntityController {
   protected final HashMap<String, AudioSourceObject> sources;
 
-  public AudioController() {
+  public EntityAudioController() {
     sources = new HashMap<>();
   }
 

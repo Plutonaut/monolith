@@ -2,36 +2,38 @@ package com.game.caches;
 
 import com.game.caches.audio.AudioBufferCache;
 import com.game.caches.graphics.*;
-import com.game.caches.models.*;
+import com.game.caches.models.AbstractModelCache;
+import com.game.caches.models.concrete.*;
+import com.game.caches.models.interfaces.IModelCachable;
+import com.game.caches.models.interfaces.IModelGenerator;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.models.Model;
 import com.game.engine.scene.audio.AudioBufferObject;
+import com.game.engine.scene.entities.EntityManager;
 import com.game.engine.scene.sprites.SpriteAtlas;
 import com.game.graphics.fonts.FontInfo;
 import com.game.graphics.materials.Material;
 import com.game.graphics.shaders.Program;
 import com.game.graphics.shaders.Shader;
 import com.game.graphics.texture.Texture;
-import com.game.utils.enums.EFont;
 import com.game.utils.enums.EGraphicsCache;
 import com.game.utils.enums.EModelCache;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 public class GlobalCache {
   private static GlobalCache CACHE;
   private final HashMap<EGraphicsCache, AbstractGraphicsCache> graphicsCache;
   private final HashMap<EModelCache, AbstractModelCache> modelCache;
-  private final EntityNameResolver entityNameResolver;
   private final FontGraphicsHandler fontGraphicsHandler;
+  private final EntityManager entityManager;
 
   private GlobalCache() {
     graphicsCache = new HashMap<>();
     modelCache = new HashMap<>();
-    entityNameResolver = new EntityNameResolver();
+    entityManager = new EntityManager();
     fontGraphicsHandler = new FontGraphicsHandler();
   }
 
@@ -40,24 +42,13 @@ public class GlobalCache {
     return CACHE;
   }
 
-  public Font getFont(EFont font, int fontSize) {
-    return getFont(font.value(), fontSize);
-  }
-
+  // TODO: Move to a FontFileLoader class.
   public Font getFont(String fontName, int fontSize) {
     return fontGraphicsHandler.getFont(fontName, fontSize);
   }
 
   public String resolveEntityName(String entityName) {
-    return entityNameResolver.getAvailable(entityName);
-  }
-
-  public Stream<String> matchingEntityNames(String entityName) {
-    return entityNameResolver.matchingNames(entityName);
-  }
-
-  public void removeEntityName(String entityName) {
-    entityNameResolver.removeName(entityName);
+    return entityManager.getAvailableEntityName(entityName);
   }
 
   public SpriteAtlas spriteAtlas(

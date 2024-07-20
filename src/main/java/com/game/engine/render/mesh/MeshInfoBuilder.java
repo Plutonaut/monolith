@@ -29,7 +29,7 @@ public class MeshInfoBuilder {
     attributes = new ArrayList<>();
     vertices = new ArrayList<>();
     indices = new ValueStore();
-    instances = 0;
+    instances = 1;
     material = null;
     name = null;
   }
@@ -49,15 +49,15 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfoBuilder materialDiffuseTexture(String texturePath) {
-    return materialTexture(EMaterialTexture.DIF.getValue(), texturePath);
+    return materialTexture(EMaterialTexture.DIF.value(), texturePath);
   }
 
   public MeshInfoBuilder materialNormalTexture(String texturePath) {
-    return materialTexture(EMaterialTexture.NRM.getValue(), texturePath);
+    return materialTexture(EMaterialTexture.NRM.value(), texturePath);
   }
 
   public MeshInfoBuilder materialHeightTexture(String texturePath) {
-    return materialTexture(EMaterialTexture.HGT.getValue(), texturePath);
+    return materialTexture(EMaterialTexture.HGT.value(), texturePath);
   }
 
   public MeshInfoBuilder materialTexture(int textureType, String texturePath) {

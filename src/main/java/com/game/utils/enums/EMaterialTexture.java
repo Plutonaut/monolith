@@ -1,10 +1,12 @@
 package com.game.utils.enums;
 
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.lwjgl.assimp.Assimp;
 
 import java.util.List;
 
+@Accessors(fluent = true)
 @Getter
 public enum EMaterialTexture {
   NON(Assimp.aiTextureType_NONE, null),

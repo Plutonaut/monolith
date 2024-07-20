@@ -1,6 +1,8 @@
 package com.game.caches.shaders;
 
 import com.game.engine.render.mesh.vertices.AttribInfo;
+import com.game.engine.render.mesh.vertices.VertexAttributeArray;
+import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.utils.application.LambdaCounter;
 import org.lwjgl.opengl.GL46;
 
@@ -19,56 +21,70 @@ public class AttributeCache extends AbstractShaderCache {
     return check(location, "Attribute", key);
   }
 
-  public List<String> point(Collection<AttribInfo> attributes, int glType) {
-    List<String> vaas = new ArrayList<>();
+  public List<VertexAttributeArray> point(VertexInfo info) {
+    Collection<AttribInfo> attributes = info.attributes().values();
+    int glType = info.glType();
+
+    List<VertexAttributeArray> vertexAttributeArrays = new ArrayList<>();
     LambdaCounter lambdaOffset = new LambdaCounter();
+
     int stride = attributes.size() == 1 ? 0 : attributes.stream().mapToInt(AttribInfo::size).sum();
     int offset = lambdaOffset.value();
+
     attributes.forEach(attribute -> {
-      if (has(attribute.key())) {
-        enable(attribute.key());
-        point(
-          attribute.key(),
-          attribute.size(),
-          stride,
-          offset,
-          glType,
-          attribute.instances()
-        );
-        lambdaOffset.add(attribute.size() * attribute.instances());
-        vaas.add(attribute.key());
-      }
+      VertexAttributeArray vertexAttributeArray = new VertexAttributeArray(
+        attribute.key(),
+        attribute.size(),
+        stride,
+        offset,
+        glType,
+        attribute.instances()
+      );
+      point(vertexAttributeArray);
+      vertexAttributeArrays.add(vertexAttributeArray);
     });
 
-    return vaas;
+    return vertexAttributeArrays;
   }
 
-  public void point(String attribute, int size, int stride, int offset, int glType, int instances) {
-    int location = get(attribute);
+  public void point(VertexAttributeArray vertexAttributeArray) {
+    int location = get(vertexAttributeArray.key());
     if (location < 0) return;
-
-    boolean instanced = instances > 1;
-    int glBytes = glBytes(glType);
-    int glStride = stride * glBytes * instances;
-    for (int i = 0; i < instances; i++) {
+    boolean instanced = vertexAttributeArray.isInstanced();
+    for (int i = 0; i < vertexAttributeArray.instances(); i++) {
       location += i;
-      GL46.glVertexAttribPointer(location, size, glType, false, glStride, (long) offset * glBytes);
+      GL46.glVertexAttribPointer(
+        location,
+        vertexAttributeArray.size(),
+        vertexAttributeArray.glType(),
+        false,
+        vertexAttributeArray.glStride(),
+        vertexAttributeArray.glOffset(i)
+      );
       if (instanced) GL46.glVertexBindingDivisor(location, 1);
-      offset += size;
     }
   }
 
-  public int glBytes(int glType) {
-    return glType == GL46.GL_FLOAT ? Float.BYTES : Integer.BYTES;
+  interface IVertexAttributeOperation {
+    void gl(int location);
   }
 
-  public void enable(String key) {
-    int location = get(key);
-    if (location >= 0) GL46.glEnableVertexAttribArray(location);
+  public void enable(VertexAttributeArray vertexAttributeArray) {
+    operate(vertexAttributeArray, GL46::glEnableVertexAttribArray);
   }
 
-  public void disable(String key) {
+  public void disable(VertexAttributeArray vertexAttributeArray) {
+    operate(vertexAttributeArray, GL46::glDisableVertexAttribArray);
+  }
+
+  void operate(VertexAttributeArray vertexAttributeArray, IVertexAttributeOperation operation) {
+    String key = vertexAttributeArray.key();
     int location = get(key);
-    if (location >= 0) GL46.glDisableVertexAttribArray(location);
+    if (location < 0) return;
+    int instances = vertexAttributeArray.instances();
+    for (int i = 0; i < instances; i++) {
+      location += i;
+      operation.gl(location);
+    }
   }
 }
