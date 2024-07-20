@@ -47,10 +47,12 @@ public class ProceduralNoiseData {
     int seed,
     boolean localNormalization
   ) {
+    this.offset = offset;
     this.persistence = ScalarUtils.clamp01(persistence);
     this.lacunarity = Math.max(lacunarity, 1);
     this.scale = Math.max(scale, 0.01f);
     this.octaves = octaves;
+    this.seed = seed;
     this.localNormalization = localNormalization;
   }
 }

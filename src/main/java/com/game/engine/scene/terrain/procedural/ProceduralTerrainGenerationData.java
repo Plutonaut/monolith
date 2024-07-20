@@ -1,5 +1,6 @@
 package com.game.engine.scene.terrain.procedural;
 
+import com.game.graphics.texture.TextureMapData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,6 @@ public class ProceduralTerrainGenerationData {
   protected int height;
   protected float minVertexHeight;
   protected float maxVertexHeight;
-  protected String diffuseTexture;
-  protected String heightMapTexture;
+  protected TextureMapData textureMapData;
   protected ProceduralNoiseData noise;
 }

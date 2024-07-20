@@ -33,6 +33,7 @@ public class Window {
   private final JoyStick joystick;
   private Callback debugCallback;
   private PrintStream printStream;
+  private String title;
   private int width;
   private int height;
 
@@ -41,8 +42,8 @@ public class Window {
   ) {
     // Creating an instance of WindowUtils rather than using a static class for thread safety.
     EngineGLVersion glVersion = new WindowService().initializeWindow(debugMode, safeMode);
-    String windowTitle = String.format("%s OpenGL %s", title, glVersion);
-    handle = GLFW.glfwCreateWindow(width, height, windowTitle, MemoryUtil.NULL, MemoryUtil.NULL);
+    title = String.format("%s OpenGL %s", title, glVersion);
+    handle = GLFW.glfwCreateWindow(width, height, title, MemoryUtil.NULL, MemoryUtil.NULL);
     if (handle == MemoryUtil.NULL) throw new RuntimeException("Failed to create the GLFW window");
     mouse = new Mouse();
     joystick = new JoyStick();
@@ -69,6 +70,10 @@ public class Window {
       );
       debugCallback = GLUtil.setupDebugMessageCallback(printStream);
     }
+  }
+
+  public void title(String title) {
+    GLFW.glfwSetWindowTitle(handle, this.title + " - " + title);
   }
 
   public void clear() {

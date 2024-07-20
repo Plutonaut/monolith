@@ -40,7 +40,7 @@ public class GameEngine implements Runnable {
       timer.onUpdate();
     }
 
-    logic.current().render();
+    logic.current().render(timer.fps);
     timer.onFrameRendered();
   }
 }

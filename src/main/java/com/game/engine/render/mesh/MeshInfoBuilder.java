@@ -29,7 +29,7 @@ public class MeshInfoBuilder {
     attributes = new ArrayList<>();
     vertices = new ArrayList<>();
     indices = new ValueStore();
-    instances = 1;
+    instances = 0;
     material = null;
     name = null;
   }
@@ -169,6 +169,7 @@ public class MeshInfoBuilder {
   public MeshInfoBuilder vertices(ValueStore store, int size, int glType, String attribute) {
     return vertices(store, size, glType, GL46.GL_STATIC_DRAW, attribute);
   }
+
   public MeshInfoBuilder vertices(ValueStore store, int size, int glType, int glUsage, String attribute) {
     return vertices(store, size, glType, glUsage, attribute, 1);
   }

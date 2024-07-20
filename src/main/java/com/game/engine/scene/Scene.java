@@ -15,6 +15,7 @@ import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerationData;
 import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerator;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
+import com.game.graphics.texture.TextureMapData;
 import com.game.utils.engine.loaders.FontResourceLoader;
 import com.game.utils.engine.loaders.ModelResourceLoader;
 import com.game.utils.engine.loaders.SpriteResourceLoader;
@@ -63,14 +64,22 @@ public class Scene {
     packets = new PacketManager();
   }
 
-  // TODO: Create texture pack DAO object. Load all textures in a given directory and separate them based on file name.
+  public Scene generateProceduralTerrain(
+    String id, TextureMapData textureMapData
+  ) {
+    return generateProceduralTerrain(ERenderer.SCENE, id, textureMapData);
+  }
+
+  public Scene generateProceduralTerrain(ERenderer shader, String id, TextureMapData data) {
+    return generateProceduralTerrain(shader, id, 256, 256, data, 1);
+  }
+
   public Scene generateProceduralTerrain(
     ERenderer shader,
     String id,
     int width,
     int height,
-    String texturePath,
-    String heightMapTexturePath,
+    TextureMapData textureData,
     float scale
   ) {
     ProceduralNoiseData noise = new ProceduralNoiseData(
@@ -87,9 +96,7 @@ public class Scene {
       width,
       height,
       0f,
-      0.1f,
-      texturePath,
-      heightMapTexturePath,
+      0.1f, textureData,
       noise
     );
     return generateProceduralTerrain(shader, data);

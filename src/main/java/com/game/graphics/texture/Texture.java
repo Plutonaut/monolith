@@ -36,6 +36,11 @@ public class Texture implements IGraphicsCachable {
     GL46.glBindTexture(GL46.GL_TEXTURE_2D, glId);
   }
 
+  @Override
+  public void dispose() {
+    GL46.glDeleteTextures(glId);
+  }
+
   public void store() {
     GL46.glPixelStorei(GL46.GL_UNPACK_ALIGNMENT, 1);
   }
@@ -49,19 +54,24 @@ public class Texture implements IGraphicsCachable {
     parameter(GL46.GL_TEXTURE_WRAP_T, GL46.GL_CLAMP_TO_BORDER);
   }
 
-  public void mipmap() {
+  public void filter() {
     parameter(GL46.GL_TEXTURE_MIN_FILTER, GL46.GL_NEAREST);
     parameter(GL46.GL_TEXTURE_MAG_FILTER, GL46.GL_NEAREST);
-    GL46.glGenerateMipmap(GL46.GL_TEXTURE_2D);
   }
 
   public void upload(int internalFormat, int format, int glType, ByteBuffer image) {
-    GL46.glTexImage2D(GL46.GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, glType, image);
-  }
-
-  @Override
-  public void dispose() {
-    GL46.glDeleteTextures(glId);
+    GL46.glTexImage2D(
+      GL46.GL_TEXTURE_2D,
+      0,
+      internalFormat,
+      width,
+      height,
+      0,
+      format,
+      glType,
+      image
+    );
+    GL46.glGenerateMipmap(GL46.GL_TEXTURE_2D);
   }
 
   @Override

@@ -12,16 +12,35 @@ import com.game.utils.application.ValueStore2D;
 import com.game.utils.engine.TextureLoaderUtils;
 import com.game.utils.engine.terrain.TerrainUtils;
 import org.lwjgl.opengl.GL46;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 public class ProceduralTerrainGeneratorUtils {
   public static MeshInfo process(
     ProceduralTerrainGenerationData data
   ) {
-    String heightMapTexturePath = data.heightMapTexture();
-    final MeshInfoBuilder builder = LoaderUtils.isResourcePath(heightMapTexturePath)
-                                    ? buildTerrainMeshInfoFromTexture(data, heightMapTexturePath)
-                                    : buildTerrainMeshInfoFromNoise(data, heightMapTexturePath);
+    String heightMapTexturePath = data.textureMapData().height();
+    final MeshInfoBuilder builder;
+    if (LoaderUtils.isResourcePath(heightMapTexturePath))
+      builder = buildTerrainMeshInfoFromTexture(data, heightMapTexturePath);
+    else if (data.noise() != null)
+      builder = buildTerrainMeshInfoFromNoise(data, heightMapTexturePath);
+    else builder = safeMode_buildTerrainMeshInfo(data);
     return builder.build();
+  }
+
+  static MeshInfoBuilder safeMode_buildTerrainMeshInfo(ProceduralTerrainGenerationData data) {
+    MeshInfoBuilder builder = new MeshInfoBuilder();
+    final ValueStore2D grid = new ValueStore2D(data.width(), data.height());
+    buildTerrainMeshInfo(data, builder, (int col, int row) -> {
+      float height = 0.1f;
+      grid.set(row, col, height);
+      return height;
+    });
+    return builder;
   }
 
   static MeshInfoBuilder buildTerrainMeshInfoFromTexture(
@@ -29,31 +48,46 @@ public class ProceduralTerrainGeneratorUtils {
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
     final ValueStore2D grid = new ValueStore2D(data.width(), data.height());
-    Texture texture = new Texture(heightMapTexturePath);
-    texture.bind();
-    texture.store();
-    texture.clamp();
-    texture.mipmap();
+    Texture texture;
 
     String fileType = LoaderUtils.getFileType(heightMapTexturePath);
-    int format = fileType != null ? TextureLoaderUtils.formatByFileType(fileType) : GL46.GL_RGBA;
-    TextureLoaderUtils.readTexture(heightMapTexturePath, (((buffer, w, h) -> {
-      texture.width(w);
-      texture.height(h);
+    int format = TextureLoaderUtils.formatByFileType(fileType);
+    ByteBuffer buffer;
+
+    try (MemoryStack stack = MemoryStack.stackPush()) {
+      IntBuffer w = stack.mallocInt(1);
+      IntBuffer h = stack.mallocInt(1);
+      IntBuffer comp = stack.mallocInt(1);
+
+      STBImage.stbi_set_flip_vertically_on_load(true);
+      buffer = STBImage.stbi_load(heightMapTexturePath, w, h, comp, 4);
+
+      if (buffer == null)
+        throw new RuntimeException("Texture path: " + heightMapTexturePath + System.lineSeparator() + STBImage.stbi_failure_reason());
+
+      int width = w.get();
+      int height = h.get();
+      texture = new Texture(heightMapTexturePath);
+      texture.width(width);
+      texture.height(height);
+      texture.bind();
+      texture.store();
+      texture.filter();
       texture.upload(GL46.GL_RGBA, format, GL46.GL_UNSIGNED_BYTE, buffer);
-      buildTerrainMeshInfo(data, builder, (int row, int col) -> {
-        float vertexHeight = TerrainUtils.getHeight(
-          col,
-          row,
-          data.minVertexHeight(),
-          data.maxVertexHeight(),
-          data.width(),
-          buffer
+      buildTerrainMeshInfo(data, builder, (int col, int row) -> {
+        float vertexHeight = TerrainUtils.getHeight(col,
+                                                    row,
+                                                    data.minVertexHeight(),
+                                                    data.maxVertexHeight(),
+                                                    width,
+                                                    buffer
         );
         grid.set(row, col, vertexHeight);
         return vertexHeight;
+
       });
-    })));
+      STBImage.stbi_image_free(buffer);
+    }
     GlobalCache.instance().cacheItem(texture);
     return builder;
   }
@@ -73,8 +107,9 @@ public class ProceduralTerrainGeneratorUtils {
     ProceduralTerrainGenerationData data, final MeshInfoBuilder builder, IHeightMapper mapper
   ) {
     String id = data.id();
-    String diffuseTexturePath = data.diffuseTexture();
-    String heightMapTexturePath = data.heightMapTexture();
+    String diffuseTexturePath = data.textureMapData().diffuse();
+    String normalTexturePath = data.textureMapData().normal();
+    String heightMapTexturePath = data.textureMapData().height();
     ValueStore positions = new ValueStore();
     ValueStore textureCoordinates = new ValueStore();
     ValueStore indices = new ValueStore();
@@ -106,13 +141,15 @@ public class ProceduralTerrainGeneratorUtils {
       }
     }
     ValueStore normals = TerrainUtils.calculateNormals(positions, width, height);
-    builder.use(id)
-           .positions(positions)
-           .textureCoordinates(textureCoordinates)
-           .normals(normals)
-           .indices(indices)
-           .material(id + "_mat")
-           .materialDiffuseTexture(diffuseTexturePath)
-           .materialHeightTexture(heightMapTexturePath);
+    builder
+      .use(id)
+      .positions(positions)
+      .textureCoordinates(textureCoordinates)
+      .normals(normals)
+      .indices(indices)
+      .material(id + "_mat")
+      .materialNormalTexture(normalTexturePath)
+      .materialDiffuseTexture(diffuseTexturePath)
+      .materialHeightTexture(heightMapTexturePath);
   }
 }

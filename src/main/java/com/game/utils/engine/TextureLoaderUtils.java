@@ -22,20 +22,46 @@ import java.nio.file.Path;
 
 public class TextureLoaderUtils {
   public static Texture load(String path) {
-    Texture texture = new Texture(path);
-    texture.bind();
-    texture.store();
-    texture.clamp();
-    texture.mipmap();
-
+//    Texture texture = new Texture(path);
+    Texture texture;
     String fileType = LoaderUtils.getFileType(path);
-    int format = fileType != null ? TextureLoaderUtils.formatByFileType(fileType) : GL46.GL_RGBA;
+    int format = TextureLoaderUtils.formatByFileType(fileType);
+    ByteBuffer buffer;
 
-    TextureLoaderUtils.readTexture(path, ((buffer, width, height) -> {
+    try (MemoryStack stack = MemoryStack.stackPush()) {
+      IntBuffer w = stack.mallocInt(1);
+      IntBuffer h = stack.mallocInt(1);
+      IntBuffer comp = stack.mallocInt(1);
+
+      STBImage.stbi_set_flip_vertically_on_load(true);
+      buffer = STBImage.stbi_load(path, w, h, comp, 4);
+
+      if (buffer == null)
+        throw new RuntimeException("Texture path: " + path + System.lineSeparator() + STBImage.stbi_failure_reason());
+
+//      reader.read(buffer, w.get(), h.get());
+      int width = w.get();
+      int height = h.get();
+      texture = new Texture(path);
       texture.width(width);
       texture.height(height);
-      texture.upload(GL46.GL_RGBA, format, GL46.GL_UNSIGNED_BYTE, buffer);
-    }));
+      texture.bind();
+      texture.store();
+//      texture.clamp();
+      texture.filter();
+      texture.upload(GL46.GL_RGBA8, format, GL46.GL_UNSIGNED_BYTE, buffer);
+
+      STBImage.stbi_image_free(buffer);
+    }
+//    TextureLoaderUtils.readTexture(path, ((buffer, width, height) -> {
+//      texture.width(width);
+//      texture.height(height);
+//      texture.bind();
+//      texture.store();
+//      texture.clamp();
+//      texture.filter();
+//      texture.upload(GL46.GL_RGBA8, format, GL46.GL_UNSIGNED_BYTE, buffer);
+//    }));
 
     return texture;
   }
@@ -64,9 +90,12 @@ public class TextureLoaderUtils {
    * Convert two-dimensional array of floats into color data and create a texture from the resulting
    * buffered image.
    *
-   * @param path Relative file path of the texture to be generated.
-   * @param grid 2D array of floats to be converted into pixel color data.
-   * @param save flag denoting whether the resulting texture should be saved to the file system.
+   * @param path
+   *   Relative file path of the texture to be generated.
+   * @param grid
+   *   2D array of floats to be converted into pixel color data.
+   * @param save
+   *   flag denoting whether the resulting texture should be saved to the file system.
    *
    * @return resulting texture.
    */
@@ -77,7 +106,7 @@ public class TextureLoaderUtils {
     BufferedImage image = new BufferedImage(columns, rows, BufferedImage.TYPE_INT_ARGB);
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
-        float heightValue = grid.get(y, x);
+        float heightValue = grid.get(x, y);
         int colorValue = ColorUtils.interpolate(heightValue);
         image.setRGB(x, y, colorValue);
       }
@@ -116,10 +145,6 @@ public class TextureLoaderUtils {
     if (Files.exists(Path.of(path))) return GlobalCache.instance().texture(path);
 
     Texture texture = new Texture(path);
-    texture.bind();
-    texture.store();
-    texture.clamp();
-    texture.mipmap();
     ByteBuffer decodedImage;
     int width;
     int height;
@@ -137,14 +162,16 @@ public class TextureLoaderUtils {
       height = h.get();
       texture.width(width);
       texture.height(height);
+      texture.bind();
+      texture.store();
+      texture.clamp();
+      texture.filter();
       STBImage.stbi_image_free(decodedImage);
     }
     return texture;
   }
 
   public static int formatByFileType(String fileType) {
-    if (fileType.equals(".tga")) return GL46.GL_BGRA;
-
-    return GL46.GL_RGBA;
+    return (fileType != null && fileType.equals(".tga")) ? GL46.GL_BGRA : GL46.GL_RGBA;
   }
 }

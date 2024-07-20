@@ -25,7 +25,7 @@ public class ValueStore2D {
     return grid[row];
   }
 
-  public float get(int row, int column) {
+  public float get(int column, int row) {
     return grid[row][column];
   }
 
