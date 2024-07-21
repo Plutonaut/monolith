@@ -8,11 +8,11 @@ import lombok.experimental.Accessors;
 public class LambdaCounter {
   private int value;
 
-  public LambdaCounter() {this(0);}
+  public LambdaCounter() { this(0); }
 
-  public LambdaCounter(int value) {this.value = value;}
+  public LambdaCounter(int value) { this.value = value; }
 
-  public int inc() {return value++;}
+  public int inc() { return value++; }
 
   public int set(int value) {
     this.value = value;

@@ -1,4 +1,4 @@
-package com.game.caches.models;
+package com.game.caches.models.interfaces;
 
 import com.game.engine.render.models.IModel;
 import com.game.utils.enums.EModelCache;

@@ -1,11 +1,11 @@
 package com.game.engine.render.models;
 
 import com.game.caches.GlobalCache;
-import com.game.caches.models.IModelCachable;
+import com.game.caches.models.interfaces.IModelCachable;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.animations.Animation;
-import com.game.engine.scene.entities.controllers.AnimationController;
+import com.game.engine.scene.entities.controllers.EntityAnimationController;
 import com.game.utils.enums.EModelCache;
 import com.game.utils.enums.EModifier;
 import lombok.Data;
@@ -35,7 +35,7 @@ public class Model implements IModelCachable {
   public Entity create(String entityName) {
     Entity entity = new Entity(entityName);
     if (!animations().isEmpty()) {
-      AnimationController controller = new AnimationController();
+      EntityAnimationController controller = new EntityAnimationController();
       for (Animation animation : animations()) {
         controller.add(animation);
       }

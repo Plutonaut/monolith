@@ -1,5 +1,9 @@
 package com.game.caches.models;
 
+import com.game.caches.models.interfaces.IModelCachable;
+import com.game.caches.models.interfaces.IModelCache;
+import com.game.caches.models.interfaces.IModelGenerator;
+
 import java.util.HashMap;
 
 public abstract class AbstractModelCache implements IModelCache {
@@ -13,6 +17,7 @@ public abstract class AbstractModelCache implements IModelCache {
   }
 
   public IModelCachable use(String name) {
+  // TODO: Replace with cache.getOrDefault(name, null);
     return use(name, this::generate);
   }
 
@@ -24,5 +29,6 @@ public abstract class AbstractModelCache implements IModelCache {
     return model;
   }
 
+  // TODO: Remove this
   protected abstract IModelCachable generate(String name);
 }

@@ -1,5 +1,6 @@
 package com.game.utils.engine;
 
+import com.game.utils.math.ScalarUtils;
 import org.joml.Vector4f;
 import org.lwjgl.assimp.AIColor4D;
 
@@ -25,4 +26,15 @@ public class ColorUtils {
   }
 
   public static float normalize(int value) {return (float) value / 255f;}
+
+  /**
+   * Values above 1 and below 0 are clamped to decrease scope of interpolation.
+   * Result is interpolated between 0 and 255, which are the base hex values for RGB.
+   * @param value Value to clamp, interpolate, and round.
+   * @return integer RGB value of resulting interpolated color value.
+   */
+  public static int interpolate(float value) {
+    int interpolated = Math.round(ScalarUtils.clampedLerp01(0, 255, value));
+    return new Color(interpolated, interpolated, interpolated).getRGB();
+  }
 }

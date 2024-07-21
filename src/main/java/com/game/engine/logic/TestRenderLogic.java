@@ -1,10 +1,10 @@
 package com.game.engine.logic;
 
 import com.game.caches.GlobalCache;
-import com.game.engine.settings.EngineSettings;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.mesh.vertices.AttribInfo;
+import com.game.engine.settings.EngineSettings;
 import com.game.graphics.shaders.Program;
 import com.game.utils.enums.ERenderer;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 
 @Slf4j
 public class TestRenderLogic extends AbstractLogic {
@@ -53,8 +52,8 @@ public class TestRenderLogic extends AbstractLogic {
     GL46.glBindBuffer(GL46.GL_ARRAY_BUFFER, vbo);
     GL46.glBufferData(GL46.GL_ARRAY_BUFFER, vertexData, GL46.GL_STATIC_DRAW);
     MemoryUtil.memFree(vertexData);
-    program.attributes().enable(info.key());
-    program.attributes().point(List.of(info), GL46.GL_FLOAT);
+//    program.attributes().enable(info.key());
+//    program.attributes().point(List.of(info), GL46.GL_FLOAT); // Replaced with VertexAttributeArray
     return vbo;
   }
 
@@ -104,7 +103,7 @@ public class TestRenderLogic extends AbstractLogic {
   }
 
   @Override
-  public void render() {
+  public void render(float fps) {
     GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
     GL46.glViewport(0, 0, 800, 600);
     program.bind();

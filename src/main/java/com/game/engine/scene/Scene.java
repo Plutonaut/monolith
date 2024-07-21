@@ -10,8 +10,12 @@ import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.TextEntity;
 import com.game.engine.scene.lighting.LightingManager;
 import com.game.engine.scene.projection.Projection;
+import com.game.engine.scene.terrain.procedural.ProceduralNoiseData;
+import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerationData;
+import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerator;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
+import com.game.graphics.texture.TextureMapData;
 import com.game.utils.engine.loaders.FontResourceLoader;
 import com.game.utils.engine.loaders.ModelResourceLoader;
 import com.game.utils.engine.loaders.SpriteResourceLoader;
@@ -58,6 +62,49 @@ public class Scene {
     audio = new AudioManager();
     lighting = new LightingManager();
     packets = new PacketManager();
+  }
+
+  public Scene generateProceduralTerrain(
+    String id, TextureMapData textureMapData
+  ) {
+    return generateProceduralTerrain(ERenderer.SCENE, id, textureMapData);
+  }
+
+  public Scene generateProceduralTerrain(ERenderer shader, String id, TextureMapData data) {
+    return generateProceduralTerrain(shader, id, 256, 256, data, 1);
+  }
+
+  public Scene generateProceduralTerrain(
+    ERenderer shader,
+    String id,
+    int width,
+    int height,
+    TextureMapData textureData,
+    float scale
+  ) {
+    ProceduralNoiseData noise = new ProceduralNoiseData(
+      new Vector2f(0f),
+      0.25f,
+      5,
+      scale,
+      2,
+      0,
+      false
+    );
+    ProceduralTerrainGenerationData data = new ProceduralTerrainGenerationData(
+      id,
+      width,
+      height,
+      0f,
+      0.1f, textureData,
+      noise
+    );
+    return generateProceduralTerrain(shader, data);
+  }
+
+  public Scene generateProceduralTerrain(ERenderer shader, ProceduralTerrainGenerationData data) {
+    pipe(shader, ProceduralTerrainGenerator.generate(data));
+    return this;
   }
 
   public Scene loadSkyBox3D(EModel model) {

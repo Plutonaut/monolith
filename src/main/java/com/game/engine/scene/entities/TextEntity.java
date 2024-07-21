@@ -23,6 +23,7 @@ public class TextEntity implements IRenderable {
   private final Mesh mesh;
   private final String name;
   private String text;
+  private String textUpdate;
   private int positionVboId;
   private int textureCoordinateVboId;
   private int indexVboId;
@@ -32,7 +33,10 @@ public class TextEntity implements IRenderable {
     this.name = name;
     this.mesh = mesh;
     this.text = text;
+    textUpdate = text;
   }
+
+  public boolean refreshVertices() { return !text.equals(textUpdate); }
 
   public TextEntity move(float x, float y) {
     transform.position().set(x, y, 0f);

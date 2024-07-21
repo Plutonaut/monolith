@@ -1,20 +1,27 @@
 package com.game.engine.render.renderers;
 
+import com.game.caches.GlobalCache;
 import com.game.engine.scene.lighting.Attenuation;
+import com.game.engine.scene.lighting.LightingManager;
 import com.game.engine.scene.lighting.lights.DirectionalLight;
 import com.game.engine.scene.lighting.lights.Light;
 import com.game.engine.scene.lighting.lights.PointLight;
 import com.game.engine.scene.lighting.lights.SpotLight;
 import com.game.graphics.materials.Material;
 import com.game.graphics.materials.MaterialTexturePack;
+import com.game.graphics.texture.Texture;
+import com.game.utils.application.LambdaCounter;
 import com.game.utils.enums.EMaterialColor;
+import com.game.utils.enums.EMaterialTexture;
 import com.game.utils.enums.EUniform;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL46;
 
 import java.util.List;
 
+// TODO: Replace with some utility inner object used by UniformCache.
 public abstract class AbstractLitRenderer extends AbstractRenderer {
   protected void setMaterialUniform(Material material) {
     program
@@ -30,6 +37,42 @@ public abstract class AbstractLitRenderer extends AbstractRenderer {
 
     MaterialTexturePack textures = material.textures();
     if (textures.hasTextures()) setMaterialTextureUniform(textures);
+  }
+
+  protected void setMaterialTextureUniform(MaterialTexturePack textures) {
+    program
+      .uniforms()
+      .set(
+        EUniform.MATERIAL_HAS_TEXTURE.value(),
+        textures.hasTexture(EMaterialTexture.DIF.value())
+      );
+    program.uniforms()
+           .set(
+             EUniform.MATERIAL_HAS_NORMAL_MAP.value(),
+             textures.hasTexture(EMaterialTexture.NRM.value())
+           );
+
+    LambdaCounter counter = new LambdaCounter();
+    textures.pack().forEach((type, path) -> {
+      Texture texture = GlobalCache.instance().texture(path);
+      String uniform = EMaterialTexture.getUniformByType(type).value();
+
+      if (texture != null && program.uniforms().has(uniform)) {
+        int index = counter.inc();
+        int glIndex = GL46.GL_TEXTURE0 + index;
+        texture.active(glIndex);
+        texture.bind();
+
+        program.uniforms().set(uniform, index);
+      }
+    });
+  }
+
+  protected void setLightingUniforms(LightingManager lighting, Matrix4f viewMatrix) {
+    if (lighting.hasAmbientLight()) setAmbientLightUniform(lighting.ambientLight());
+    if (lighting.hasDirectionalLight()) setDirectionalLightUniform(lighting.directionalLight(), viewMatrix);
+    if (lighting.hasPointLights()) setPointLightUniforms(lighting.pointLights(), viewMatrix);
+    if (lighting.hasSpotLights()) setSpotLightUniforms(lighting.spotLights(), viewMatrix);
   }
 
   protected void setAmbientLightUniform(Light light) {

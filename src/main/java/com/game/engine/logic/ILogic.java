@@ -5,6 +5,6 @@ public interface ILogic {
   void onStart();
   void input();
   void update();
-  void render();
+  void render(float fps);
   void onEnd();
 }

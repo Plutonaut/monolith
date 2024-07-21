@@ -16,7 +16,6 @@ public class UniformCache extends AbstractShaderCache {
   @Override
   protected int glLocation(String key) {
     int location = GL46.glGetUniformLocation(programId, key);
-
     return check(location, "Uniform", key);
   }
 

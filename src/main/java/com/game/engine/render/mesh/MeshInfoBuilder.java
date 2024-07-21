@@ -49,15 +49,15 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfoBuilder materialDiffuseTexture(String texturePath) {
-    return materialTexture(EMaterialTexture.DIF.getValue(), texturePath);
+    return materialTexture(EMaterialTexture.DIF.value(), texturePath);
   }
 
   public MeshInfoBuilder materialNormalTexture(String texturePath) {
-    return materialTexture(EMaterialTexture.NRM.getValue(), texturePath);
+    return materialTexture(EMaterialTexture.NRM.value(), texturePath);
   }
 
   public MeshInfoBuilder materialHeightTexture(String texturePath) {
-    return materialTexture(EMaterialTexture.HGT.getValue(), texturePath);
+    return materialTexture(EMaterialTexture.HGT.value(), texturePath);
   }
 
   public MeshInfoBuilder materialTexture(int textureType, String texturePath) {
@@ -169,6 +169,7 @@ public class MeshInfoBuilder {
   public MeshInfoBuilder vertices(ValueStore store, int size, int glType, String attribute) {
     return vertices(store, size, glType, GL46.GL_STATIC_DRAW, attribute);
   }
+
   public MeshInfoBuilder vertices(ValueStore store, int size, int glType, int glUsage, String attribute) {
     return vertices(store, size, glType, glUsage, attribute, 1);
   }

@@ -21,7 +21,8 @@ public abstract class AbstractLogic implements ILogic {
   }
 
   @Override
-  public void render() {
+  public void render(float fps) {
+    scene.window().title("FPS: %s".formatted(fps));
     renderer.render(scene);
   }
 

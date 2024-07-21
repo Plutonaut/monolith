@@ -1,7 +1,7 @@
 package com.game.engine.render.mesh;
 
 import com.game.caches.GlobalCache;
-import com.game.caches.models.IModelCachable;
+import com.game.caches.models.interfaces.IModelCachable;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.graphics.materials.Material;

@@ -6,14 +6,14 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Data
-public abstract class AbstractController {
+public abstract class AbstractEntityController {
   protected String entityId;
 
   public abstract String type();
 
   public abstract void onUpdate();
 
-  public AbstractController onAttach(Entity entity) {
+  public AbstractEntityController onAttach(Entity entity) {
     this.entityId = entity.name();
 
     return this;

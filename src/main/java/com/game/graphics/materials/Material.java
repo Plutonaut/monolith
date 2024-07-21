@@ -1,6 +1,6 @@
 package com.game.graphics.materials;
 
-import com.game.caches.models.IModelCachable;
+import com.game.caches.models.interfaces.IModelCachable;
 import com.game.utils.enums.EModelCache;
 import lombok.Data;
 import lombok.experimental.Accessors;

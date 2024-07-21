@@ -38,6 +38,7 @@ public class RenderManager implements IRenderer {
     return getRenderer(shader).associate(model);
   }
 
+  // TODO: Move entity creation to renderer. Add newly created entities to global cache. Pull from global cache on render.
   public void bind(Scene scene) {
     scene.packets().bindQueue(this::bind);
   }

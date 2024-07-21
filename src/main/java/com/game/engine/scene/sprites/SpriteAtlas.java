@@ -1,7 +1,7 @@
 package com.game.engine.scene.sprites;
 
 import com.game.caches.GlobalCache;
-import com.game.caches.models.IModelCachable;
+import com.game.caches.models.interfaces.IModelCachable;
 import com.game.engine.scene.entities.animations.Animation2D;
 import com.game.graphics.texture.Texture;
 import com.game.utils.application.PathSanitizer;
