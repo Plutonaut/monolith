@@ -1,10 +1,15 @@
 package com.game.caches.graphics;
 
-import java.util.HashMap;
+import com.game.caches.graphics.interfaces.IGraphicsCachable;
+import com.game.caches.graphics.interfaces.IGraphicsCache;
+import com.game.caches.graphics.interfaces.IGraphicsGenerator;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractGraphicsCache implements IGraphicsCache {
-  protected final HashMap<String, IGraphicsCachable> cache = new HashMap<>();
+  protected final ConcurrentHashMap<String, IGraphicsCachable> cache = new ConcurrentHashMap<>();
 
+  @Deprecated
   public final void cache(IGraphicsCachable... entries) {
     for (IGraphicsCachable entry : entries) {
       if (entry != null && entry.key() != null)
@@ -18,11 +23,10 @@ public abstract class AbstractGraphicsCache implements IGraphicsCache {
 
   public IGraphicsCachable use(String key, IGraphicsGenerator generator) {
     if (key == null) return null;
-
-    IGraphicsCachable entry = cache.getOrDefault(key, generator.generate(key));
-    if (entry != null) cache.putIfAbsent(key, entry);
-
-    return entry;
+    return cache.computeIfAbsent(key, generator::generate);
+//    IGraphicsCachable entry = cache.getOrDefault(key, generator.generate(key));
+//    if (entry != null) cache.putIfAbsent(key, entry);
+//    return entry;
   }
 
   protected abstract IGraphicsCachable generate(String key);

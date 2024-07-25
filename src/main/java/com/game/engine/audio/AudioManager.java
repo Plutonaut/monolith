@@ -2,7 +2,7 @@ package com.game.engine.audio;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.scene.audio.AudioBufferObject;
-import com.game.engine.scene.audio.AudioSourceObject;
+import com.game.engine.scene.audio.AudioSource;
 import org.joml.Vector3f;
 import org.lwjgl.openal.*;
 import org.lwjgl.system.MemoryUtil;
@@ -12,7 +12,7 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 
 public class AudioManager {
-  private final HashMap<String, AudioSourceObject> sources;
+  private final HashMap<String, AudioSource> sources;
   private final ALCapabilities capabilities;
   private final long device;
   private final long context;
@@ -37,20 +37,20 @@ public class AudioManager {
     capabilities = AL.createCapabilities(deviceCapabilities, MemoryUtil::memCallocPointer);
   }
 
-  public AudioSourceObject load(String key, String path, Vector3f position) {
+  public AudioSource load(String key, String path, Vector3f position) {
     AudioBufferObject abo = GlobalCache.instance().audioBuffer(path);
-    AudioSourceObject aso = get(key, position);
+    AudioSource aso = get(key, position);
     aso.buffer(abo);
 
     return aso;
   }
 
-  public AudioSourceObject get(String key) {
-    return sources.computeIfAbsent(key, AudioSourceObject::new);
+  public AudioSource get(String key) {
+    return sources.computeIfAbsent(key, AudioSource::new);
   }
 
-  public AudioSourceObject get(String key, Vector3f position) {
-    AudioSourceObject aso = get(key);
+  public AudioSource get(String key, Vector3f position) {
+    AudioSource aso = get(key);
     aso.moveTo(position);
 
     return aso;
@@ -59,7 +59,7 @@ public class AudioManager {
   public void setAttenuationModel(int model) { AL11.alDistanceModel(model); }
 
   public void dispose() {
-    sources.values().forEach(AudioSourceObject::dispose);
+    sources.values().forEach(AudioSource::dispose);
 
     if (capabilities != null) MemoryUtil.memFree(capabilities.getAddressBuffer());
     if (context != MemoryUtil.NULL) ALC11.alcDestroyContext(context);

@@ -1,6 +1,6 @@
 package com.game.engine.render.mesh;
 
-import com.game.caches.graphics.IGraphicsCachable;
+import com.game.caches.graphics.interfaces.IGraphicsCachable;
 import com.game.engine.render.mesh.vertices.VertexAttributeArray;
 import com.game.engine.render.mesh.vertices.VertexBufferObject;
 import com.game.graphics.materials.Material;
@@ -69,9 +69,9 @@ public class Mesh implements IGraphicsCachable {
     GL46.glDrawArrays(mode, 0, vertexCount);
   }
 
-  public VertexBufferObject vbo(int glId) {
-    return vbos.stream().filter(vbo -> vbo.glId() == glId).findFirst().orElse(null);
-  }
+//  public VertexBufferObject vbo(int glId) {
+//    return vbos.stream().filter(vbo -> vbo.glId() == glId).findFirst().orElse(null);
+//  }
 
   public void setVertexAttributeArrays(List<VertexAttributeArray> vertexAttributeArrays) {
     vertexAttributeArrays.forEach(this::setVertexAttributeArray);

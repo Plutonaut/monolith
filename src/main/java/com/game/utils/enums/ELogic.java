@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Getter
 public enum ELogic {
+  TEST_PROC_GEN("testProcGen"),
   TEST_PIPELINE("testPipeline"),
   TEST_RENDER("testRender"),
   SAFE_MODE("safeMode");

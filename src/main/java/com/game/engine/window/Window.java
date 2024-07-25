@@ -42,7 +42,7 @@ public class Window {
   ) {
     // Creating an instance of WindowUtils rather than using a static class for thread safety.
     EngineGLVersion glVersion = new WindowService().initializeWindow(debugMode, safeMode);
-    title = String.format("%s OpenGL %s", title, glVersion);
+    this.title = String.format("%s OpenGL %s", title, glVersion);
     handle = GLFW.glfwCreateWindow(width, height, title, MemoryUtil.NULL, MemoryUtil.NULL);
     if (handle == MemoryUtil.NULL) throw new RuntimeException("Failed to create the GLFW window");
     mouse = new Mouse();

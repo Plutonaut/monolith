@@ -5,18 +5,11 @@ import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.engine.scene.terrain.IHeightMapper;
 import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerationData;
-import com.game.graphics.texture.Texture;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.application.ValueStore;
 import com.game.utils.application.ValueStore2D;
-import com.game.utils.engine.TextureLoaderUtils;
+import com.game.utils.engine.loaders.TextureLoader;
 import com.game.utils.engine.terrain.TerrainUtils;
-import org.lwjgl.opengl.GL46;
-import org.lwjgl.stb.STBImage;
-import org.lwjgl.system.MemoryStack;
-
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
 public class ProceduralTerrainGeneratorUtils {
   public static MeshInfo process(
@@ -43,52 +36,36 @@ public class ProceduralTerrainGeneratorUtils {
     return builder;
   }
 
+  // TODO: Attempt to pull from cache before loading texture from file.
   static MeshInfoBuilder buildTerrainMeshInfoFromTexture(
     ProceduralTerrainGenerationData data, String heightMapTexturePath
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
     final ValueStore2D grid = new ValueStore2D(data.width(), data.height());
-    Texture texture;
 
-    String fileType = LoaderUtils.getFileType(heightMapTexturePath);
-    int format = TextureLoaderUtils.formatByFileType(fileType);
-    ByteBuffer buffer;
-
-    try (MemoryStack stack = MemoryStack.stackPush()) {
-      IntBuffer w = stack.mallocInt(1);
-      IntBuffer h = stack.mallocInt(1);
-      IntBuffer comp = stack.mallocInt(1);
-
-      STBImage.stbi_set_flip_vertically_on_load(true);
-      buffer = STBImage.stbi_load(heightMapTexturePath, w, h, comp, 4);
-
-      if (buffer == null)
-        throw new RuntimeException("Texture path: " + heightMapTexturePath + System.lineSeparator() + STBImage.stbi_failure_reason());
-
-      int width = w.get();
-      int height = h.get();
-      texture = new Texture(heightMapTexturePath);
-      texture.width(width);
-      texture.height(height);
-      texture.bind();
-      texture.store();
-      texture.filter();
-      texture.upload(GL46.GL_RGBA, format, GL46.GL_UNSIGNED_BYTE, buffer);
-      buildTerrainMeshInfo(data, builder, (int col, int row) -> {
-        float vertexHeight = TerrainUtils.getHeight(col,
-                                                    row,
-                                                    data.minVertexHeight(),
-                                                    data.maxVertexHeight(),
-                                                    width,
-                                                    buffer
-        );
-        grid.set(row, col, vertexHeight);
-        return vertexHeight;
-
-      });
-      STBImage.stbi_image_free(buffer);
-    }
-    GlobalCache.instance().cacheItem(texture);
+    TextureLoader.read(
+      heightMapTexturePath,
+      (buffer, width, height) -> buildTerrainMeshInfo(
+        data,
+        builder,
+        (int col, int row) -> {
+          float vertexHeight = TerrainUtils.getHeight(
+            col,
+            row,
+            data.minVertexHeight(),
+            data.maxVertexHeight(),
+            width,
+            buffer
+          );
+          grid.set(
+            row,
+            col,
+            vertexHeight
+          );
+          return vertexHeight;
+        }
+      )
+    );
     return builder;
   }
 
@@ -97,9 +74,8 @@ public class ProceduralTerrainGeneratorUtils {
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
     ValueStore2D grid = ProceduralNoiseUtils.process(data.width(), data.height(), data.noise());
-    Texture texture = TextureLoaderUtils.generate(heightMapTexturePath, grid, true);
+    GlobalCache.instance().texture(heightMapTexturePath, grid);
     buildTerrainMeshInfo(data, builder, grid::get);
-    GlobalCache.instance().cacheItem(texture);
     return builder;
   }
 
@@ -109,7 +85,6 @@ public class ProceduralTerrainGeneratorUtils {
     String id = data.id();
     String diffuseTexturePath = data.textureMapData().diffuse();
     String normalTexturePath = data.textureMapData().normal();
-    String heightMapTexturePath = data.textureMapData().height();
     ValueStore positions = new ValueStore();
     ValueStore textureCoordinates = new ValueStore();
     ValueStore indices = new ValueStore();
@@ -149,7 +124,6 @@ public class ProceduralTerrainGeneratorUtils {
       .indices(indices)
       .material(id + "_mat")
       .materialNormalTexture(normalTexturePath)
-      .materialDiffuseTexture(diffuseTexturePath)
-      .materialHeightTexture(heightMapTexturePath);
+      .materialDiffuseTexture(diffuseTexturePath);
   }
 }

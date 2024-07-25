@@ -5,38 +5,74 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1cab9a76-5ab2-428f-a8c0-c6a16da21f10" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/graphics/texture/TextureMapData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-06-38.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-09-02.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-09-09.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-24-28.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-25-44.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-26-06.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/engine/AbstractEngineCache.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/engine/ICachable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/engine/ICachableGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/TestProceduralGenerationLogic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/DynamicMesh.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/IVertexCallback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/loaders/ITextureBufferCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/loaders/ITextureBufferStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/ModelUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/loaders/TextureLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/logging/LoggingPrettifyUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-24-2024-22-12-25.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-24-2024-22-20-11.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-24-2024-22-22-12.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-24-2024-22-22-37.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/shaders/UniformCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/shaders/UniformCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/GlobalCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/GlobalCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/ICacheUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/AbstractGraphicsCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/AbstractGraphicsCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/IGraphicsCachable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/interfaces/IGraphicsCachable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/IGraphicsCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/interfaces/IGraphicsCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/IGraphicsGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/interfaces/IGraphicsGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/MeshCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/concrete/MeshCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/ProgramCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/concrete/ProgramCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/ShaderCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/concrete/ShaderCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/TextureCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/graphics/concrete/TextureCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/models/AbstractModelCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/models/AbstractModelCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/FontInfoCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/FontInfoCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/MaterialCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/MaterialCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/MeshInfoCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/MeshInfoCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/ModelCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/ModelCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/audio/AudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/audio/AudioManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/AbstractLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/AbstractLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/EngineLogicRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/EngineLogicRunner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/ILogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/ILogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/LogicFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/SafeModeLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/SafeModeLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/TestPipelineLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/TestPipelineLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/TestRenderLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/logic/TestRenderLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/RenderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/RenderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/FontMeshInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/FontMeshInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/Mesh.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/Mesh.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/MeshInfoBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/MeshInfoBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/vertices/VertexInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/mesh/vertices/VertexInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/pipeline/packets/TextPacketResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/pipeline/packets/TextPacketResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/renderers/AbstractLitRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/renderers/AbstractLitRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/renderers/FontRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/renderers/FontRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/render/renderers/SkyBoxRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/render/renderers/SkyBoxRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/audio/AudioBufferObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/audio/AudioBufferObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/audio/AudioSourceObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/audio/AudioSource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/entities/TextEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/entities/TextEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/terrain/procedural/ProceduralNoiseData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/terrain/procedural/ProceduralNoiseData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/terrain/procedural/ProceduralTerrainGenerationData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/terrain/procedural/ProceduralTerrainGenerationData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/entities/controllers/EntityAudioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/scene/entities/controllers/EntityAudioController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/engine/window/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/engine/window/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/graphics/shaders/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/graphics/shaders/Program.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/graphics/shaders/Shader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/graphics/shaders/Shader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/graphics/texture/Texture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/graphics/texture/Texture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/application/LambdaCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/application/LambdaCounter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/application/ValueStore2D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/application/ValueStore2D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/TextureLoaderUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/TextureLoaderUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/FontInfoUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/FontInfoUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/TextureLoaderUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/loaders/FontResourceLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/loaders/FontResourceLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/terrain/procedural/ProceduralTerrainGeneratorUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/engine/terrain/procedural/ProceduralTerrainGeneratorUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-19-2024-19-34-17.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-19-2024-19-37-54.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-19-2024-19-38-15.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-19-2024-19-38-50.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-19-2024-19-42-39.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-19-2024-19-43-04.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/ini/settings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/ini/settings.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/utils/enums/ELogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/utils/enums/ELogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-06-38.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-09-02.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-09-09.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-24-28.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-25-44.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/opengl/game_engine_window_07-20-2024-16-26-06.log" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,9 +88,9 @@
         <option value="Enum" />
         <option value="Empty object" />
         <option value="Empty material" />
-        <option value="Interface" />
         <option value="Record" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -78,10 +114,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Main.executor": "Run",
+    "Application.Main.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "procedural__terrain",
+    "git-widget-placeholder": "caching__strategy",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/dmc4r/IdeaProjects/monolith/src/main/resources/models/blender/railway_part",
     "project.structure.last.edited": "Project",
@@ -148,12 +184,17 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/master" />
+                        <option value="origin/development" />
                       </list>
                     </value>
                   </entry>
@@ -169,6 +210,15 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/caches/models/concrete/MeshInfoCache.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.game.graphics.materials.Material" memberName="textures" />

@@ -31,8 +31,8 @@ public class SafeModeLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-    renderer.blend(true);
-    renderer.depth(true);
+    scene.blend(true);
+    scene.depth(true);
 //    renderer.init(
 //      ERenderer.SCENE,
 //      ERenderer.MESH,
