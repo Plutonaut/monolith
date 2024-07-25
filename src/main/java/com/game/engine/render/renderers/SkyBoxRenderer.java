@@ -17,6 +17,7 @@ public class SkyBoxRenderer extends AbstractLitRenderer {
 
   @Override
   protected void render(IRenderable item, Scene scene) {
+    scene.cull(false);
     Entity entity = (Entity) item;
     program.uniforms().set(EUniform.PROJECTION.value(), scene.projectionMat(EProjection.PERSPECTIVE));
 
@@ -30,5 +31,6 @@ public class SkyBoxRenderer extends AbstractLitRenderer {
       setMaterialUniform(material);
       draw(mesh);
     });
+    scene.cull(true);
   }
 }

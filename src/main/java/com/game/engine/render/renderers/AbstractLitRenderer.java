@@ -17,7 +17,6 @@ import com.game.utils.enums.EUniform;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.opengl.GL46;
 
 import java.util.List;
 
@@ -42,35 +41,34 @@ public abstract class AbstractLitRenderer extends AbstractRenderer {
   protected void setMaterialTextureUniform(MaterialTexturePack textures) {
     program
       .uniforms()
-      .set(
-        EUniform.MATERIAL_HAS_TEXTURE.value(),
-        textures.hasTexture(EMaterialTexture.DIF.value())
+      .set(EUniform.MATERIAL_HAS_TEXTURE.value(),
+           textures.hasTexture(EMaterialTexture.DIF.value())
       );
-    program.uniforms()
-           .set(
-             EUniform.MATERIAL_HAS_NORMAL_MAP.value(),
-             textures.hasTexture(EMaterialTexture.NRM.value())
-           );
+    program
+      .uniforms()
+      .set(EUniform.MATERIAL_HAS_NORMAL_MAP.value(),
+           textures.hasTexture(EMaterialTexture.NRM.value())
+      );
 
     LambdaCounter counter = new LambdaCounter();
     textures.pack().forEach((type, path) -> {
-      Texture texture = GlobalCache.instance().texture(path);
       String uniform = EMaterialTexture.getUniformByType(type).value();
-
-      if (texture != null && program.uniforms().has(uniform)) {
+      if (program.uniforms().has(uniform)) {
         int index = counter.inc();
-        int glIndex = GL46.GL_TEXTURE0 + index;
-        texture.active(glIndex);
-        texture.bind();
-
-        program.uniforms().set(uniform, index);
+        Texture texture = GlobalCache.instance().texture(path);
+        if (texture != null) {
+          texture.active(index);
+          texture.bind();
+          program.uniforms().set(uniform, index);
+        }
       }
     });
   }
 
   protected void setLightingUniforms(LightingManager lighting, Matrix4f viewMatrix) {
     if (lighting.hasAmbientLight()) setAmbientLightUniform(lighting.ambientLight());
-    if (lighting.hasDirectionalLight()) setDirectionalLightUniform(lighting.directionalLight(), viewMatrix);
+    if (lighting.hasDirectionalLight())
+      setDirectionalLightUniform(lighting.directionalLight(), viewMatrix);
     if (lighting.hasPointLights()) setPointLightUniforms(lighting.pointLights(), viewMatrix);
     if (lighting.hasSpotLights()) setSpotLightUniforms(lighting.spotLights(), viewMatrix);
   }

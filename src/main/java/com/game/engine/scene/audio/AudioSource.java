@@ -7,12 +7,12 @@ import org.lwjgl.openal.AL11;
 
 @Accessors(fluent = true)
 @Data
-public class AudioSourceObject {
+public class AudioSource {
   private final Vector3f position;
   private final int alId;
   private String name;
 
-  public AudioSourceObject(String name) {
+  public AudioSource(String name) {
     alId = AL11.alGenSources();
     position = new Vector3f();
 

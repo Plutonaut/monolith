@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL46;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,19 +197,18 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfo build() {
-    final MeshInfo meshInfo = GlobalCache.instance().meshInfo(name);
+    final MeshInfo meshInfo = new MeshInfo(name);
+    return constructMeshInfo(meshInfo);
+  }
+
+  public FontMeshInfo build(String text, Font font) {
+    final FontMeshInfo meshInfo = new FontMeshInfo(name, text, font);
     constructMeshInfo(meshInfo);
+//    GlobalCache.instance().cacheItem(meshInfo);
     return meshInfo;
   }
 
-  public FontMeshInfo build(String text) {
-    final FontMeshInfo meshInfo = new FontMeshInfo(name, text);
-    constructMeshInfo(meshInfo);
-    GlobalCache.instance().cacheItem(meshInfo);
-    return meshInfo;
-  }
-
-  void constructMeshInfo(MeshInfo meshInfo) {
+  MeshInfo constructMeshInfo(MeshInfo meshInfo) {
     vertices.forEach(meshInfo::addVertices);
     meshInfo.indices.set(indices);
     meshInfo.instances(instances);
@@ -220,6 +220,8 @@ public class MeshInfoBuilder {
     meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material.name());
     dispose();
+
+    return meshInfo;
   }
 
   public ModelBuilder model(String name) {

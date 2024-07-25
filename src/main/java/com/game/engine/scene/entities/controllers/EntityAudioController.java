@@ -1,12 +1,12 @@
 package com.game.engine.scene.entities.controllers;
 
-import com.game.engine.scene.audio.AudioSourceObject;
+import com.game.engine.scene.audio.AudioSource;
 import com.game.utils.enums.EController;
 
 import java.util.HashMap;
 
 public class EntityAudioController extends AbstractEntityController {
-  protected final HashMap<String, AudioSourceObject> sources;
+  protected final HashMap<String, AudioSource> sources;
 
   public EntityAudioController() {
     sources = new HashMap<>();

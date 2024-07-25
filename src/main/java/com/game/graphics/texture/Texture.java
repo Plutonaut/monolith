@@ -1,6 +1,6 @@
 package com.game.graphics.texture;
 
-import com.game.caches.graphics.IGraphicsCachable;
+import com.game.caches.graphics.interfaces.IGraphicsCachable;
 import com.game.utils.enums.EGraphicsCache;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,9 +17,15 @@ public class Texture implements IGraphicsCachable {
   protected int height;
 
   public Texture(String path) {
+    this(path, 0, 0);
+  }
+
+  public Texture(String path, int width, int height) {
     glId = GL46.glGenTextures();
 
     this.path = path;
+    this.width = width;
+    this.height = height;
   }
 
   @Override
@@ -28,7 +34,7 @@ public class Texture implements IGraphicsCachable {
   }
 
   public void active(int glIndex) {
-    GL46.glActiveTexture(glIndex);
+    GL46.glActiveTexture(GL46.GL_TEXTURE0 + glIndex);
   }
 
   @Override
@@ -41,6 +47,7 @@ public class Texture implements IGraphicsCachable {
     GL46.glDeleteTextures(glId);
   }
 
+  // Tells OpenGL to unpack the RGBA data with 1 byte for each component.
   public void store() {
     GL46.glPixelStorei(GL46.GL_UNPACK_ALIGNMENT, 1);
   }
@@ -50,13 +57,29 @@ public class Texture implements IGraphicsCachable {
   }
 
   public void clamp() {
-    parameter(GL46.GL_TEXTURE_WRAP_S, GL46.GL_CLAMP_TO_BORDER);
-    parameter(GL46.GL_TEXTURE_WRAP_T, GL46.GL_CLAMP_TO_BORDER);
+    wrap(GL46.GL_CLAMP_TO_BORDER);
   }
 
-  public void filter() {
-    parameter(GL46.GL_TEXTURE_MIN_FILTER, GL46.GL_NEAREST);
-    parameter(GL46.GL_TEXTURE_MAG_FILTER, GL46.GL_NEAREST);
+  public void repeat() {
+    wrap(GL46.GL_REPEAT);
+  }
+
+  public void wrap(int value) {
+    parameter(GL46.GL_TEXTURE_WRAP_S, value);
+    parameter(GL46.GL_TEXTURE_WRAP_T, value);
+  }
+
+  public void nearest() {
+    filter(GL46.GL_NEAREST);
+  }
+
+  public void linear() {
+    filter(GL46.GL_LINEAR);
+  }
+
+  public void filter(int value) {
+    parameter(GL46.GL_TEXTURE_MIN_FILTER, value);
+    parameter(GL46.GL_TEXTURE_MAG_FILTER, value);
   }
 
   public void upload(int internalFormat, int format, int glType, ByteBuffer image) {

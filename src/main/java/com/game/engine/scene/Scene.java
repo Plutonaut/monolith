@@ -29,6 +29,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL46;
 
 import java.awt.*;
 
@@ -64,6 +65,40 @@ public class Scene {
     packets = new PacketManager();
   }
 
+  // Support for culling back faces
+  public Scene cull(boolean enabled) {
+    GL46.glCullFace(GL46.GL_BACK);
+    return toggleGl(GL46.GL_CULL_FACE, enabled);
+  }
+
+  public Scene wireframe(boolean enabled) {
+    int mode = enabled ? GL46.GL_LINE : GL46.GL_FILL;
+    GL46.glPolygonMode(GL46.GL_FRONT_AND_BACK, mode);
+    return this;
+  }
+
+  public Scene depth(boolean enabled) {
+    return toggleGl(GL46.GL_DEPTH_TEST, enabled);
+  }
+
+  // Support for transparencies
+  public Scene blend(boolean enabled) {
+    toggleGl(GL46.GL_BLEND, enabled);
+    GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA);
+    return this;
+  }
+
+  public Scene clearColor(float red, float green, float blue, float alpha) {
+    GL46.glClearColor(red, green, blue, alpha);
+    return this;
+  }
+
+  private Scene toggleGl(int target, boolean toggle) {
+    if (toggle) GL46.glEnable(target);
+    else GL46.glDisable(target);
+    return this;
+  }
+
   public Scene generateProceduralTerrain(
     String id, TextureMapData textureMapData
   ) {
@@ -71,7 +106,7 @@ public class Scene {
   }
 
   public Scene generateProceduralTerrain(ERenderer shader, String id, TextureMapData data) {
-    return generateProceduralTerrain(shader, id, 256, 256, data, 1);
+    return generateProceduralTerrain(shader, id, 64, 64, data, 1);
   }
 
   public Scene generateProceduralTerrain(
@@ -118,6 +153,12 @@ public class Scene {
   public Scene loadSkyBox3D(String name, String path) {
     return load3D(ERenderer.SKYBOX, name, path, false);
   }
+
+//  public Scene redrawText(String name, String text) {
+//    TextEntity textEntity = gameText(name);
+//    FontResourceLoader.redraw(textEntity, text);
+//    return this;
+//  }
 
   public Scene loadText(String name, String text) {
     return loadText(name, text, false);

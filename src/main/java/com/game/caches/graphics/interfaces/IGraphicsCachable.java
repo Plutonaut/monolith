@@ -1,4 +1,4 @@
-package com.game.caches.graphics;
+package com.game.caches.graphics.interfaces;
 
 import com.game.graphics.IGraphics;
 import com.game.utils.enums.EGraphicsCache;

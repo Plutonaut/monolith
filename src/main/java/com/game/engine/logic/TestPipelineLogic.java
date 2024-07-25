@@ -1,21 +1,15 @@
 package com.game.engine.logic;
 
-import com.game.engine.scene.camera.Camera;
 import com.game.engine.settings.EngineSettings;
-import com.game.engine.window.Window;
 import com.game.graphics.texture.TextureMapData;
 import com.game.utils.enums.EModel;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
+import com.game.utils.enums.ERenderer;
 
 public class TestPipelineLogic extends AbstractLogic {
-  Vector3f viewMovement;
-  Vector2f viewRotation;
+  static final String FPS_HUD_TEXT = "HUD Display Text: %d";
 
   public TestPipelineLogic(EngineSettings settings) {
     super(settings);
-    viewMovement = new Vector3f();
-    viewRotation = new Vector2f();
   }
 
   void loadLights() {
@@ -47,32 +41,36 @@ public class TestPipelineLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-//    renderer.cull(true);
-    renderer.blend(true);
-    renderer.depth(true);
     loadLights();
-    scene.generateProceduralTerrain("proc_terrain", proceduralTerrainTextures());
-    scene.loadSkyBox3D(EModel.BASIC_SKYBOX).loadText("test", "Sample Text!");
+    scene
+      .cull(true)
+      .blend(true)
+      .depth(true)
+      .loadSkyBox3D(EModel.BASIC_SKYBOX)
+      .loadText("hud", FPS_HUD_TEXT.formatted(0))
+      .load3D(ERenderer.SCENE, EModel.CUBE)
+      .load3D(ERenderer.SCENE, EModel.CUBE)
+      .load3D(ERenderer.SCENE, EModel.RAILWAY_PART)
+      .generateProceduralTerrain("proc_terrain", proceduralTerrainTextures());
     renderer.bind(scene);
     scene.entity(EModel.BASIC_SKYBOX.name()).scale(50f);
+    scene.entity("proc_terrain").scale(5);
+    scene.entity(EModel.CUBE.name()).move(0f, 0.5f, 0f).scale(0.5f);
+    scene.entity(EModel.RAILWAY_PART.name()).move(0f, -0.5f, 0f).scale(0.25f);
   }
 
   @Override
   public void input() {
-    Window window = scene.window();
-
-    window.keyboard().input();
-    viewMovement.set(window.keyboard().movementVec());
-
-    window.mouse().input();
-    if (window.mouse().isRightButtonPressed()) viewRotation.set(window.mouse().displVec());
-    else viewRotation.set(0f);
+    captureCameraMovementInput();
   }
 
   @Override
   public void update() {
-    Camera camera = scene.camera();
-    camera.move(viewMovement.x, viewMovement.y, viewMovement.z);
-    camera.rotate(viewRotation.x, viewRotation.y, 0f);
+    moveCameraOnUpdate();
+    scene.gameText("hud").redraw(FPS_HUD_TEXT.formatted(currentFPS));
+//    TextEntity textEntity = scene.gameText("hud");
+//    String updatedFPSText = FPS_HUD_TEXT.formatted(currentFPS);
+//    if (!textEntity.text().equals(updatedFPSText))
+//      scene.redrawText("hud", updatedFPSText);
   }
 }
