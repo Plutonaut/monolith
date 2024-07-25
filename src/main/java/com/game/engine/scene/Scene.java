@@ -154,12 +154,6 @@ public class Scene {
     return load3D(ERenderer.SKYBOX, name, path, false);
   }
 
-//  public Scene redrawText(String name, String text) {
-//    TextEntity textEntity = gameText(name);
-//    FontResourceLoader.redraw(textEntity, text);
-//    return this;
-//  }
-
   public Scene loadText(String name, String text) {
     return loadText(name, text, false);
   }
@@ -173,7 +167,7 @@ public class Scene {
   }
 
   public Scene loadText(String name, String text, boolean antiAlias, Font font, Color color) {
-    return pipe(ERenderer.FONT, FontResourceLoader.load(name, text, antiAlias, font, color));
+    return pipe(ERenderer.FONT, FontResourceLoader.load(name, text, font, color, antiAlias));
   }
 
   public Scene load2D(ESprite sprite) {

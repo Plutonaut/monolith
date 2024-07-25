@@ -6,7 +6,7 @@ import com.game.utils.enums.EModel;
 import com.game.utils.enums.ERenderer;
 
 public class TestPipelineLogic extends AbstractLogic {
-  static final String FPS_HUD_TEXT = "HUD Display Text: %d";
+  static final String FPS_HUD_TEXT = "FPS: %d";
 
   public TestPipelineLogic(EngineSettings settings) {
     super(settings);
@@ -57,6 +57,7 @@ public class TestPipelineLogic extends AbstractLogic {
     scene.entity("proc_terrain").scale(5);
     scene.entity(EModel.CUBE.name()).move(0f, 0.5f, 0f).scale(0.5f);
     scene.entity(EModel.RAILWAY_PART.name()).move(0f, -0.5f, 0f).scale(0.25f);
+    scene.gameText("hud").move(20, 20);
   }
 
   @Override
@@ -67,10 +68,7 @@ public class TestPipelineLogic extends AbstractLogic {
   @Override
   public void update() {
     moveCameraOnUpdate();
+    // TODO: Move to method that can only be called once per frame.
     scene.gameText("hud").redraw(FPS_HUD_TEXT.formatted(currentFPS));
-//    TextEntity textEntity = scene.gameText("hud");
-//    String updatedFPSText = FPS_HUD_TEXT.formatted(currentFPS);
-//    if (!textEntity.text().equals(updatedFPSText))
-//      scene.redrawText("hud", updatedFPSText);
   }
 }
