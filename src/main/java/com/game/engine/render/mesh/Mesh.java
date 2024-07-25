@@ -69,9 +69,9 @@ public class Mesh implements IGraphicsCachable {
     GL46.glDrawArrays(mode, 0, vertexCount);
   }
 
-//  public VertexBufferObject vbo(int glId) {
-//    return vbos.stream().filter(vbo -> vbo.glId() == glId).findFirst().orElse(null);
-//  }
+  public VertexAttributeArray vertexAttributeArray(String vaaKey) {
+    return vaas.get(vaaKey);
+  }
 
   public void setVertexAttributeArrays(List<VertexAttributeArray> vertexAttributeArrays) {
     vertexAttributeArrays.forEach(this::setVertexAttributeArray);
