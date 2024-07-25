@@ -21,6 +21,7 @@ public class TextEntity implements IRenderable {
   private final HashMap<String, VertexBufferObject> vboAttributeKeyMap;
   private Font font;
   private String text;
+  private String updatedText;
 
   public TextEntity(String name, DynamicMesh mesh, String text, Font font) {
     this.transform = new ModelTransform();
@@ -29,6 +30,7 @@ public class TextEntity implements IRenderable {
     this.text = text;
     this.font = font;
 
+    updatedText = text;
     vboAttributeKeyMap = new HashMap<>();
   }
 
@@ -43,13 +45,8 @@ public class TextEntity implements IRenderable {
   }
 
   public void redraw(String text) {
-    redraw(text, true);
-  }
-
-  public void redraw(String text, boolean antiAlias) {
     if (text == null || this.text.equals(text)) return;
-
-    FontMeshInfo info = FontResourceLoader.build(name, text, antiAlias, Color.white, font);
+    FontMeshInfo info = FontResourceLoader.build(name, text, font);
     mesh.redraw(info, null);
     this.text = text;
   }

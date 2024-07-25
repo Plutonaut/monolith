@@ -16,27 +16,25 @@ public class FontResourceLoader {
   static final float Z_POS = 0.0f;
   static final int VERTICES_PER_QUAD = 4;
 
-  public static Model load(String name, String text, boolean antiAlias, Font font, Color color) {
+  public static Model load(String name, String text, Font font, Color color, boolean antiAlias) {
     return GlobalCache.instance().model(name, n -> {
       Model model = new Model(n);
       FontMeshInfo meshInfo = (FontMeshInfo) GlobalCache
         .instance()
-        .meshInfo(name, meshInfoName -> build(meshInfoName, text, antiAlias, color, font));
+        .meshInfo(name, meshInfoName -> build(meshInfoName, text, font, color, antiAlias));
       model.addMeshData(meshInfo.name());
       return model;
     });
   }
 
-//  public static void redraw(TextEntity entity, String text) {
-//    redraw(entity, true, text, Color.white);
-//  }
-//
-//  public static void redraw(TextEntity entity, boolean antiAlias, String text, Color color) {
-//    FontMeshInfo info = build(entity.name(), text, antiAlias, color, entity.font());
-//    entity.redraw(info);
-//  }
+  public static FontMeshInfo build(String name, String text, Font font) {
+    return build(name, text, font, Color.white);
+  }
+  public static FontMeshInfo build(String name, String text, Font font, Color color) {
+    return build(name, text, font, color, true);
+  }
 
-  public static FontMeshInfo build(String name, String text, boolean antiAlias, Color color, Font font) {
+  public static FontMeshInfo build(String name, String text, Font font, Color color, boolean antiAlias) {
     FontInfo info = GlobalCache
       .instance()
       .fontInfo(font.getFontName(), n -> FontInfoUtils.process(font, antiAlias, color));
@@ -49,16 +47,18 @@ public class FontResourceLoader {
     ValueStore indices = new ValueStore();
     char[] characters = text.toCharArray();
     int numChars = characters.length;
+    int infoWidth = info.width();
+    int infoHeight = info.height();
 
-    float startx = 0;
-    float starty = 0;
+    float startX = 0;
+    float startY = 0;
     for (int i = 0; i < numChars; i++) {
       final char c = characters[i];
       final CharInfo charInfo = info.charInfo(c);
 
       // Build a character tile composed by two triangles
-      final float textureCoordX = (float) charInfo.startX() / info.width();
-      final float textureCoordX2 = (float) (charInfo.startX() + charInfo.width()) / info.width();
+      final float textureCoordX = (float) charInfo.startX() / infoWidth;
+      final float textureCoordX2 = (float) (charInfo.startX() + charInfo.width()) / infoWidth;
 
       /*
        * [IF TEXT IS DISPLAYING UPSIDE DOWN] In the Texture class, we are calling
@@ -71,8 +71,8 @@ public class FontResourceLoader {
        */
 
       // Left Top vertex
-      positions.add(startx); // x
-      positions.add(starty + info.height()); // y
+      positions.add(startX); // x
+      positions.add(startY + infoHeight); // y
       positions.add(Z_POS); // z
 
       textureCoordinates.add(textureCoordX);
@@ -81,8 +81,8 @@ public class FontResourceLoader {
       indices.add(i * VERTICES_PER_QUAD);
 
       // Left Bottom vertex
-      positions.add(startx); // x
-      positions.add(starty); // y
+      positions.add(startX); // x
+      positions.add(startY); // y
       positions.add(Z_POS); // z
 
       textureCoordinates.add(textureCoordX);
@@ -91,8 +91,8 @@ public class FontResourceLoader {
       indices.add(i * VERTICES_PER_QUAD + 1);
 
       // Right Bottom vertex
-      positions.add(startx + charInfo.width()); // x
-      positions.add(starty); // y
+      positions.add(startX + charInfo.width()); // x
+      positions.add(startY); // y
       positions.add(Z_POS); // z
 
       textureCoordinates.add(textureCoordX2);
@@ -101,8 +101,8 @@ public class FontResourceLoader {
       indices.add(i * VERTICES_PER_QUAD + 2);
 
       // Right Top vertex
-      positions.add(startx + charInfo.width()); // x
-      positions.add(starty + info.height()); // y
+      positions.add(startX + charInfo.width()); // x
+      positions.add(startY + infoHeight); // y
       positions.add(Z_POS); // z
 
       textureCoordinates.add(textureCoordX2);
@@ -115,9 +115,9 @@ public class FontResourceLoader {
       indices.add(i * VERTICES_PER_QUAD + 2);
 
       if (c == '\n') {
-        startx = 0;
-        starty += info.height();
-      } else startx += charInfo.width();
+        startX = 0;
+        startY += infoHeight;
+      } else startX += charInfo.width();
     }
 
     MeshInfoBuilder meshInfoBuilder = new MeshInfoBuilder();
