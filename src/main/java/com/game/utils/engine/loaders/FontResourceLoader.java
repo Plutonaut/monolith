@@ -17,18 +17,33 @@ public class FontResourceLoader {
   static final int VERTICES_PER_QUAD = 4;
 
   public static Model load(String name, String text, boolean antiAlias, Font font, Color color) {
-    Model model = new Model(name + "_model");
-    FontMeshInfo meshInfo = (FontMeshInfo) GlobalCache
-      .instance()
-      .meshInfo(name, n -> build(name, text, antiAlias, font, color));
-    model.addMeshData(meshInfo.name());
-    return model;
+    return GlobalCache.instance().model(name, n -> {
+      Model model = new Model(n);
+      FontMeshInfo meshInfo = (FontMeshInfo) GlobalCache
+        .instance()
+        .meshInfo(name, meshInfoName -> build(meshInfoName, text, antiAlias, color, font));
+      model.addMeshData(meshInfo.name());
+      return model;
+    });
   }
 
-  static FontMeshInfo build(String name, String text, boolean antiAlias, Font font, Color color) {
+//  public static void redraw(TextEntity entity, String text) {
+//    redraw(entity, true, text, Color.white);
+//  }
+//
+//  public static void redraw(TextEntity entity, boolean antiAlias, String text, Color color) {
+//    FontMeshInfo info = build(entity.name(), text, antiAlias, color, entity.font());
+//    entity.redraw(info);
+//  }
+
+  public static FontMeshInfo build(String name, String text, boolean antiAlias, Color color, Font font) {
     FontInfo info = GlobalCache
       .instance()
       .fontInfo(font.getFontName(), n -> FontInfoUtils.process(font, antiAlias, color));
+    return build(name, text, color, info);
+  }
+
+  static FontMeshInfo build(String name, String text, Color color, FontInfo info) {
     ValueStore positions = new ValueStore();
     ValueStore textureCoordinates = new ValueStore();
     ValueStore indices = new ValueStore();
@@ -115,6 +130,6 @@ public class FontResourceLoader {
       .materialDiffuseColor(ColorUtils.convert(color))
       .materialDiffuseTexture(info.texture().path());
 
-    return meshInfoBuilder.build(text);
+    return meshInfoBuilder.build(text, info.font());
   }
 }

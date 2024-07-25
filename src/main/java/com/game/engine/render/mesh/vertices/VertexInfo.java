@@ -64,6 +64,10 @@ public class VertexInfo {
     return attributes.getOrDefault(key, null);
   }
 
+  public String getAttributeKey() {
+    return attributes.keySet().stream().findFirst().orElse(null);
+  }
+
   public boolean hasAttribute(String key) { return getAttribute(key) != null; }
 
   public void addAttributes(AttribInfo... attributes) {

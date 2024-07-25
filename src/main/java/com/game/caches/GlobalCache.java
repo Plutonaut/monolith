@@ -1,7 +1,13 @@
 package com.game.caches;
 
 import com.game.caches.audio.AudioBufferCache;
-import com.game.caches.graphics.*;
+import com.game.caches.graphics.AbstractGraphicsCache;
+import com.game.caches.graphics.concrete.MeshCache;
+import com.game.caches.graphics.concrete.ProgramCache;
+import com.game.caches.graphics.concrete.ShaderCache;
+import com.game.caches.graphics.concrete.TextureCache;
+import com.game.caches.graphics.interfaces.IGraphicsCachable;
+import com.game.caches.graphics.interfaces.IGraphicsGenerator;
 import com.game.caches.models.AbstractModelCache;
 import com.game.caches.models.concrete.*;
 import com.game.caches.models.interfaces.IModelCachable;
@@ -17,10 +23,16 @@ import com.game.graphics.materials.Material;
 import com.game.graphics.shaders.Program;
 import com.game.graphics.shaders.Shader;
 import com.game.graphics.texture.Texture;
+import com.game.utils.application.ValueStore2D;
+import com.game.utils.engine.FontInfoUtils;
+import com.game.utils.engine.ModelUtils;
+import com.game.utils.engine.loaders.TextureLoader;
 import com.game.utils.enums.EGraphicsCache;
 import com.game.utils.enums.EModelCache;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 public class GlobalCache {
@@ -63,20 +75,21 @@ public class GlobalCache {
     );
   }
 
+  public FontInfo fontInfo(String name) {
+    return fontInfo(name, FontInfoUtils::process);
+  }
+
   public FontInfo fontInfo(String name, IModelGenerator generator) {
     return (FontInfo) getItem(name, EModelCache.FONT_INFO, generator);
   }
 
-  public FontInfo fontInfo(String name) {
-    return (FontInfo) getItem(name, EModelCache.FONT_INFO);
-  }
-
   public MeshInfo meshInfo(String name, IModelGenerator generator) {
-    return (MeshInfo) getItem(name, EModelCache.MESH_INFO, generator);
+    String meshInfoName = ModelUtils.resolveMeshInfoName(name);
+    return (MeshInfo) getItem(meshInfoName, EModelCache.MESH_INFO, generator);
   }
 
   public MeshInfo meshInfo(String name) {
-    return (MeshInfo) getItem(name, EModelCache.MESH_INFO);
+    return meshInfo(name, MeshInfo::new);
   }
 
   public Material material(String name) {
@@ -84,11 +97,12 @@ public class GlobalCache {
   }
 
   public Model model(String name, IModelGenerator generator) {
-    return (Model) getItem(name, EModelCache.MODEL, generator);
+    String modelName = ModelUtils.resolveModelName(name);
+    return (Model) getItem(modelName, EModelCache.MODEL, generator);
   }
 
   public Model model(String name) {
-    return (Model) getItem(name, EModelCache.MODEL);
+    return model(name, Model::new);
   }
 
   public IModelCachable getItem(String name, EModelCache type, IModelGenerator generator) {
@@ -114,7 +128,19 @@ public class GlobalCache {
   }
 
   public Texture texture(String key) {
-    return (Texture) getItem(key, EGraphicsCache.TEXTURE);
+    return texture(key, TextureLoader::load);
+  }
+
+  public Texture texture(String path, ByteBuffer buffer) {
+    return texture(path, (p) -> TextureLoader.load(p, buffer));
+  }
+
+  public Texture texture(String path, ValueStore2D grid) {
+    return texture(path, (p) -> TextureLoader.load(p, grid));
+  }
+
+  public Texture texture(String path, BufferedImage image, boolean save) {
+    return texture(path, (p) -> TextureLoader.load(p, image, save));
   }
 
   public Texture texture(String key, IGraphicsGenerator generator) {

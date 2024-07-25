@@ -103,7 +103,7 @@ public class TestRenderLogic extends AbstractLogic {
   }
 
   @Override
-  public void render(float fps) {
+  public void render(int fps) {
     GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
     GL46.glViewport(0, 0, 800, 600);
     program.bind();

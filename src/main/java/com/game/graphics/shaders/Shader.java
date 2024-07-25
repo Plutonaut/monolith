@@ -1,6 +1,6 @@
 package com.game.graphics.shaders;
 
-import com.game.caches.graphics.IGraphicsCachable;
+import com.game.caches.graphics.interfaces.IGraphicsCachable;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.engine.ShaderUtils;
 import com.game.utils.enums.EGraphicsCache;
