@@ -2,6 +2,9 @@ package com.game.engine.scene;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.audio.AudioManager;
+import com.game.engine.physics.Hit;
+import com.game.engine.physics.IHitListener;
+import com.game.engine.physics.Ray;
 import com.game.engine.render.mesh.definitions.MeshDefinition;
 import com.game.engine.render.models.Model;
 import com.game.engine.render.pipeline.packets.PacketManager;
@@ -25,13 +28,11 @@ import com.game.utils.enums.ERenderer;
 import com.game.utils.enums.ESprite;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
 import org.lwjgl.opengl.GL46;
 
 import java.awt.*;
+import java.util.List;
 
 @Accessors(fluent = true)
 @Data
@@ -215,6 +216,49 @@ public class Scene {
     return packets.getGameText(name);
   }
 
+  public void rayCastMouseClickAll(IHitListener listener) {
+    rayCastMouseClick(listener, true);
+  }
+
+  public void rayCastMouseClickClosest(IHitListener listener) {
+    rayCastMouseClick(listener, false);
+  }
+
+  void rayCastMouseClick(IHitListener listener, boolean all) {
+    Vector2f mousePosition = window.mouse().position();
+    Vector3f normalizedDeviceSpace = window.normalizedDeviceSpace(mousePosition);
+
+    Hit hit = new Hit();
+    float closestDistance = Float.POSITIVE_INFINITY;
+    List<Entity> entityStream = packets.getEntities();
+    Vector2f result = new Vector2f();
+
+    for (Entity entity : entityStream) {
+      if (!entity.controllers().hasPhysics()) continue;
+
+      Vector4f viewSpace = viewSpace(EProjection.PERSPECTIVE, normalizedDeviceSpace);
+      Vector4f worldSpace = camera.worldPosition(viewSpace);
+      Vector3f dir = new Vector3f(worldSpace.x, worldSpace.y, worldSpace.z);
+
+      Ray ray = new Ray(camera.position(), dir, result);
+      boolean intersects = entity.intersects(ray);
+      if (intersects) {
+        hit.ray(ray);
+        if (all) {
+          hit.entity(entity);
+          listener.onHit(hit);
+        } else if(ray.result().x < closestDistance) {
+          hit.entity(entity);
+          closestDistance = ray.result().x;
+        }
+      }
+    }
+
+    if (!all) {
+      listener.onHit(hit);
+    }
+  }
+
   public Matrix4f modelViewMat3D(Entity entity) {
     return modelWorldSpaceMat(entity, camera.view3D());
   }
@@ -229,6 +273,10 @@ public class Scene {
 
   Matrix4f modelWorldSpaceMat(Entity entity, Matrix4f mat) {
     return new Matrix4f().set(mat).mul(entity.transform().worldModelMat());
+  }
+
+  public Vector4f viewSpace(EProjection type, Vector3f point) {
+    return viewSpace(type, new Vector4f(point, 1.0f));
   }
 
   public Vector4f viewSpace(EProjection type, Vector4f point) {

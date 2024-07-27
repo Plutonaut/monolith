@@ -23,7 +23,7 @@ import com.game.graphics.materials.Material;
 import com.game.graphics.shaders.Program;
 import com.game.graphics.shaders.Shader;
 import com.game.graphics.texture.Texture;
-import com.game.utils.application.ValueStore2D;
+import com.game.utils.application.ValueGrid;
 import com.game.utils.engine.FontInfoUtils;
 import com.game.utils.engine.ModelUtils;
 import com.game.utils.engine.loaders.TextureLoader;
@@ -135,7 +135,7 @@ public class GlobalCache {
     return texture(path, (p) -> TextureLoader.load(p, buffer));
   }
 
-  public Texture texture(String path, ValueStore2D grid) {
+  public Texture texture(String path, ValueGrid grid) {
     return texture(path, (p) -> TextureLoader.load(p, grid));
   }
 

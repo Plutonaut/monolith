@@ -1,6 +1,7 @@
 package com.game.engine.scene.entities.controllers;
 
 import com.game.engine.scene.audio.AudioSource;
+import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EController;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class EntityAudioController extends AbstractEntityController {
   }
 
   @Override
-  public void onUpdate() {
+  public void onUpdate(ModelTransform transform) {
 
   }
 }

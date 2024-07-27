@@ -7,7 +7,7 @@ import com.game.engine.scene.terrain.IHeightMapper;
 import com.game.engine.scene.terrain.procedural.ProceduralTerrainGenerationData;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.application.ValueStore;
-import com.game.utils.application.ValueStore2D;
+import com.game.utils.application.ValueGrid;
 import com.game.utils.engine.loaders.TextureLoader;
 import com.game.utils.engine.terrain.TerrainUtils;
 
@@ -27,7 +27,7 @@ public class ProceduralTerrainGeneratorUtils {
 
   static MeshInfoBuilder safeMode_buildTerrainMeshInfo(ProceduralTerrainGenerationData data) {
     MeshInfoBuilder builder = new MeshInfoBuilder();
-    final ValueStore2D grid = new ValueStore2D(data.width(), data.height());
+    final ValueGrid grid = new ValueGrid(data.width(), data.height());
     buildTerrainMeshInfo(data, builder, (int col, int row) -> {
       float height = 0.1f;
       grid.set(row, col, height);
@@ -41,7 +41,7 @@ public class ProceduralTerrainGeneratorUtils {
     ProceduralTerrainGenerationData data, String heightMapTexturePath
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
-    final ValueStore2D grid = new ValueStore2D(data.width(), data.height());
+    final ValueGrid grid = new ValueGrid(data.width(), data.height());
 
     TextureLoader.read(
       heightMapTexturePath,
@@ -73,7 +73,7 @@ public class ProceduralTerrainGeneratorUtils {
     ProceduralTerrainGenerationData data, String heightMapTexturePath
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
-    ValueStore2D grid = ProceduralNoiseUtils.process(data.width(), data.height(), data.noise());
+    ValueGrid grid = ProceduralNoiseUtils.process(data.width(), data.height(), data.noise());
     GlobalCache.instance().texture(heightMapTexturePath, grid);
     buildTerrainMeshInfo(data, builder, grid::get);
     return builder;

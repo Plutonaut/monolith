@@ -7,6 +7,7 @@ import com.game.engine.scene.entities.TextEntity;
 import com.game.utils.enums.ERenderer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.stream.Stream;
@@ -16,6 +17,10 @@ public class PacketManager {
 
   public PacketManager() {
     packets = new HashMap<>();
+  }
+
+  public List<Entity> getEntities() {
+    return packetStream().flatMap(RenderPacket::getAllSceneEntities).toList();
   }
 
   public Entity getEntity(String key) {
