@@ -1,8 +1,10 @@
 package com.game.engine.scene.entities;
 
+import com.game.engine.physics.Ray;
 import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.Mesh;
-import com.game.engine.scene.entities.controllers.AbstractEntityController;
+import com.game.engine.scene.entities.animations.Animation;
+import com.game.engine.scene.entities.controllers.EntityControllerManager;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EModifier;
 import lombok.Data;
@@ -10,13 +12,12 @@ import lombok.experimental.Accessors;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Accessors(fluent = true)
 @Data
 public class Entity implements IRenderable {
-  protected final HashMap<String, AbstractEntityController> controllers;
+  protected final EntityControllerManager controllers;
   protected final ArrayList<EModifier> modifiers;
   protected final ModelTransform transform;
   protected final ArrayList<Mesh> meshes;
@@ -30,16 +31,17 @@ public class Entity implements IRenderable {
   public Entity(String name, ArrayList<Mesh> meshes) {
     this.name = name;
     this.id = System.identityHashCode(name);
-    this.meshes = meshes;
+    this.meshes = new ArrayList<>();
 
     transform = new ModelTransform();
     modifiers = new ArrayList<>();
-    controllers = new HashMap<>();
+    controllers = new EntityControllerManager();
+
+    addMeshes(meshes);
   }
 
   public Entity move(Vector3f position) {
-    transform.position().set(position);
-    return this;
+    return move(position.x(), position.y(), position.z());
   }
 
   public Entity move(float x, float y) {
@@ -48,21 +50,16 @@ public class Entity implements IRenderable {
 
   public Entity move(float x, float y, float z) {
     transform.position().set(x, y, z);
-    return this;
-  }
-
-  public Entity moveToward(Vector3f position) {
-    transform.position().add(position);
-    return this;
-  }
-
-  public Entity moveToward(float x, float y, float z) {
-    transform.position().add(x, y, z);
-    return this;
+    return onTransformUpdate();
   }
 
   public Entity scale(float scale) {
     transform.scale(scale);
+    return onTransformUpdate();
+  }
+
+  Entity onTransformUpdate() {
+    controllers.onUpdate(transform);
     return this;
   }
 
@@ -79,15 +76,20 @@ public class Entity implements IRenderable {
     this.meshes.addAll(meshes);
   }
 
-  public void addMesh(Mesh mesh) {
-    this.meshes.add(mesh);
+  public Entity addPhysics() {
+    controllers.physics();
+    return onTransformUpdate();
   }
 
-  public void addController(AbstractEntityController controller) {
-    controllers.put(controller.type(), controller.onAttach(this));
+  public Entity addAnimations(List<Animation> animations) {
+    controllers.animations().add(animations);
+    return onTransformUpdate();
   }
 
-  public AbstractEntityController controller(String type) {
-    return controllers.get(type);
+  public boolean intersects(Ray ray) {
+    return controllers.hasPhysics() && onTransformUpdate()
+      .controllers()
+      .physics()
+      .intersects(meshes, ray);
   }
 }

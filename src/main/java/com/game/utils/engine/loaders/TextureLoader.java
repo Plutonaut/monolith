@@ -6,7 +6,7 @@ import com.game.loaders.ITextureBufferReader;
 import com.game.loaders.ITextureBufferStrategy;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.application.PathSanitizer;
-import com.game.utils.application.ValueStore2D;
+import com.game.utils.application.ValueGrid;
 import com.game.utils.engine.ColorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.opengl.GL46;
@@ -27,7 +27,7 @@ public class TextureLoader {
     return generate(path, (w, h, avChannels) -> STBImage.stbi_load(path, w, h, avChannels, 4));
   }
 
-  public static Texture load(String path, ValueStore2D grid) {
+  public static Texture load(String path, ValueGrid grid) {
     int rows = grid.height();
     int columns = grid.width();
     BufferedImage image = new BufferedImage(columns, rows, BufferedImage.TYPE_INT_ARGB);

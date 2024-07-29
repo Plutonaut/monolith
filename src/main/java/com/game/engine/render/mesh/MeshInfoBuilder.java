@@ -171,7 +171,13 @@ public class MeshInfoBuilder {
     return vertices(store, size, glType, GL46.GL_STATIC_DRAW, attribute);
   }
 
-  public MeshInfoBuilder vertices(ValueStore store, int size, int glType, int glUsage, String attribute) {
+  public MeshInfoBuilder vertices(
+    ValueStore store,
+    int size,
+    int glType,
+    int glUsage,
+    String attribute
+  ) {
     return vertices(store, size, glType, glUsage, attribute, 1);
   }
 
@@ -204,7 +210,6 @@ public class MeshInfoBuilder {
   public FontMeshInfo build(String text, Font font) {
     final FontMeshInfo meshInfo = new FontMeshInfo(name, text, font);
     constructMeshInfo(meshInfo);
-//    GlobalCache.instance().cacheItem(meshInfo);
     return meshInfo;
   }
 

@@ -41,9 +41,9 @@ public class TestRenderLogic extends AbstractLogic {
 
   // Enabling and disabling vertex attributes does not break anything, but it is also not necessary for this test.
   private void drawVao() {
-    mesh.bind();
-    mesh.drawComplex(GL46.GL_TRIANGLES, numVertices);
-    mesh.unbind();
+//    mesh.bind();
+//    mesh.drawComplex(GL46.GL_TRIANGLES, numVertices);
+//    mesh.unbind();
   }
 
   private int setupVBO(AttribInfo info, float[] data) {

@@ -7,6 +7,7 @@ import com.game.graphics.materials.Material;
 import com.game.utils.enums.EGraphicsCache;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ public class Mesh implements IGraphicsCachable {
   protected final String name;
   protected final List<VertexBufferObject> vbos;
   protected final HashMap<String, VertexAttributeArray> vaas;
-//  protected final List<String> vaas;
   protected Material material;
+  protected Vector3f min;
+  protected Vector3f max;
   protected int vertexCount;
   protected boolean isComplex;
 
@@ -30,6 +32,8 @@ public class Mesh implements IGraphicsCachable {
     glId = GL46.glGenVertexArrays();
     vbos = new ArrayList<>();
     vaas = new HashMap<>();
+    min = new Vector3f();
+    max = new Vector3f();
   }
 
   @Override
@@ -61,16 +65,12 @@ public class Mesh implements IGraphicsCachable {
     drawComplex(mode, vertexCount);
   }
 
-  public void drawComplex(int mode, int vertexCount) {
+  protected void drawComplex(int mode, int vertexCount) {
     GL46.glDrawElements(mode, vertexCount, GL46.GL_UNSIGNED_INT, 0);
   }
 
   protected void drawSimple(int mode) {
     GL46.glDrawArrays(mode, 0, vertexCount);
-  }
-
-  public VertexAttributeArray vertexAttributeArray(String vaaKey) {
-    return vaas.get(vaaKey);
   }
 
   public void setVertexAttributeArrays(List<VertexAttributeArray> vertexAttributeArrays) {
@@ -79,6 +79,11 @@ public class Mesh implements IGraphicsCachable {
 
   public void setVertexAttributeArray(VertexAttributeArray vertexAttributeArray) {
     vaas.put(vertexAttributeArray.key(), vertexAttributeArray);
+  }
+
+  public void updateBounds(Vector3f min, Vector3f max) {
+    this.min.set(min);
+    this.max.set(max);
   }
 
   public void unbind() {

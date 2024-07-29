@@ -50,6 +50,11 @@ public class LogPrintStreamFactory {
     LocalDateTime logDateTime = LoggingUtils.getDateOfLog(path);
 
     if (logDateTime.isBefore(LoggingUtils.DELETE_IF_OLDER_THAN))
-      LoggingUtils.attemptLogDeletion(path, "Log file [{}] was made before [{}]. Deleting file.");
+      LoggingUtils.attemptLogDeletion(path,
+                                      "Log file [{}] was made before %s. Deleting file.".formatted(
+                                        LoggingUtils.OLDER_THAN_DATE_READABLE_FORMAT)
+      );
+    else if (LoggingUtils.logFileIsEmpty(path))
+      LoggingUtils.attemptLogDeletion(path, "Log file [{}] was empty. Deleting file.");
   }
 }
