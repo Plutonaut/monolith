@@ -36,7 +36,7 @@ public class GameEngine implements Runnable {
     logic.current().input();
 
     while (timer.isUpdateReady()) {
-      logic.current().update();
+      logic.current().update(timer.currentInterval());
       timer.onUpdate();
     }
 

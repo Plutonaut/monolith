@@ -1,8 +1,8 @@
 package com.game.engine.render.mesh.definitions;
 
+import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.MeshInfoBuilder;
-import com.game.engine.render.models.Model;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector4f;
@@ -61,7 +61,7 @@ public abstract class MeshDefinition {
     return builder().build();
   }
 
-  public Model createModel() {
-    return builder().model(name()).build();
+  public MeshInfo meshInfo() {
+    return GlobalCache.instance().meshInfo(name(), name -> createMeshInfo());
   }
 }

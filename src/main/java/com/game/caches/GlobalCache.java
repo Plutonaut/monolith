@@ -6,20 +6,16 @@ import com.game.caches.graphics.concrete.MeshCache;
 import com.game.caches.graphics.concrete.ProgramCache;
 import com.game.caches.graphics.concrete.ShaderCache;
 import com.game.caches.graphics.concrete.TextureCache;
-import com.game.caches.graphics.interfaces.IGraphicsCachable;
-import com.game.caches.graphics.interfaces.IGraphicsGenerator;
-import com.game.caches.models.AbstractModelCache;
-import com.game.caches.models.concrete.*;
-import com.game.caches.models.interfaces.IModelCachable;
-import com.game.caches.models.interfaces.IModelGenerator;
+import com.game.caches.models.concrete.FontInfoCache;
+import com.game.caches.models.concrete.MeshInfoCache;
+import com.game.caches.models.concrete.ModelCache;
+import com.game.caches.models.concrete.SpriteAtlasCache;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.models.Model;
 import com.game.engine.scene.audio.AudioBufferObject;
-import com.game.engine.scene.entities.EntityManager;
 import com.game.engine.scene.sprites.SpriteAtlas;
 import com.game.graphics.fonts.FontInfo;
-import com.game.graphics.materials.Material;
 import com.game.graphics.shaders.Program;
 import com.game.graphics.shaders.Shader;
 import com.game.graphics.texture.Texture;
@@ -27,8 +23,8 @@ import com.game.utils.application.ValueGrid;
 import com.game.utils.engine.FontInfoUtils;
 import com.game.utils.engine.ModelUtils;
 import com.game.utils.engine.loaders.TextureLoader;
-import com.game.utils.enums.EGraphicsCache;
-import com.game.utils.enums.EModelCache;
+import com.game.utils.engine.logging.DiagnosticLoggingHandler;
+import com.game.utils.enums.ECache;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,15 +33,11 @@ import java.util.HashMap;
 
 public class GlobalCache {
   private static GlobalCache CACHE;
-  private final HashMap<EGraphicsCache, AbstractGraphicsCache> graphicsCache;
-  private final HashMap<EModelCache, AbstractModelCache> modelCache;
+  private final HashMap<ECache, AbstractCache> cache;
   private final FontGraphicsHandler fontGraphicsHandler;
-  private final EntityManager entityManager;
 
   private GlobalCache() {
-    graphicsCache = new HashMap<>();
-    modelCache = new HashMap<>();
-    entityManager = new EntityManager();
+    cache = new HashMap<>();
     fontGraphicsHandler = new FontGraphicsHandler();
   }
 
@@ -54,24 +46,53 @@ public class GlobalCache {
     return CACHE;
   }
 
+  ICachable getItem(String name, ECache type) {
+    return getCache(type).use(name);
+  }
+
+  ICachable getItem(String name, ECache type, ICachableGenerator generator) {
+    return getCache(type).use(name, generator);
+  }
+
+  ICachable cacheItem(String key, ECache type, ICachable item) {
+    return getCache(type).cache(key, item);
+  }
+
+  public void dispose() {
+    cache.forEach((k, v) -> {
+      if (v instanceof AbstractGraphicsCache graphicsCache)
+        graphicsCache.dispose();
+    });
+  }
+
+  protected AbstractCache getCache(ECache type) {
+    return cache.computeIfAbsent(type, t -> switch (t) {
+      case MODEL -> new ModelCache();
+      case MESH_INFO -> new MeshInfoCache();
+      case SPRITE_ATLAS -> new SpriteAtlasCache();
+      case FONT_INFO -> new FontInfoCache();
+      case MESH -> new MeshCache();
+      case TEXTURE -> new TextureCache();
+      case SHADER -> new ShaderCache();
+      case PROGRAM -> new ProgramCache();
+      case AUDIO -> new AudioBufferCache();
+    });
+  }
+
   // TODO: Move to a FontFileLoader class.
   public Font getFont(String fontName, int fontSize) {
     return fontGraphicsHandler.getFont(fontName, fontSize);
   }
 
-  public String resolveEntityName(String entityName) {
-    return entityManager.getAvailableEntityName(entityName);
-  }
-
   public SpriteAtlas spriteAtlas(
     String name,
-    IModelGenerator generator
-  ) { return (SpriteAtlas) getItem(name, EModelCache.SPRITE_ATLAS, generator); }
+    ICachableGenerator generator
+  ) { return (SpriteAtlas) getItem(name, ECache.SPRITE_ATLAS, generator); }
 
   public SpriteAtlas spriteAtlas(String name) {
     return (SpriteAtlas) getItem(
       name,
-      EModelCache.SPRITE_ATLAS
+      ECache.SPRITE_ATLAS
     );
   }
 
@@ -79,52 +100,38 @@ public class GlobalCache {
     return fontInfo(name, FontInfoUtils::process);
   }
 
-  public FontInfo fontInfo(String name, IModelGenerator generator) {
-    return (FontInfo) getItem(name, EModelCache.FONT_INFO, generator);
+  public FontInfo fontInfo(String name, ICachableGenerator generator) {
+    return (FontInfo) getItem(name, ECache.FONT_INFO, generator);
   }
 
-  public MeshInfo meshInfo(String name, IModelGenerator generator) {
+  public MeshInfo meshInfo(String name, ICachableGenerator generator) {
     String meshInfoName = ModelUtils.resolveMeshInfoName(name);
-    return (MeshInfo) getItem(meshInfoName, EModelCache.MESH_INFO, generator);
+    return (MeshInfo) getItem(meshInfoName, ECache.MESH_INFO, generator);
   }
 
   public MeshInfo meshInfo(String name) {
     return meshInfo(name, MeshInfo::new);
   }
 
-  public Material material(String name) {
-    return (Material) getItem(name, EModelCache.MATERIAL);
-  }
-
-  public Model model(String name, IModelGenerator generator) {
+  public Model model(String name, ICachableGenerator generator) {
     String modelName = ModelUtils.resolveModelName(name);
-    return (Model) getItem(modelName, EModelCache.MODEL, generator);
+    return (Model) getItem(modelName, ECache.MODEL, generator);
   }
 
   public Model model(String name) {
     return model(name, Model::new);
   }
 
-  public IModelCachable getItem(String name, EModelCache type, IModelGenerator generator) {
-    return getCache(type).use(name, generator);
-  }
-
-  public IModelCachable getItem(String name, EModelCache type) { return getCache(type).use(name); }
-
-  public void cacheItem(IModelCachable model) { getCache(model.type()).cache(model); }
-
-  protected AbstractModelCache getCache(EModelCache type) {
-    return modelCache.computeIfAbsent(type, t -> switch (t) {
-      case MODEL -> new ModelCache();
-      case MATERIAL -> new MaterialCache();
-      case MESH_INFO -> new MeshInfoCache();
-      case SPRITE_ATLAS -> new SpriteAtlasCache();
-      case FONT_INFO -> new FontInfoCache();
-    });
-  }
-
   public Mesh mesh(String key) {
-    return (Mesh) getItem(key, EGraphicsCache.MESH);
+    return (Mesh) getItem(key, ECache.MESH);
+  }
+
+  public Mesh mesh(String name, ICachableGenerator generator) {
+    return (Mesh) getItem(name, ECache.MESH, generator);
+  }
+
+  public Mesh mesh(String key, Mesh mesh) {
+    return (Mesh) cacheItem(key, ECache.MESH, mesh);
   }
 
   public Texture texture(String key) {
@@ -143,46 +150,27 @@ public class GlobalCache {
     return texture(path, (p) -> TextureLoader.load(p, image, save));
   }
 
-  public Texture texture(String key, IGraphicsGenerator generator) {
-    return (Texture) getItem(key, EGraphicsCache.TEXTURE, generator);
+  public Texture texture(String key, ICachableGenerator generator) {
+    return (Texture) getItem(key, ECache.TEXTURE, generator);
   }
 
-  public Program program(String key) { return (Program) getItem(key, EGraphicsCache.PROGRAM); }
+  public Program program(String key) { return (Program) getItem(key, ECache.PROGRAM); }
 
-  public Shader shader(String key) { return (Shader) getItem(key, EGraphicsCache.SHADER); }
+  public Shader shader(String key) { return (Shader) getItem(key, ECache.SHADER); }
 
   public AudioBufferObject audioBuffer(String key) {
     return (AudioBufferObject) getItem(
       key,
-      EGraphicsCache.AUDIO
+      ECache.AUDIO
     );
   }
 
-  protected IGraphicsCachable getItem(String key, EGraphicsCache type) {
-    return getCache(type).use(key);
-  }
-
-  protected IGraphicsCachable getItem(
-    String key,
-    EGraphicsCache type,
-    IGraphicsGenerator generator
-  ) {
-    return getCache(type).use(key, generator);
-  }
-
-  public void cacheItem(IGraphicsCachable item) { getCache(item.type()).cache(item); }
-
-  protected AbstractGraphicsCache getCache(EGraphicsCache type) {
-    return graphicsCache.computeIfAbsent(type, t -> switch (t) {
-      case MESH -> new MeshCache();
-      case TEXTURE -> new TextureCache();
-      case SHADER -> new ShaderCache();
-      case PROGRAM -> new ProgramCache();
-      case AUDIO -> new AudioBufferCache();
+  public void computeDiagnostics(DiagnosticLoggingHandler handler) {
+    handler.open("Global Cache");
+    cache.forEach((k, v) -> {
+      handler.row(k.name(), "Items: " + v.cache.size());
+      v.cache.keySet().forEach(handler::row);
     });
-  }
-
-  public void dispose() {
-    graphicsCache.forEach((k, v) -> v.dispose());
+    handler.close();
   }
 }

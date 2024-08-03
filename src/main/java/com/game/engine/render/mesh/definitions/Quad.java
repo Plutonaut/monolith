@@ -1,5 +1,6 @@
 package com.game.engine.render.mesh.definitions;
 
+// TODO: Make TexturedQuad object with texture path/coordinate overrides...
 public class Quad extends MeshDefinition {
   public static final float[] POSITIONS = {
     -0.5f, 0.5f, 0f,
@@ -7,6 +8,9 @@ public class Quad extends MeshDefinition {
     0.5f, -0.5f, 0f,
     0.5f, 0.5f, 0f,
     };
+
+  // frog - Making values smaller increases the size of the texture.
+  // Making values larger has the inverse effect...
   public static final float[] TEXTURE_COORDINATES = {
     0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f,
     };

@@ -1,9 +1,7 @@
 package com.game.engine.render.mesh;
 
-import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
-import com.game.engine.render.models.ModelBuilder;
 import com.game.graphics.materials.Material;
 import com.game.utils.application.ValueStore;
 import com.game.utils.enums.EAttribute;
@@ -45,7 +43,7 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfoBuilder material(String materialId) {
-    material = GlobalCache.instance().material(materialId);
+    material = new Material(materialId);
     return this;
   }
 
@@ -223,16 +221,10 @@ public class MeshInfoBuilder {
       vertexCount = info.totalVertexCount();
     }
     meshInfo.vertexCount(vertexCount);
-    if (material != null) meshInfo.material(material.name());
+    if (material != null) meshInfo.material(material);
     dispose();
 
     return meshInfo;
-  }
-
-  public ModelBuilder model(String name) {
-    ModelBuilder builder = new ModelBuilder();
-    builder.use(name).addMeshData(build());
-    return builder;
   }
 
   protected void dispose() {

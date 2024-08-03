@@ -1,7 +1,5 @@
 package com.game.engine.render.mesh;
 
-import com.game.caches.GlobalCache;
-import com.game.graphics.materials.Material;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -26,11 +24,7 @@ public class FontMeshInfo extends MeshInfo {
     DynamicMesh mesh = new DynamicMesh(name);
     mesh.vertexCount(vertexCount);
     mesh.isComplex = !indices.isEmpty();
-
-    if (material != null) {
-      Material material = GlobalCache.instance().material(this.material);
-      mesh.material(material);
-    }
+    mesh.material(material);
     return mesh;
   }
 }

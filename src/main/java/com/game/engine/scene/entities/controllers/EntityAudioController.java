@@ -15,11 +15,39 @@ public class EntityAudioController extends AbstractEntityController {
 
   @Override
   public String type() {
-    return EController.AUDIO.getValue();
+    return EController.AUDIO.value();
   }
 
   @Override
   public void onUpdate(ModelTransform transform) {
+    sources.values().forEach(v -> v.moveTo(transform.position()));
+  }
 
+  public void add(AudioSource source) {
+    sources.put(source.name(), source);
+  }
+
+  public void play(String key) {
+    get(key).play();
+  }
+
+  public void pause(String key) {
+    get(key).pause();
+  }
+
+  public void stop() {
+    sources.values().forEach(AudioSource::stop);
+  }
+
+  public void stop(String key) {
+    get(key).stop();
+  }
+
+  public void loop(String key, boolean toggle) {
+    get(key).loop(toggle);
+  }
+
+  public AudioSource get(String key) {
+    return sources.get(key);
   }
 }

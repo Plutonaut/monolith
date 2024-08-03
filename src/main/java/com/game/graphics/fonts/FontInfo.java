@@ -1,8 +1,8 @@
 package com.game.graphics.fonts;
 
-import com.game.caches.models.interfaces.IModelCachable;
+import com.game.engine.render.models.IModel;
 import com.game.graphics.texture.Texture;
-import com.game.utils.enums.EModelCache;
+import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 @Accessors(fluent = true)
 @Data
-public class FontInfo implements IModelCachable {
+public class FontInfo implements IModel {
   private final Texture texture;
   private final HashMap<Character, CharInfo> characters;
   private final Font font;
@@ -30,7 +30,7 @@ public class FontInfo implements IModelCachable {
   public String name() { return font.getFontName(); }
 
   @Override
-  public EModelCache type() { return EModelCache.FONT_INFO; }
+  public ECache type() { return ECache.FONT_INFO; }
 
   public CharInfo charInfo(char c) {
     return characters.get(c);

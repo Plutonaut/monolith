@@ -1,14 +1,16 @@
 package com.game.utils.engine.entity;
 
-import com.game.graphics.texture.TextureMapData;
+import com.game.engine.scene.terrain.procedural.ProceduralNoiseData;
+import org.joml.Vector2f;
 
 public class StaticEntityData {
-  static final String RESOURCE_DIRECTORY = "src/main/resources/";
-  static final String TEXTURE_DIRECTORY = RESOURCE_DIRECTORY + "textures/";
-  static final String MOSS_TEXTURE_DIRECTORY = TEXTURE_DIRECTORY + "moss_surface/";
-
-  public static final TextureMapData MOSS_TEXTURE_MAP_DATA = new TextureMapData()
-    .diffuse(MOSS_TEXTURE_DIRECTORY + "moss_surface_albedo.png")
-    .normal(MOSS_TEXTURE_DIRECTORY + "moss_surface_normal.png")
-    .height(MOSS_TEXTURE_DIRECTORY + "moss_surface_height.png");
+  public static final ProceduralNoiseData PROCEDURAL_NOISE = new ProceduralNoiseData()
+    .scale(1)
+    .offset(new Vector2f())
+    .seed(0)
+    .octaves(1)
+    .lacunarity(0.5f)
+    .persistence(0.25f)
+    .localNormalization(false);
+  public static final String RESOURCE_DIRECTORY = "src/main/resources/";
 }

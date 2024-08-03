@@ -1,5 +1,7 @@
 package com.game.engine.render.models;
 
-public interface IModel {
+import com.game.caches.ICachable;
+
+public interface IModel extends ICachable {
   String name();
 }

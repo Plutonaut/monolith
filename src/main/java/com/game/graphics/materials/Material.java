@@ -1,14 +1,12 @@
 package com.game.graphics.materials;
 
-import com.game.caches.models.interfaces.IModelCachable;
-import com.game.utils.enums.EModelCache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector4f;
 
 @Accessors(fluent = true)
 @Data
-public class Material implements IModelCachable {
+public class Material {
   protected final MaterialTexturePack textures;
   protected final MaterialColorPack colors;
   protected String name;
@@ -20,9 +18,6 @@ public class Material implements IModelCachable {
     colors = new MaterialColorPack();
     reflectance = 0f;
   }
-
-  @Override
-  public EModelCache type() { return EModelCache.MATERIAL; }
 
   public String texture(int type) {
     return textures.get(type);
