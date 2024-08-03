@@ -1,9 +1,11 @@
 package com.game.engine.logic;
 
-import com.game.engine.scene.camera.Camera;
-import com.game.engine.settings.EngineSettings;
+import com.game.engine.controls.Keyboard;
+import com.game.engine.controls.Mouse;
 import com.game.engine.render.RenderManager;
 import com.game.engine.scene.Scene;
+import com.game.engine.scene.camera.Camera;
+import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -14,7 +16,6 @@ public abstract class AbstractLogic implements ILogic {
   protected Vector3f viewMovement;
   protected Vector2f viewRotation;
   protected int currentFPS;
-
 
   public AbstractLogic(EngineSettings settings) {
     scene = new Scene(settings, windowTitle());
@@ -27,13 +28,15 @@ public abstract class AbstractLogic implements ILogic {
 
   protected void captureCameraMovementInput() {
     Window window = scene.window();
+    Mouse mouse = window.mouse();
+    Keyboard keyboard = window.keyboard();
 
-    window.keyboard().input();
-    viewMovement.set(window.keyboard().movementVec());
+    keyboard.input();
+    viewMovement.set(keyboard.movementVec());
 
-    window.mouse().input();
-    if (window.mouse().isRightButtonPressed()) viewRotation.set(window.mouse().displVec());
-    else viewRotation.set(0f);
+    viewRotation.set(0f);
+    mouse.input();
+    if (mouse.isRightButtonPressed()) viewRotation.set(mouse.displVec());
   }
 
   protected void moveCameraOnUpdate() {

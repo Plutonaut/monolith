@@ -2,6 +2,7 @@ package com.game.utils.enums;
 
 public enum EController {
   AUDIO("audio"),
+  PHYS("physics"),
   BODY("physicsBody"),
   COLL("collider"),
   ANIM("animation");

@@ -2,7 +2,7 @@ package com.game.utils.engine.terrain.procedural;
 
 import com.game.engine.scene.terrain.procedural.ProceduralNoiseData;
 import com.game.utils.application.RandomNumberGenerator;
-import com.game.utils.application.ValueStore2D;
+import com.game.utils.application.ValueGrid;
 import org.joml.SimplexNoise;
 import org.joml.Vector2f;
 
@@ -12,7 +12,7 @@ public class ProceduralNoiseUtils {
   public static final int SHARP_FALL_OFF_A = 3;
   public static final float SHARP_FALL_OFF_B = 2.2f;
 
-  static ValueStore2D process(int width, int height, ProceduralNoiseData data) {
+  static ValueGrid process(int width, int height, ProceduralNoiseData data) {
     int octaves = data.octaves();
     Vector2f offset = data.offset();
     Vector2f[] octaveOffsets = new Vector2f[octaves];
@@ -31,7 +31,7 @@ public class ProceduralNoiseUtils {
       amplitude *= data.persistence();
     }
 
-    ValueStore2D grid = new ValueStore2D(width, height);
+    ValueGrid grid = new ValueGrid(width, height);
     float scale = data.scale();
     float persistence = data.persistence();
     float lacunarity = data.lacunarity();

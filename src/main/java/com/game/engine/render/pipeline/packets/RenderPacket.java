@@ -19,7 +19,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class RenderPacket implements IRenderPacket {
   protected final ERenderer destination;
-  //  protected final ArrayList<Entity> items;
+  // TODO: Replace with list of entity ids. Move entity objects to entity manager.
+  // TODO: Move HUD entities to HUD. Pull from HUDManager exclusively.
   protected final ArrayList<IRenderable> items;
   protected final ArrayBlockingQueue<Model> queue;
 
@@ -39,6 +40,10 @@ public class RenderPacket implements IRenderPacket {
 
   public TextEntity getGameText(String key) {
     return getAllGameText(key).findFirst().orElse(null);
+  }
+
+  public Stream<Entity> getAllSceneEntities() {
+    return getAllEntities("");
   }
 
   public Stream<Entity> getAllEntities(String key) {

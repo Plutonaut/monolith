@@ -5,14 +5,14 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Data
-public class ValueStore2D {
+public class ValueGrid {
   private final float[][] grid;
   private int width;
   private int height;
   private float min;
   private float max;
 
-  public ValueStore2D(int width, int height) {
+  public ValueGrid(int width, int height) {
     this.width = width;
     this.height = height;
     this.min = Float.MAX_VALUE;

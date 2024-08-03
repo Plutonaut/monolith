@@ -1,11 +1,13 @@
 package com.game.utils.engine;
 
+import com.game.engine.physics.Bounds3D;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.utils.application.ValueStore;
 import com.game.utils.enums.EAttribute;
+import org.joml.Vector3f;
 import org.lwjgl.assimp.AIFace;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIVector3D;
@@ -15,6 +17,28 @@ import java.nio.IntBuffer;
 
 public class MeshInfoUtils {
   public static final int MAX_VERTEX_DATA = 9;
+
+  public static Bounds3D calculateBounds(VertexInfo info) {
+    Vector3f min = new Vector3f(Float.MAX_VALUE);
+    Vector3f max = new Vector3f(Float.MIN_VALUE);
+
+    ValueStore vertices = info.vertices();
+    float[] values = vertices.asArray();
+    int vertexSize = info.totalSize();
+    int vertexCount = info.totalVertexCount();
+
+    for (int i = 0; i < vertexCount; i++) {
+      int index = i * vertexSize;
+      float x = values[index];
+      float y = values[index + 1];
+      float z = values[index + 2];
+      Vector3f vertex = new Vector3f(x, y, z);
+      min.min(vertex);
+      max.max(vertex);
+    }
+
+    return new Bounds3D(min, max);
+  }
 
   public static MeshInfo process(AIMesh aiMesh) {
     return new MeshInfoBuilder()

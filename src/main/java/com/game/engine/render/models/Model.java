@@ -5,7 +5,6 @@ import com.game.caches.models.interfaces.IModelCachable;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.animations.Animation;
-import com.game.engine.scene.entities.controllers.EntityAnimationController;
 import com.game.utils.enums.EModelCache;
 import com.game.utils.enums.EModifier;
 import lombok.Data;
@@ -34,23 +33,13 @@ public class Model implements IModelCachable {
 
   public Entity create(String entityName) {
     Entity entity = new Entity(entityName);
-    if (!animations().isEmpty()) {
-      EntityAnimationController controller = new EntityAnimationController();
-      for (Animation animation : animations()) {
-        controller.add(animation);
-      }
-      entity.addController(controller);
-      entity.toggleModifier(EModifier.ANIMATED);
-    }
+    if (!animations().isEmpty())
+      entity.addAnimations(animations).toggleModifier(EModifier.ANIMATED);
 
     return entity;
   }
 
   public void addMeshData(String meshInfo) { this.meshData.add(meshInfo); }
-
-  public void addAnimation(Animation animation3D) {
-    this.animations.add(animation3D);
-  }
 
   public void addAnimations(List<? extends Animation> animations) {
     this.animations.addAll(animations);

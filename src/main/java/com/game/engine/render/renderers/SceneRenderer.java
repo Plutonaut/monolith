@@ -25,7 +25,7 @@ public class SceneRenderer extends AbstractLitRenderer {
     boolean isAnimated = entity.isModifierActive(EModifier.ANIMATED);
     program.uniforms().set(EUniform.ANIMATED.value(), isAnimated);
     if (isAnimated) {
-      EntityAnimationController animController = (EntityAnimationController) entity.controller(EController.ANIM.getValue());
+      EntityAnimationController animController = entity.controllers().animations();
       Matrix4f[] boneMatrices = animController.frameBoneMatrices();
       program.uniforms().set(EUniform.BONE_MATRICES.value(), boneMatrices);
     }

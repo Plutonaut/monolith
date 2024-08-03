@@ -1,6 +1,6 @@
 package com.game.engine.scene.entities.controllers;
 
-import com.game.engine.scene.entities.Entity;
+import com.game.engine.scene.entities.transforms.ModelTransform;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -11,11 +11,5 @@ public abstract class AbstractEntityController {
 
   public abstract String type();
 
-  public abstract void onUpdate();
-
-  public AbstractEntityController onAttach(Entity entity) {
-    this.entityId = entity.name();
-
-    return this;
-  }
+  public abstract void onUpdate(ModelTransform transform);
 }

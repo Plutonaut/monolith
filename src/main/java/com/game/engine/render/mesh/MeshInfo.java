@@ -2,6 +2,7 @@ package com.game.engine.render.mesh;
 
 import com.game.caches.GlobalCache;
 import com.game.caches.models.interfaces.IModelCachable;
+import com.game.engine.physics.Bounds3D;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.graphics.materials.Material;
@@ -48,6 +49,11 @@ public class MeshInfo implements IModelCachable {
       Material material = GlobalCache.instance().material(this.material);
       mesh.material(material);
     }
+    VertexInfo positions = getVerticesByAttribute(EAttribute.POS.getValue());
+    if (positions != null) {
+      Bounds3D bounds = MeshInfoUtils.calculateBounds(positions);
+      mesh.updateBounds(bounds.min(), bounds.max());
+    }
     return mesh;
   }
 
@@ -56,7 +62,7 @@ public class MeshInfo implements IModelCachable {
   }
 
   public VertexInfo getVerticesByAttribute(String key) {
-    return vertices.stream().filter(verts -> verts.hasAttribute(key)).findFirst().orElse(null);
+    return vertices.stream().filter(vertexInfo -> vertexInfo.hasAttribute(key)).findFirst().orElse(null);
   }
 
   public VertexInfo getVerticesByAttribute(EAttribute key) {
@@ -67,10 +73,6 @@ public class MeshInfo implements IModelCachable {
     if (vertexInfo != null && vertices.size() < MeshInfoUtils.MAX_VERTEX_DATA)
       this.vertices.add(vertexInfo);
     return this;
-  }
-
-  public MeshInfo addVertices(ValueStore values, int glType, int glUsage, int size, String attribute) {
-    return addVertices(values, glType, glUsage, size, attribute, 1);
   }
 
   public MeshInfo addVertices(
