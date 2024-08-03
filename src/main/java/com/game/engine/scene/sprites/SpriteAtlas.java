@@ -1,11 +1,11 @@
 package com.game.engine.scene.sprites;
 
 import com.game.caches.GlobalCache;
-import com.game.caches.models.interfaces.IModelCachable;
+import com.game.engine.render.models.IModel;
 import com.game.engine.scene.entities.animations.Animation2D;
 import com.game.graphics.texture.Texture;
 import com.game.utils.application.PathSanitizer;
-import com.game.utils.enums.EModelCache;
+import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Slf4j
 @Data
-public class SpriteAtlas implements IModelCachable {
+public class SpriteAtlas implements IModel {
   protected String name;
   protected List<SpriteAtlasRecord> atlas;
 
@@ -38,6 +38,7 @@ public class SpriteAtlas implements IModelCachable {
     this.name = name;
   }
 
+  // SnakeYAML requires explicit setters.
   public void setAtlas(List<SpriteAtlasRecord> atlas) { this.atlas = atlas; }
 
   public static SpriteAtlas load(String path) {
@@ -57,8 +58,8 @@ public class SpriteAtlas implements IModelCachable {
   }
 
   @Override
-  public EModelCache type() {
-    return EModelCache.SPRITE_ATLAS;
+  public ECache type() {
+    return ECache.SPRITE_ATLAS;
   }
 
   public SpriteAtlasRecord get() {

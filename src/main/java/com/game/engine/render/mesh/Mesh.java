@@ -1,25 +1,25 @@
 package com.game.engine.render.mesh;
 
-import com.game.caches.graphics.interfaces.IGraphicsCachable;
 import com.game.engine.render.mesh.vertices.VertexAttributeArray;
 import com.game.engine.render.mesh.vertices.VertexBufferObject;
+import com.game.graphics.IGraphics;
 import com.game.graphics.materials.Material;
-import com.game.utils.enums.EGraphicsCache;
+import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Accessors(fluent = true)
 @Data
-public class Mesh implements IGraphicsCachable {
+public class Mesh implements IGraphics {
   protected final int glId;
   protected final String name;
-  protected final List<VertexBufferObject> vbos;
+  protected final HashSet<VertexBufferObject> vbos;
   protected final HashMap<String, VertexAttributeArray> vaas;
   protected Material material;
   protected Vector3f min;
@@ -30,14 +30,14 @@ public class Mesh implements IGraphicsCachable {
   public Mesh(String name) {
     this.name = name;
     glId = GL46.glGenVertexArrays();
-    vbos = new ArrayList<>();
+    vbos = new HashSet<>();
     vaas = new HashMap<>();
     min = new Vector3f();
     max = new Vector3f();
   }
 
   @Override
-  public EGraphicsCache type() { return EGraphicsCache.MESH; }
+  public ECache type() { return ECache.MESH; }
 
   @Override
   public String key() {
@@ -71,6 +71,10 @@ public class Mesh implements IGraphicsCachable {
 
   protected void drawSimple(int mode) {
     GL46.glDrawArrays(mode, 0, vertexCount);
+  }
+
+  public void addVertexBufferObject(VertexBufferObject vertexBufferObject) {
+    vbos.add(vertexBufferObject);
   }
 
   public void setVertexAttributeArrays(List<VertexAttributeArray> vertexAttributeArrays) {

@@ -1,7 +1,7 @@
 package com.game.graphics.texture;
 
-import com.game.caches.graphics.interfaces.IGraphicsCachable;
-import com.game.utils.enums.EGraphicsCache;
+import com.game.graphics.IGraphics;
+import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.lwjgl.opengl.GL46;
@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 @Accessors(fluent = true)
 @Data
-public class Texture implements IGraphicsCachable {
+public class Texture implements IGraphics {
   protected final int glId;
   protected final String path;
   protected int width;
@@ -56,8 +56,12 @@ public class Texture implements IGraphicsCachable {
     GL46.glTexParameteri(GL46.GL_TEXTURE_2D, name, value);
   }
 
-  public void clamp() {
+  public void clampBorder() {
     wrap(GL46.GL_CLAMP_TO_BORDER);
+  }
+
+  public void clampEdge() {
+    wrap(GL46.GL_CLAMP_TO_EDGE);
   }
 
   public void repeat() {
@@ -98,7 +102,7 @@ public class Texture implements IGraphicsCachable {
   }
 
   @Override
-  public EGraphicsCache type() {
-    return EGraphicsCache.TEXTURE;
+  public ECache type() {
+    return ECache.TEXTURE;
   }
 }

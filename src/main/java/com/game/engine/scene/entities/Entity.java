@@ -3,10 +3,13 @@ package com.game.engine.scene.entities;
 import com.game.engine.physics.Ray;
 import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.Mesh;
+import com.game.engine.scene.audio.AudioSource;
 import com.game.engine.scene.entities.animations.Animation;
 import com.game.engine.scene.entities.controllers.EntityControllerManager;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EModifier;
+import com.game.utils.enums.EProjection;
+import com.game.utils.enums.ERenderer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector3f;
@@ -18,8 +21,9 @@ import java.util.List;
 @Data
 public class Entity implements IRenderable {
   protected final EntityControllerManager controllers;
-  protected final ArrayList<EModifier> modifiers;
+  protected final EntityRenderParameters parameters;
   protected final ModelTransform transform;
+  // TODO: Convert to hashmap, perform check for duplicates prior to adding mesh
   protected final ArrayList<Mesh> meshes;
   protected final String name;
   protected final int id;
@@ -29,15 +33,36 @@ public class Entity implements IRenderable {
   }
 
   public Entity(String name, ArrayList<Mesh> meshes) {
+    this(name, meshes, new EntityRenderParameters());
+  }
+
+  public Entity(String name, EntityRenderParameters parameters) {
+    this(name, new ArrayList<>(), parameters);
+  }
+
+  public Entity(String name, ArrayList<Mesh> meshes, EntityRenderParameters parameters) {
     this.name = name;
     this.id = System.identityHashCode(name);
     this.meshes = new ArrayList<>();
+    this.parameters = parameters;
 
     transform = new ModelTransform();
-    modifiers = new ArrayList<>();
     controllers = new EntityControllerManager();
 
     addMeshes(meshes);
+  }
+
+  @Override
+  public int glParamFlags() {
+    return parameters.glParamFlags;
+  }
+
+  public EProjection projection() {
+    return parameters.projection;
+  }
+
+  public boolean matches(ERenderer shader) {
+    return parameters.hasShader(shader);
   }
 
   public Entity move(Vector3f position) {
@@ -63,17 +88,12 @@ public class Entity implements IRenderable {
     return this;
   }
 
-  public void toggleModifier(EModifier modifier) {
-    if (isModifierActive(modifier)) modifiers.remove(modifier);
-    else modifiers.add(modifier);
-  }
-
-  public boolean isModifierActive(EModifier modifier) {
-    return modifiers.contains(modifier);
-  }
-
   public void addMeshes(List<Mesh> meshes) {
-    this.meshes.addAll(meshes);
+    meshes.forEach(this::addMesh);
+  }
+
+  public void addMesh(Mesh mesh) {
+    meshes.add(mesh);
   }
 
   public Entity addPhysics() {
@@ -84,6 +104,20 @@ public class Entity implements IRenderable {
   public Entity addAnimations(List<Animation> animations) {
     controllers.animations().add(animations);
     return onTransformUpdate();
+  }
+
+  public Entity addAudio(AudioSource source) {
+    controllers.audio().add(source);
+    return onTransformUpdate();
+  }
+
+  public boolean isModifierActive(EModifier modifier) {
+    return parameters().isModifierActive(modifier);
+  }
+
+  public void redrawText(String text) {
+    controllers().text().redraw(text);
+    onTransformUpdate();
   }
 
   public boolean intersects(Ray ray) {

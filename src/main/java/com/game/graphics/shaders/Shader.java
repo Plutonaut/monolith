@@ -1,16 +1,16 @@
 package com.game.graphics.shaders;
 
-import com.game.caches.graphics.interfaces.IGraphicsCachable;
+import com.game.graphics.IGraphics;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.engine.ShaderUtils;
-import com.game.utils.enums.EGraphicsCache;
+import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.lwjgl.opengl.GL46;
 
 @Accessors(fluent = true)
 @Data
-public class Shader implements IGraphicsCachable {
+public class Shader implements IGraphics {
   protected int glId;
   protected String key;
   protected String content;
@@ -46,7 +46,7 @@ public class Shader implements IGraphicsCachable {
   }
 
   @Override
-  public EGraphicsCache type() {
-    return EGraphicsCache.SHADER;
+  public ECache type() {
+    return ECache.SHADER;
   }
 }

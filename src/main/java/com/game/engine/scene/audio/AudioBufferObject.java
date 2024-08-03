@@ -1,7 +1,7 @@
 package com.game.engine.scene.audio;
 
-import com.game.caches.graphics.interfaces.IGraphicsCachable;
-import com.game.utils.enums.EGraphicsCache;
+import com.game.graphics.IGraphics;
+import com.game.utils.enums.ECache;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.lwjgl.openal.AL11;
@@ -10,7 +10,7 @@ import java.nio.ShortBuffer;
 
 @Accessors(fluent = true)
 @Getter
-public class AudioBufferObject implements IGraphicsCachable {
+public class AudioBufferObject implements IGraphics {
   private final String path;
   private final int alId;
 
@@ -35,13 +35,14 @@ public class AudioBufferObject implements IGraphicsCachable {
 
   }
 
+  @Override
   public void dispose() {
     AL11.alDeleteBuffers(alId);
   }
 
   @Override
-  public EGraphicsCache type() {
-    return EGraphicsCache.AUDIO;
+  public ECache type() {
+    return ECache.AUDIO;
   }
 
   @Override

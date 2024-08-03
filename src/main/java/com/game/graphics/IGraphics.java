@@ -1,5 +1,7 @@
 package com.game.graphics;
 
-public interface IGraphics extends IGL {
+import com.game.caches.ICachable;
+
+public interface IGraphics extends IGL, ICachable {
   String key();
 }

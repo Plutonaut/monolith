@@ -5,6 +5,7 @@ import com.game.engine.controls.Keyboard;
 import com.game.engine.controls.Mouse;
 import com.game.utils.logging.LogPrintStreamFactory;
 import com.game.utils.logging.LoggingUtils;
+import com.game.utils.math.VectorUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -62,11 +63,12 @@ public class Window {
     GL.createCapabilities();
     // debug
     if (debugMode) {
-      printStream = LogPrintStreamFactory.create(LoggingUtils.WINDOW_LOG_FILENAME,
-                                                 LoggingUtils.WINDOW_LOG_DIRECTORY,
-                                                 ".log",
-                                                 5,
-                                                 true
+      printStream = LogPrintStreamFactory.create(
+        LoggingUtils.WINDOW_LOG_FILENAME,
+        LoggingUtils.WINDOW_LOG_DIRECTORY,
+        ".log",
+        5,
+        true
       );
       debugCallback = GLUtil.setupDebugMessageCallback(printStream);
     }
@@ -78,6 +80,10 @@ public class Window {
 
   public void clear() {
     GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
+  }
+
+  public void clearColor(float red, float green, float blue, float alpha) {
+    GL46.glClearColor(red, green, blue, alpha);
   }
 
   public void viewport() { viewport(0, 0); }
@@ -100,16 +106,11 @@ public class Window {
 
   public void setWindowShouldClose(boolean close) { GLFW.glfwSetWindowShouldClose(handle, close); }
 
-  public boolean areKeysPressed(boolean all, int... keyCodes) {
-    for (int key : keyCodes) {
-      boolean pressed = isKeyPressed(key);
-      if (all && !pressed) return false;
-      if (!all && pressed) return true;
-    }
-
-    return all;
+  public Vector2f getPointInScreenSpace(Vector3f point) {
+    return VectorUtils.screenSpace(point, width, height);
   }
 
+  // TODO: Triggers too often. May need to wrap in a timeout.
   public boolean isKeyPressed(int keyCode) {
     return keyboard().isKeyPressed(handle, keyCode);
   }

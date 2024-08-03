@@ -1,7 +1,5 @@
 package com.game.engine.render;
 
-import com.game.engine.render.models.Model;
-import com.game.engine.render.pipeline.packets.PacketResult;
 import com.game.engine.render.renderers.AbstractRenderer;
 import com.game.engine.render.renderers.IRenderer;
 import com.game.engine.scene.Scene;
@@ -33,20 +31,12 @@ public class RenderManager implements IRenderer {
     return renderers.computeIfAbsent(type, factory::create);
   }
 
-  PacketResult bind(ERenderer shader, Model model) {
-    return getRenderer(shader).associate(model);
-  }
-
-  // TODO: Move entity creation to renderer. Add newly created entities to global cache. Pull from global cache on render.
-  public void bind(Scene scene) {
-    scene.packets().bindQueue(this::bind);
-  }
-
   public void render(Scene scene) {
     scene.enter();
+    // Order in which objects are rendered dictates placement in scene relative to the view.
     orderedShaderRenderArray.forEach(shader -> {
-      // Only bother attempting to render if a renderer object already exists.
-      if (renderers.containsKey(shader)) getRenderer(shader).render(scene);
+      // Only bother attempting to render if a render packet exists for this particular shader.
+      if (scene.hasPacket(shader)) getRenderer(shader).render(scene);
     });
     scene.exit();
   }
