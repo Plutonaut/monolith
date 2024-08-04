@@ -1,6 +1,5 @@
 package com.game.engine.logic;
 
-import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.mesh.vertices.AttribInfo;
@@ -32,7 +31,7 @@ public class TestRenderLogic extends AbstractLogic {
 
   private void setupVAO() {
     Quad quad = new Quad();
-    GlobalCache.instance().cacheItem(quad.createMeshInfo());
+//    GlobalCache.instance().cacheItem(quad.createMeshInfo());
 //    MeshInfo info = GlobalCache.instance().meshInfo(quad.name(), n -> quad.create());
 //    mesh = info.create();
     mesh = new Mesh(quad.name());
@@ -98,7 +97,7 @@ public class TestRenderLogic extends AbstractLogic {
   }
 
   @Override
-  public void update() {
+  public void update(float interval) {
 
   }
 

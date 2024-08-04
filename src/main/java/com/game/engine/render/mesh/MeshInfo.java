@@ -1,16 +1,15 @@
 package com.game.engine.render.mesh;
 
-import com.game.caches.GlobalCache;
-import com.game.caches.models.interfaces.IModelCachable;
 import com.game.engine.physics.Bounds3D;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
+import com.game.engine.render.models.IModel;
 import com.game.graphics.materials.Material;
 import com.game.utils.application.ValueStore;
 import com.game.utils.engine.MaterialUtils;
 import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.enums.EAttribute;
-import com.game.utils.enums.EModelCache;
+import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -19,11 +18,11 @@ import java.util.List;
 
 @Accessors(fluent = true)
 @Data
-public class MeshInfo implements IModelCachable {
+public class MeshInfo implements IModel {
   protected final List<VertexInfo> vertices;
   protected final ValueStore indices;
   protected final String name;
-  protected String material;
+  protected Material material;
   protected int vertexCount;
   protected int instances;
 
@@ -32,23 +31,19 @@ public class MeshInfo implements IModelCachable {
 
     indices = new ValueStore();
     vertices = new ArrayList<>();
-    material = MaterialUtils.DFLT;
+    material = new Material(MaterialUtils.DFLT);
     instances = 1;
     vertexCount = 0;
   }
 
   @Override
-  public EModelCache type() { return EModelCache.MESH_INFO; }
+  public ECache type() { return ECache.MESH_INFO; }
 
   public Mesh create() {
     Mesh mesh = isInstanced() ? new InstancedMesh(name, instances) : new Mesh(name);
     mesh.vertexCount(vertexCount);
     mesh.isComplex = !indices.isEmpty();
-
-    if (material != null) {
-      Material material = GlobalCache.instance().material(this.material);
-      mesh.material(material);
-    }
+    mesh.material(material);
     VertexInfo positions = getVerticesByAttribute(EAttribute.POS.getValue());
     if (positions != null) {
       Bounds3D bounds = MeshInfoUtils.calculateBounds(positions);
@@ -62,7 +57,11 @@ public class MeshInfo implements IModelCachable {
   }
 
   public VertexInfo getVerticesByAttribute(String key) {
-    return vertices.stream().filter(vertexInfo -> vertexInfo.hasAttribute(key)).findFirst().orElse(null);
+    return vertices
+      .stream()
+      .filter(vertexInfo -> vertexInfo.hasAttribute(key))
+      .findFirst()
+      .orElse(null);
   }
 
   public VertexInfo getVerticesByAttribute(EAttribute key) {
@@ -76,12 +75,7 @@ public class MeshInfo implements IModelCachable {
   }
 
   public MeshInfo addVertices(
-    ValueStore values,
-    int glType,
-    int glUsage,
-    int size,
-    String attribute,
-    int instances
+    ValueStore values, int glType, int glUsage, int size, String attribute, int instances
   ) {
     if (instances > this.instances) this.instances = instances;
 

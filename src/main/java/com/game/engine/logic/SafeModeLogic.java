@@ -31,15 +31,6 @@ public class SafeModeLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-    scene.blend(true);
-    scene.depth(true);
-//    renderer.init(
-//      ERenderer.SCENE,
-//      ERenderer.MESH,
-//      ERenderer.SKYBOX,
-//      ERenderer.SPRITE,
-//      ERenderer.BASIC
-//    );
     scene.lighting()
          .addAmbientLight()
          .addDirectionalLight()
@@ -50,20 +41,6 @@ public class SafeModeLogic extends AbstractLogic {
     scene.lighting().directionalLight().factor(0.5f);
     scene.lighting().pointLight("test_A").move(0.75f);
     scene.lighting().spotLight("test_B").pointConeToward(0.5f);
-
-
-    // frog this works....
-//    scene.entities().loadTestQuad("test");
-
-    // This don't...
-//    scene
-//      .entities()
-//      .load2DSprite("sprite", "src/main/resources/textures/plaster_wall/plaster_wall.jpg");
-//    skyBox = scene.entities().loadSkyBoxModel("skybox", EModel.BASIC_SKYBOX.path());
-//    blueShape = scene.entities()
-//                     .load3DModel("test", EModel.BLUE_SHAPE.path(), EModel.BLUE_SHAPE.animated())
-//                     .scale(0.25f)
-//                     .move(0f, 1f, -2.5f);
   }
 
   @Override
@@ -80,7 +57,7 @@ public class SafeModeLogic extends AbstractLogic {
   }
 
   @Override
-  public void update() {
+  public void update(float interval) {
     Camera camera = scene.camera();
     camera.move(viewMovement.x, viewMovement.y, viewMovement.z);
     camera.rotate(viewRotation.x, viewRotation.y, 0f);

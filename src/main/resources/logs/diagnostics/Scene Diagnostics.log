@@ -1,0 +1,223 @@
+
+======================================================================================
+#	Test Procedural Generation OpenGL GL Version {4}.{6}
+======================================================================================
+
+	width: 1280
+	height: 720
+	Log: 1
+
+======================================================================================
+#	Camera
+======================================================================================
+
+	Position: { x: 0, y: 0, z: 2 }
+	Rotation: { x: 0, y: 0, z: 0 }
+	Mouse Sensitivity: : 0.2
+	Camera Speed: : 0.05
+	Log: 2
+
+======================================================================================
+#	Lighting
+======================================================================================
+
+	ambient
+	Color: { x: 1, y: 1, z: 1 }
+	Factor: 0.25
+	Log: 3
+
+======================================================================================
+#	Entities
+======================================================================================
+
+	skybox: 1430458746
+	Position: { x: 0, y: 0, z: 0 }
+	Rotation: { x: 0, y: 0, z: 0, w: 1 }
+	Scale: 100
+	Shader: skybox
+	Projection: PERSPECTIVE
+	Meshes
+	skyboxmtl: 2
+	Vertex Count: 36
+	Is Complex: true
+	Min vertex: { x: -1, y: -1, z: -1 }
+	Max vertex: { x: 1, y: 1, z: 1 }
+	Material: src\main\resources\models\skybox_1
+	src\main\resources\models\skybox\skybox.png
+	$clr.ambient: { x: 0, y: 0, z: 0, w: 1 }
+	$clr.diffuse: { x: 0.64, y: 0.64, z: 0.64, w: 1 }
+	$clr.specular: { x: 0.5, y: 0.5, z: 0.5, w: 1 }
+	Vertex Attribute Array: normal
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: tangent
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: texcoord
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: position
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: bitangent
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	CUBE(1): 487608132
+	Position: { x: 1, y: 0, z: 1 }
+	Rotation: { x: 0, y: 0, z: 0, w: 1 }
+	Scale: 0.5
+	Shader: scene
+	Projection: PERSPECTIVE
+	Meshes
+	cube: 1
+	Vertex Count: 36
+	Is Complex: true
+	Min vertex: { x: -0.5, y: -0.5, z: -0.5 }
+	Max vertex: { x: 0.5, y: 0.5, z: 0.5 }
+	Material: src\main\resources\models\cube_1
+	src\main\resources\models\cube\cube.png
+	$clr.ambient: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
+	$clr.diffuse: { x: 0, y: 0, z: 0, w: 1 }
+	$clr.specular: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
+	Vertex Attribute Array: normal
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: tangent
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: texcoord
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: position
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: bitangent
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	CUBE: 2063281585
+	Position: { x: 0, y: 1, z: 1 }
+	Rotation: { x: 0, y: 0, z: 0, w: 1 }
+	Scale: 0.25
+	Shader: scene
+	Projection: PERSPECTIVE
+	Meshes
+	cube: 1
+	Vertex Count: 36
+	Is Complex: true
+	Min vertex: { x: -0.5, y: -0.5, z: -0.5 }
+	Max vertex: { x: 0.5, y: 0.5, z: 0.5 }
+	Material: src\main\resources\models\cube_1
+	src\main\resources\models\cube\cube.png
+	$clr.ambient: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
+	$clr.diffuse: { x: 0, y: 0, z: 0, w: 1 }
+	$clr.specular: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
+	Vertex Attribute Array: normal
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: tangent
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: texcoord
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: position
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: bitangent
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	proc_moss: 696910157
+	Position: { x: 0, y: 0, z: 0 }
+	Rotation: { x: 0, y: 0, z: 0, w: 1 }
+	Scale: 10
+	Shader: scene
+	Projection: PERSPECTIVE
+	Meshes
+	proc_moss: 3
+	Vertex Count: 96774
+	Is Complex: true
+	Min vertex: { x: -0.5, y: -0.04, z: -0.5 }
+	Max vertex: { x: 0.5, y: 0, z: 0.5 }
+	Material: proc_moss_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array: normal
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: texcoord
+	Size: 2
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Vertex Attribute Array: position
+	Size: 3
+	Stride: 0
+	Offset: 0
+	Instances: 1
+	Log: 4
+
+======================================================================================
+#	Global Cache
+======================================================================================
+
+	AUDIO: Items: 1
+	music/woo_scary.ogg
+	MESH: Items: 3
+	skyboxmtl
+	cube
+	proc_moss
+	SHADER: Items: 4
+	render\scene\scene.vert
+	render\skybox\skybox.vert
+	render\skybox\skybox.frag
+	render\scene\scene.frag
+	MODEL: Items: 3
+	proc_terrainproc_moss_model
+	src/main/resources/models/cube/cube.obj_model
+	src/main/resources/models/skybox/skybox.obj_model
+	TEXTURE: Items: 4
+	src\main\resources\models\cube\cube.png
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	src\main\resources\models\skybox\skybox.png
+	PROGRAM: Items: 2
+	skybox
+	scene
+	MESH_INFO: Items: 3
+	skyboxmtl_mesh_info
+	cube_mesh_info
+	proc_moss_mesh_info
+	Log: 5
+Closing Print Stream

@@ -4,7 +4,7 @@ public interface ILogic {
   boolean isRunning();
   void onStart();
   void input();
-  void update();
+  void update(float interval);
   void render(int fps);
   void onEnd();
 }

@@ -12,7 +12,7 @@ public class ProceduralNoiseUtils {
   public static final int SHARP_FALL_OFF_A = 3;
   public static final float SHARP_FALL_OFF_B = 2.2f;
 
-  static ValueGrid process(int width, int height, ProceduralNoiseData data) {
+  public static ValueGrid process(int width, int height, ProceduralNoiseData data) {
     int octaves = data.octaves();
     Vector2f offset = data.offset();
     Vector2f[] octaveOffsets = new Vector2f[octaves];

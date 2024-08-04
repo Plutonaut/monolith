@@ -2,7 +2,6 @@ package com.game.engine.settings;
 
 import com.game.loaders.ini.INIFileModel;
 import com.game.utils.enums.EFont;
-import com.game.utils.enums.ELogic;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector3f;
@@ -21,9 +20,10 @@ public class EngineSettings {
   private float stepSize;
   private boolean threaded;
   private boolean debug;
+  private boolean diagnostics;
   private int maxLogFiles;
   private EFont fontType;
-  private ELogic logic;
+  private String logic;
   private Vector3f cameraPosition;
   private float movementSpeed;
   private float fov;
@@ -51,6 +51,7 @@ public class EngineSettings {
     fontType = engine.getEFont("fontType");
     threaded = engine.getBool("threaded");
     debug = engine.getBool("debug");
+    diagnostics = engine.getBool("diagnostics");
     logic = engine.getELogic("logic");
     INIModelSection camera = model.modelSection("camera");
     cameraPosition = camera.getVector3f("cameraPosition");

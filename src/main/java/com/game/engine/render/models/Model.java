@@ -1,11 +1,10 @@
 package com.game.engine.render.models;
 
 import com.game.caches.GlobalCache;
-import com.game.caches.models.interfaces.IModelCachable;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.animations.Animation;
-import com.game.utils.enums.EModelCache;
+import com.game.utils.enums.ECache;
 import com.game.utils.enums.EModifier;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @Accessors(fluent = true)
 @Data
-public class Model implements IModelCachable {
+public class Model implements IModel {
   private final String name;
   private final List<String> meshData;
   private final List<Animation> animations;
@@ -34,7 +33,7 @@ public class Model implements IModelCachable {
   public Entity create(String entityName) {
     Entity entity = new Entity(entityName);
     if (!animations().isEmpty())
-      entity.addAnimations(animations).toggleModifier(EModifier.ANIMATED);
+      entity.addAnimations(animations).parameters().toggleModifier(EModifier.ANIMATED);
 
     return entity;
   }
@@ -46,5 +45,5 @@ public class Model implements IModelCachable {
   }
 
   @Override
-  public EModelCache type() { return EModelCache.MODEL; }
+  public ECache type() { return ECache.MODEL; }
 }

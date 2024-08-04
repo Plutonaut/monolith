@@ -1,10 +1,10 @@
 package com.game.graphics.shaders;
 
-import com.game.caches.graphics.interfaces.IGraphicsCachable;
 import com.game.caches.shaders.AttributeCache;
 import com.game.caches.shaders.UniformCache;
+import com.game.graphics.IGraphics;
 import com.game.utils.engine.ShaderUtils;
-import com.game.utils.enums.EGraphicsCache;
+import com.game.utils.enums.ECache;
 import com.game.utils.enums.ERenderer;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 @Accessors(fluent = true)
 @Data
 @Slf4j
-public class Program implements IGraphicsCachable {
+public class Program implements IGraphics {
   protected final AttributeCache attributes;
   protected final UniformCache uniforms;
   protected final int glId;
@@ -46,10 +46,12 @@ public class Program implements IGraphicsCachable {
   }
 
   void attach(Shader shader) {
+    log.info("Program {} attaching shader {}", key, shader.key);
     GL46.glAttachShader(glId, shader.glId());
   }
 
   void detach(Shader shader) {
+    log.info("Program {} detaching shader {}", key, shader.key);
     GL46.glDetachShader(glId, shader.glId());
   }
 
@@ -87,7 +89,7 @@ public class Program implements IGraphicsCachable {
   }
 
   @Override
-  public EGraphicsCache type() {
-    return EGraphicsCache.PROGRAM;
+  public ECache type() {
+    return ECache.PROGRAM;
   }
 }

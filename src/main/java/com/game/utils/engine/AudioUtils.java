@@ -19,8 +19,8 @@ public class AudioUtils {
       long decoder = STBVorbis.stb_vorbis_open_filename(filePath, error, null);
 
       if (decoder == MemoryUtil.NULL)
-        throw new RuntimeException("Failed to open Vorbis file " + filePath + " Error: " + error.get(0));
-      MemoryUtil.memFree(error);
+        throw new RuntimeException("Failed to open Vorbis file " + filePath + " Error: " + error.get(
+          0));
 
       STBVorbis.stb_vorbis_get_info(decoder, info);
 
@@ -28,7 +28,11 @@ public class AudioUtils {
       int lengthSamples = STBVorbis.stb_vorbis_stream_length_in_samples(decoder);
 
       ShortBuffer result = MemoryUtil.memAllocShort(lengthSamples);
-      int sampleRate = STBVorbis.stb_vorbis_get_samples_short_interleaved(decoder, channels, result) * channels;
+      int sampleRate = STBVorbis.stb_vorbis_get_samples_short_interleaved(
+        decoder,
+        channels,
+        result
+      ) * channels;
 
       result.limit(sampleRate);
       STBVorbis.stb_vorbis_close(decoder);

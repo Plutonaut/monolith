@@ -41,4 +41,10 @@ public class TextureMapData {
     map.put(type, path);
     return this;
   }
+
+  public TextureMapData copy() {
+    TextureMapData data = new TextureMapData();
+    map.forEach(data::texture);
+    return data;
+  }
 }

@@ -8,7 +8,7 @@ public class EngineLogicRunner {
   public void use(EngineSettings settings) {
     dispose();
 
-    current = create(settings.logic().value(), settings);
+    current = create(settings);
     current.onStart();
   }
 
@@ -27,11 +27,13 @@ public class EngineLogicRunner {
     }
   }
 
-  ILogic create(String logic, EngineSettings settings) {
+  ILogic create(EngineSettings settings) {
+    String logic = settings.logic();
     return switch (logic) {
       case "testRender" -> new TestRenderLogic(settings);
       case "testPipeline" -> new TestPipelineLogic(settings);
       case "testProcGen" -> new TestProceduralGenerationLogic(settings);
+      case "sandbox2D" -> new Sandbox2DLogic(settings);
       default -> new SafeModeLogic(settings);
     };
   }

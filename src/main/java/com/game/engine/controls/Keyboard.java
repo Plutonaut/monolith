@@ -9,45 +9,45 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Accessors(fluent = true)
 @Data
 public class Keyboard {
   private final HashMap<EControls, Integer> controls;
+  private final HashMap<Integer, Consumer<Integer>> listeners;
   private final List<Integer> active;
   private final Vector3f movementVec;
+//  private final Timeout timer;
 
   public Keyboard() {
     controls = new EControlsIntegerHashMap();
     active = new ArrayList<>();
+    listeners = new HashMap<>();
     movementVec = new Vector3f();
+//    timer = new Timeout();
   }
 
   public void onKeyPress(long window, int key, int scancode, int action, int mods) {
-    if (action == GLFW.GLFW_PRESS && !isKeyPressed(key)) {
-      active.add(key);
-    } else if (action == GLFW.GLFW_RELEASE && isKeyPressed(key)) {
-      if (key == GLFW.GLFW_KEY_ESCAPE) GLFW.glfwSetWindowShouldClose(window, true);
-      else active.remove(active.indexOf(key));
-    }
+    if (key == GLFW.GLFW_KEY_ESCAPE) GLFW.glfwSetWindowShouldClose(window, true);
+
+    else if (listeners().containsKey(key)) emit(key, action);
   }
 
-  public boolean isKeyPressed(EControls control) {
-    return isKeyPressed(controls.get(control));
+  public void onKeyPress(int key, Consumer<Integer> callback) {
+    listeners.put(key, callback);
   }
 
-  public boolean isKeyPressed(int keyCode) {
+  void emit(int key, int action) {
+    listeners.get(key).accept(action);
+  }
+
+  boolean isKeyHeldDown(int keyCode) {
     return active.contains(keyCode);
   }
 
   public boolean isKeyPressed(long handle, int keyCode) {
-    return GLFW.glfwGetKey(handle, keyCode) == GLFW.GLFW_PRESS;
-  }
-
-  public Keyboard changeControls(EControls control, int keyCode) {
-    controls.put(control, keyCode);
-
-    return this;
+    return GLFW.glfwGetKey(handle, keyCode) == GLFW.GLFW_PRESS && !isKeyHeldDown(keyCode);
   }
 
   public void input() {

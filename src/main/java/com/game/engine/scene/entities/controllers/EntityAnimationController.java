@@ -24,7 +24,7 @@ public class EntityAnimationController extends AbstractEntityController {
 
   @Override
   public String type() {
-    return EController.ANIM.getValue();
+    return EController.ANIM.value();
   }
 
   @Override

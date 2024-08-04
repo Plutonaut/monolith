@@ -7,9 +7,28 @@ import com.game.utils.application.LoaderUtils;
 import com.game.utils.enums.ERenderer;
 import org.lwjgl.opengl.GL46;
 
+import java.util.EnumSet;
+
 public class ShaderUtils {
+  public static ERenderer getShaderEnumFromKey(String key) {
+    return EnumSet
+      .allOf(ERenderer.class)
+      .stream()
+      .filter(s -> s.key().equals(key))
+      .findFirst()
+      .orElse(null);
+  }
+
   public static Shader[] getShaders(ERenderer type) {
     return createShaders(type, Shader::new);
+  }
+
+  public static Shader[] getShadersFromCache(String key) {
+    ERenderer renderer = getShaderEnumFromKey(key);
+
+    if (renderer == null)
+      throw new IllegalArgumentException("Could not find shader enum from program key " + key);
+    return getShadersFromCache(renderer);
   }
 
   public static Shader[] getShadersFromCache(ERenderer type) {
@@ -20,7 +39,7 @@ public class ShaderUtils {
     return type.paths().stream().map(builder::build).toArray(Shader[]::new);
   }
 
-  static Shader getShader(String path) {return GlobalCache.instance().shader(path);}
+  static Shader getShader(String path) { return GlobalCache.instance().shader(path); }
 
   public static int shaderTypeFromFileType(String fileType) {
     String type = fileType;

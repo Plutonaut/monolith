@@ -20,7 +20,7 @@ public class EntityPhysicsController extends AbstractEntityController {
 
   @Override
   public String type() {
-    return EController.PHYS.getValue();
+    return EController.PHYS.value();
   }
 
   @Override
