@@ -1,5 +1,6 @@
-package com.game.engine.logic;
+package com.game.engine.logic.concrete;
 
+import com.game.engine.logic.AbstractLogic;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.settings.EngineSettings;
 import com.game.utils.enums.EModel;

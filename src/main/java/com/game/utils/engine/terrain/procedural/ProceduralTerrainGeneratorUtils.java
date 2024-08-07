@@ -1,24 +1,24 @@
 package com.game.utils.engine.terrain.procedural;
 
 import com.game.engine.render.mesh.MeshInfoBuilder;
-import com.game.engine.scene.generators.data.ProceduralTerrainGenerationData;
 import com.game.engine.scene.terrain.IHeightMapper;
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueMap;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.engine.terrain.TerrainUtils;
 
 public class ProceduralTerrainGeneratorUtils {
   public static void buildTerrainMeshInfo(
-    ProceduralTerrainGenerationData data, final MeshInfoBuilder builder, IHeightMapper mapper
+    ValueMap map, final MeshInfoBuilder builder, IHeightMapper mapper
   ) {
-    String id = data.id();
-    String diffuseTexturePath = data.textureMapData().diffuse();
-    String normalTexturePath = data.textureMapData().normal();
+    String id = map.get("id");
+    String diffuseTexturePath = map.get("diffuseTexturePath");
+    String normalTexturePath = map.get("normalTexturePath");
     ValueStore positions = new ValueStore();
     ValueStore textureCoordinates = new ValueStore();
     ValueStore indices = new ValueStore();
 
-    int width = data.width();
-    int height = data.height();
+    int width = map.getInt("width");
+    int height = map.getInt("height");
     float xInc = TerrainUtils.incrementX(width);
     float zInc = TerrainUtils.incrementZ(height);
 

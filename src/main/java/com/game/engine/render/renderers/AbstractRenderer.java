@@ -46,9 +46,9 @@ public abstract class AbstractRenderer implements IRenderer {
 
   protected void draw(Mesh mesh, int mode) {
     mesh.bind();
-    mesh.vaas().values().forEach(program.attributes()::enable);
+    mesh.enable();
     mesh.draw(mode);
-    mesh.vaas().values().forEach(program.attributes()::disable);
+    mesh.disable();
     mesh.unbind();
   }
 

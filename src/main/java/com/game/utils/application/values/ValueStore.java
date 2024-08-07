@@ -1,4 +1,4 @@
-package com.game.utils.application;
+package com.game.utils.application.values;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -78,22 +78,10 @@ public class ValueStore {
   }
 
   public void add(Matrix4f value) {
-    add(value.m00());
-    add(value.m10());
-    add(value.m20());
-    add(value.m30());
-    add(value.m01());
-    add(value.m11());
-    add(value.m21());
-    add(value.m31());
-    add(value.m02());
-    add(value.m12());
-    add(value.m22());
-    add(value.m32());
-    add(value.m03());
-    add(value.m13());
-    add(value.m23());
-    add(value.m33());
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++)
+        add(value.get(i, j));
+    }
   }
 
   public void add(Vector4f value) {

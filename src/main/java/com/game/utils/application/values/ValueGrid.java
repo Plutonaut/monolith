@@ -1,4 +1,4 @@
-package com.game.utils.application;
+package com.game.utils.application.values;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -6,7 +6,7 @@ import com.game.loaders.ITextureBufferReader;
 import com.game.loaders.ITextureBufferStrategy;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.application.PathSanitizer;
-import com.game.utils.application.ValueGrid;
+import com.game.utils.application.values.ValueGrid;
 import com.game.utils.engine.ColorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.opengl.GL46;

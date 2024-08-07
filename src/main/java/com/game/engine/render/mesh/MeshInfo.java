@@ -5,7 +5,7 @@ import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.engine.render.models.IModel;
 import com.game.graphics.materials.Material;
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.engine.MaterialUtils;
 import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.enums.EAttribute;
@@ -40,7 +40,11 @@ public class MeshInfo implements IModel {
   public ECache type() { return ECache.MESH_INFO; }
 
   public Mesh create() {
-    Mesh mesh = isInstanced() ? new InstancedMesh(name, instances) : new Mesh(name);
+    return create(instances());
+  }
+
+  public Mesh create(int instances) {
+    Mesh mesh = instances > 1 ? new InstancedMesh(name, instances) : new Mesh(name);
     mesh.vertexCount(vertexCount);
     mesh.isComplex = !indices.isEmpty();
     mesh.material(material);
@@ -52,9 +56,6 @@ public class MeshInfo implements IModel {
     return mesh;
   }
 
-  public boolean isInstanced() {
-    return instances > 1;
-  }
 
   public VertexInfo getVerticesByAttribute(String key) {
     return vertices
@@ -75,14 +76,11 @@ public class MeshInfo implements IModel {
   }
 
   public MeshInfo addVertices(
-    ValueStore values, int glType, int glUsage, int size, String attribute, int instances
+    ValueStore values, int glType, int glUsage, int size, String attribute, int instances, int divisor
   ) {
-    if (instances > this.instances) this.instances = instances;
-
     if (!values.isEmpty() && size > 0) {
-      AttribInfo attribInfo = new AttribInfo(attribute, size, instances);
+      AttribInfo attribInfo = new AttribInfo(attribute, size, instances, divisor);
       VertexInfo vertexInfo = new VertexInfo(values, glType, glUsage, attribInfo);
-
       addVertices(vertexInfo);
     }
 

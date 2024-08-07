@@ -7,8 +7,10 @@ import com.game.engine.scene.Scene;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
+import com.game.utils.enums.EControls;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 public abstract class AbstractLogic implements ILogic {
   protected Scene scene;
@@ -31,7 +33,13 @@ public abstract class AbstractLogic implements ILogic {
     Mouse mouse = window.mouse();
     Keyboard keyboard = window.keyboard();
 
-    keyboard.input();
+    keyboard.reset();
+    if (window.isKeyPressed(GLFW.GLFW_KEY_W)) keyboard.captureMovement(EControls.MOVE_FORWARD);
+    if (window.isKeyPressed(GLFW.GLFW_KEY_S)) keyboard.captureMovement(EControls.MOVE_BACKWARD);
+    if (window.isKeyPressed(GLFW.GLFW_KEY_A)) keyboard.captureMovement(EControls.MOVE_LEFT);
+    if (window.isKeyPressed(GLFW.GLFW_KEY_D)) keyboard.captureMovement(EControls.MOVE_RIGHT);
+    if (window.isKeyPressed(GLFW.GLFW_KEY_E)) keyboard.captureMovement(EControls.MOVE_UP);
+    if (window.isKeyPressed(GLFW.GLFW_KEY_Q)) keyboard.captureMovement(EControls.MOVE_DOWN);
     viewMovement.set(keyboard.movementVec());
 
     viewRotation.set(0f);
@@ -53,7 +61,7 @@ public abstract class AbstractLogic implements ILogic {
   @Override
   public void render(int fps) {
     currentFPS = fps;
-//    scene.window().title("FPS: %s".formatted(fps));
+    scene.window().title("FPS: %s".formatted(fps));
     renderer.render(scene);
   }
 

@@ -112,7 +112,7 @@ public class Window {
 
   // TODO: Triggers too often. May need to wrap in a timeout.
   public boolean isKeyPressed(int keyCode) {
-    return keyboard().isKeyPressed(handle, keyCode);
+    return GLFW.glfwGetKey(handle, keyCode) == GLFW.GLFW_PRESS;
   }
 
   // Set camera position z = -1f representing the lowest possible value of z

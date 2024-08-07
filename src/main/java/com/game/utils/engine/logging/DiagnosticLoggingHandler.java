@@ -1,6 +1,6 @@
 package com.game.utils.engine.logging;
 
-import com.game.utils.logging.LoggingPrettifyUtils;
+import com.game.utils.logging.PrettifyUtils;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -33,19 +33,19 @@ public class DiagnosticLoggingHandler extends AbstractLoggingHandler {
   }
 
   public DiagnosticLoggingHandler row(String label, Quaternionf value) {
-    return row(label, LoggingPrettifyUtils.prettify(value));
+    return row(label, PrettifyUtils.prettify(value));
   }
 
   public DiagnosticLoggingHandler row(String label, Vector4f value) {
-    return row(label, LoggingPrettifyUtils.prettify(value));
+    return row(label, PrettifyUtils.prettify(value));
   }
 
   public DiagnosticLoggingHandler row(String label, Vector3f value) {
-    return row(label, LoggingPrettifyUtils.prettify(value));
+    return row(label, PrettifyUtils.prettify(value));
   }
 
   public DiagnosticLoggingHandler row(String label, float value) {
-    return row(label, LoggingPrettifyUtils.prettify(value));
+    return row(label, PrettifyUtils.prettify(value));
   }
 
   public DiagnosticLoggingHandler row(String label, int value) {

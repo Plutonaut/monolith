@@ -4,32 +4,38 @@ import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.engine.render.models.Model;
-import com.game.engine.scene.generators.data.ProceduralTerrainGenerationData;
-import com.game.utils.application.LoaderUtils;
-import com.game.utils.application.ValueGrid;
+import com.game.utils.application.values.ValueGrid;
+import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.loaders.TextureLoader;
 import com.game.utils.engine.terrain.TerrainUtils;
 import com.game.utils.engine.terrain.procedural.ProceduralNoiseUtils;
 import com.game.utils.engine.terrain.procedural.ProceduralTerrainGeneratorUtils;
+import org.apache.commons.lang3.StringUtils;
 
-public class ProceduralTerrainModelGenerator extends AbstractModelGenerator<ProceduralTerrainGenerationData> {
+public class ProceduralTerrainModelGenerator extends AbstractModelGenerator {
   protected MeshInfo generateMeshInfo(
-    ProceduralTerrainGenerationData data
+    ValueMap map
   ) {
-    String heightMapTexturePath = data.textureMapData().height();
-    final MeshInfoBuilder builder;
-    if (LoaderUtils.isResourcePath(heightMapTexturePath))
-      builder = buildTerrainMeshInfoFromTexture(data, heightMapTexturePath);
-    else if (data.noise() != null)
-      builder = buildTerrainMeshInfoFromNoise(data, heightMapTexturePath);
-    else builder = safeMode_buildTerrainMeshInfo(data);
+    String heightMapTexturePath = map.get("heightMapTexturePath");
+    String strategy = map.get("strategy");
+    if (StringUtils.isEmpty(strategy)) {
+      if (!StringUtils.isEmpty(heightMapTexturePath)) strategy = "texture";
+      else strategy = "";
+    }
+    final MeshInfoBuilder builder = switch (strategy) {
+      case "noise"
+        -> buildTerrainMeshInfoFromNoise(map, heightMapTexturePath);
+      case "texture" -> buildTerrainMeshInfoFromTexture(map, heightMapTexturePath);
+      default -> safeMode_buildTerrainMeshInfo(map);
+    };
+
     return builder.build();
   }
 
-  MeshInfoBuilder safeMode_buildTerrainMeshInfo(ProceduralTerrainGenerationData data) {
+  MeshInfoBuilder safeMode_buildTerrainMeshInfo(ValueMap map) {
     MeshInfoBuilder builder = new MeshInfoBuilder();
-    final ValueGrid grid = new ValueGrid(data.width(), data.height());
-    ProceduralTerrainGeneratorUtils.buildTerrainMeshInfo(data, builder, (int col, int row) -> {
+    final ValueGrid grid = new ValueGrid(map.getInt("width"), map.getInt("height"));
+    ProceduralTerrainGeneratorUtils.buildTerrainMeshInfo(map, builder, (int col, int row) -> {
       float height = 0.1f;
       grid.set(row, col, height);
       return height;
@@ -39,22 +45,23 @@ public class ProceduralTerrainModelGenerator extends AbstractModelGenerator<Proc
 
   // TODO: Attempt to pull from cache before loading texture from file.
   MeshInfoBuilder buildTerrainMeshInfoFromTexture(
-    ProceduralTerrainGenerationData data, String heightMapTexturePath
+    ValueMap map,
+    String heightMapTexturePath
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
-    final ValueGrid grid = new ValueGrid(data.width(), data.height());
+    final ValueGrid grid = new ValueGrid(map.getInt("width"), map.getInt("height"));
 
     TextureLoader.read(
       heightMapTexturePath,
       (buffer, width, height) ->  ProceduralTerrainGeneratorUtils.buildTerrainMeshInfo(
-        data,
+        map,
         builder,
         (int col, int row) -> {
           float vertexHeight = TerrainUtils.getHeight(
             col,
             row,
-            data.minVertexHeight(),
-            data.maxVertexHeight(),
+            map.getFloat("minVertexHeight"),
+            map.getFloat("maxVertexHeight"),
             width,
             buffer
           );
@@ -71,21 +78,22 @@ public class ProceduralTerrainModelGenerator extends AbstractModelGenerator<Proc
   }
 
   MeshInfoBuilder buildTerrainMeshInfoFromNoise(
-    ProceduralTerrainGenerationData data, String heightMapTexturePath
+    ValueMap map, String heightMapTexturePath
   ) {
     final MeshInfoBuilder builder = new MeshInfoBuilder();
-    ValueGrid grid = ProceduralNoiseUtils.process(data.width(), data.height(), data.noise());
+    ValueGrid grid = ProceduralNoiseUtils.process(map);
     GlobalCache.instance().texture(heightMapTexturePath, grid);
-    ProceduralTerrainGeneratorUtils.buildTerrainMeshInfo(data, builder, grid::get);
+    ProceduralTerrainGeneratorUtils.buildTerrainMeshInfo(map, builder, grid::get);
     return builder;
   }
 
   @Override
-  public Model generateModel(ProceduralTerrainGenerationData data) {
+  public Model generateModel(ValueMap map) {
+    String terrainId = map.get("id");
     MeshInfo info = GlobalCache
       .instance()
-      .meshInfo(data.id(), id -> generateMeshInfo(data));
-    Model model = new Model(data.id());
+      .meshInfo(terrainId, id -> generateMeshInfo(map));
+    Model model = new Model(terrainId);
     model.addMeshData(info.name());
     return model;
   }

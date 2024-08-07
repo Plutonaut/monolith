@@ -1,6 +1,6 @@
 package com.game.loaders.ini;
 
-import com.game.engine.settings.INIModelSection;
+import com.game.utils.application.values.ValueMap;
 import com.game.utils.application.PathSanitizer;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +27,8 @@ public class INIFileModel {
     return contents.isEmpty() || contents.values().stream().allMatch(Map::isEmpty);
   }
 
-  public INIModelSection modelSection(String section) {
-    return new INIModelSection(this.section(section));
+  public ValueMap modelSection(String section) {
+    return new ValueMap(this.section(section));
   }
 
   protected Map<String, String> section(String section) {

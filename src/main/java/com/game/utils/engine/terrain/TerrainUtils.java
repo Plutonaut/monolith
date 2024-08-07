@@ -1,6 +1,6 @@
 package com.game.utils.engine.terrain;
 
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import org.joml.Vector3f;
 
 import java.nio.ByteBuffer;
