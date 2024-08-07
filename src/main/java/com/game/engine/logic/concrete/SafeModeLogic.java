@@ -1,9 +1,9 @@
-package com.game.engine.logic;
+package com.game.engine.logic.concrete;
 
-import com.game.engine.settings.EngineSettings;
+import com.game.engine.logic.AbstractLogic;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
-import com.game.engine.window.Window;
+import com.game.engine.settings.EngineSettings;
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -45,15 +45,7 @@ public class SafeModeLogic extends AbstractLogic {
 
   @Override
   public void input() {
-    Window window = scene.window();
-
-    window.keyboard().input();
-    viewMovement.set(window.keyboard().movementVec());
-
-    window.mouse().input();
-    viewRotation.set(0f);
-    if (window.mouse().isRightButtonPressed()) viewRotation.set(window.mouse().displVec());
-//    if (window.mouse().isLeftButtonPressed()) log.info("Left mouse button pressed"); // Raycast pick object
+    captureCameraMovementInput();
   }
 
   @Override

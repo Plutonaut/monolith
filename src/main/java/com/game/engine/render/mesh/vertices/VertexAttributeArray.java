@@ -3,31 +3,46 @@ package com.game.engine.render.mesh.vertices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.lwjgl.opengl.GL46;
+
+import java.util.HashSet;
 
 @AllArgsConstructor
 @Accessors(fluent = true)
 @Data
 public class VertexAttributeArray {
-  private final String key;
-  private final int size;
+  private final HashSet<VertexAttribute> attributes;
   private final int stride;
-  private final int offset;
   private final int glType;
-  private int instances;
 
-  public boolean isInstanced() { return instances > 1; }
-
-  public int glStride() { return stride * glBytes() * instances; }
-
-  public long glOffset(int index) {
-    if (!isInstanced()) return 0;
-    long position = (long) size * index;
-    long glOffset = (long) offset * glBytes();
-    return position + glOffset;
+  public VertexAttributeArray(int glType, int stride) {
+    attributes = new HashSet<>();
+    this.stride = stride;
+    this.glType = glType;
   }
 
-  protected int glBytes() {
-    return glType == GL46.GL_FLOAT ? Float.BYTES : Integer.BYTES;
+  public void addVertexAttribute(
+    String key,
+    int location,
+    int size,
+    int offset,
+    int divisor
+  ) {
+    VertexAttribute attribute = new VertexAttribute(
+      key,
+      location,
+      size,
+      offset,
+      divisor
+    );
+    attribute.point(stride, glType);
+    attributes.add(attribute);
+  }
+
+  public void enable() {
+    attributes.forEach(VertexAttribute::enable);
+  }
+
+  public void disable() {
+    attributes.forEach(VertexAttribute::disable);
   }
 }

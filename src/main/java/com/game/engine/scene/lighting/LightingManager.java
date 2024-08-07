@@ -14,25 +14,25 @@ import java.util.List;
 @Accessors(fluent = true)
 @Data
 public class LightingManager {
-  protected final HashMap<String, Light> lighting;
+  protected final HashMap<String, Light> lights;
 
   public LightingManager() {
-    lighting = new HashMap<>();
+    lights = new HashMap<>();
   }
 
   public boolean hasAmbientLight() {
-    return lighting.containsKey(ELighting.AMBIENT.value());
+    return lights.containsKey(ELighting.AMBIENT.value());
   }
 
   public boolean hasDirectionalLight() {
-    return lighting.containsKey(ELighting.DIRECTIONAL.value());
+    return lights.containsKey(ELighting.DIRECTIONAL.value());
   }
 
-  public boolean hasPointLights() {return lighting.keySet().stream().anyMatch(ELighting.POINT::isType);}
+  public boolean hasPointLights() {return lights.keySet().stream().anyMatch(ELighting.POINT::isType);}
 
-  public boolean hasSpotLights() {return lighting.keySet().stream().anyMatch(ELighting.SPOT::isType);}
+  public boolean hasSpotLights() {return lights.keySet().stream().anyMatch(ELighting.SPOT::isType);}
 
-  public Light ambientLight() {return lighting.computeIfAbsent(ELighting.AMBIENT.value(), k -> new Light());}
+  public Light ambientLight() {return lights.computeIfAbsent(ELighting.AMBIENT.value(), k -> new Light());}
 
   public LightingManager addAmbientLight() {
     ambientLight();
@@ -40,7 +40,7 @@ public class LightingManager {
   }
 
   public DirectionalLight directionalLight() {
-    return (DirectionalLight) lighting.computeIfAbsent(ELighting.DIRECTIONAL.value(), k -> new DirectionalLight());
+    return (DirectionalLight) lights.computeIfAbsent(ELighting.DIRECTIONAL.value(), k -> new DirectionalLight());
   }
 
   public LightingManager addDirectionalLight() {
@@ -49,28 +49,28 @@ public class LightingManager {
   }
 
   public List<PointLight> pointLights() {
-    return lighting.keySet().stream().filter(ELighting.POINT::isType).map(this::pointLight).toList();
+    return lights.keySet().stream().filter(ELighting.POINT::isType).map(this::pointLight).toList();
   }
 
   public PointLight pointLight(String key) {
-    return (PointLight) lighting.get(ELighting.POINT.prefix(key));
+    return (PointLight) lights.get(ELighting.POINT.prefix(key));
   }
 
   public LightingManager addPointLight(String key) {
-    lighting.putIfAbsent(ELighting.POINT.prefix(key), new PointLight());
+    lights.putIfAbsent(ELighting.POINT.prefix(key), new PointLight());
     return this;
   }
 
   public List<SpotLight> spotLights() {
-    return lighting.keySet().stream().filter(ELighting.SPOT::isType).map(this::spotLight).toList();
+    return lights.keySet().stream().filter(ELighting.SPOT::isType).map(this::spotLight).toList();
   }
 
   public SpotLight spotLight(String key) {
-    return (SpotLight) lighting.get(ELighting.SPOT.prefix(key));
+    return (SpotLight) lights.get(ELighting.SPOT.prefix(key));
   }
 
   public LightingManager addSpotLight(String key) {
-    lighting.putIfAbsent(ELighting.SPOT.prefix(key), new SpotLight());
+    lights.putIfAbsent(ELighting.SPOT.prefix(key), new SpotLight());
     return this;
   }
 }

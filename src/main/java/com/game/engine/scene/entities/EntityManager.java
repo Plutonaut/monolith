@@ -78,14 +78,15 @@ public class EntityManager {
       entity.addAnimations(animations).parameters().toggleModifier(EModifier.ANIMATED);
     model.meshInfo().forEach(info -> {
       if (info instanceof FontMeshInfo fontMeshInfo) {
-        DynamicMesh mesh = (DynamicMesh) createMesh(info,
-                                                    program,
-                                                    fromCache ? null : this::createDynamicMesh
+        DynamicMesh mesh = (DynamicMesh) createMesh(
+          info,
+          program,
+          fromCache ? null : this::createDynamicMesh
         );
         entity.controllers().text().mesh(mesh).text(fontMeshInfo.text()).font(fontMeshInfo.font());
       } else {
         Mesh mesh = createMesh(info, program, fromCache ? null : this::createMesh);
-        if (info.instances() > 1) entity.controllers().instances().set(info.instances());
+//        if (info.instances() > 1) entity.controllers().instances().set(info.instances());
         entity.addMesh(mesh);
       }
     });
@@ -99,7 +100,7 @@ public class EntityManager {
     mesh.bind();
     info.vertices().forEach(vertex -> {
       mesh.addVertexBufferObject(vertex.create());
-      mesh.setVertexAttributeArrays(program.attributes().point(vertex));
+      mesh.setVertexAttributeArray(program.attributes().point(vertex));
     });
     if (mesh.isComplex()) {
       IndexBufferObject ibo = new IndexBufferObject();
@@ -113,7 +114,7 @@ public class EntityManager {
   DynamicMesh createDynamicMesh(MeshInfo info, Program program) {
     FontMeshInfo fontMeshInfo = (FontMeshInfo) info;
     DynamicMesh mesh = fontMeshInfo.create();
-    mesh.redraw(info, v -> mesh.setVertexAttributeArrays(program.attributes().point(v)));
+    mesh.redraw(info, v -> mesh.setVertexAttributeArray(program.attributes().point(v)));
     return mesh;
   }
 

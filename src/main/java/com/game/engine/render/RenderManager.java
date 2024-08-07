@@ -14,6 +14,7 @@ public class RenderManager implements IRenderer {
     ERenderer.BASIC,
     ERenderer.FONT,
     ERenderer.SKYBOX,
+    ERenderer.PARTICLE,
     ERenderer.SPRITE,
     ERenderer.MESH,
     ERenderer.SCENE

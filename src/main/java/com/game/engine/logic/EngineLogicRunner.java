@@ -1,5 +1,6 @@
 package com.game.engine.logic;
 
+import com.game.engine.logic.concrete.*;
 import com.game.engine.settings.EngineSettings;
 
 public class EngineLogicRunner {
@@ -30,6 +31,7 @@ public class EngineLogicRunner {
   ILogic create(EngineSettings settings) {
     String logic = settings.logic();
     return switch (logic) {
+      case "testInstancing" -> new TestInstancingLogic(settings);
       case "testRender" -> new TestRenderLogic(settings);
       case "testPipeline" -> new TestPipelineLogic(settings);
       case "testProcGen" -> new TestProceduralGenerationLogic(settings);

@@ -3,32 +3,32 @@ package com.game.engine.scene.generators;
 import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.FontMeshInfo;
 import com.game.engine.render.models.Model;
-import com.game.engine.scene.generators.data.TextGenerationData;
 import com.game.graphics.fonts.FontInfo;
+import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.FontInfoUtils;
 import com.game.utils.engine.loaders.FontResourceLoaderUtils;
 
 import java.awt.*;
 
-public class TextModelGenerator extends AbstractModelGenerator<TextGenerationData> {
+public class TextModelGenerator extends AbstractModelGenerator {
   @Override
-  public Model generateModel(TextGenerationData data) {
-    String id = data.id();
+  public Model generateModel(ValueMap map) {
+    String id = map.get("id");
     Model model = new Model(id);
     FontMeshInfo meshInfo = (FontMeshInfo) GlobalCache
       .instance()
-      .meshInfo(id, meshInfoName -> generateMeshInfo(data));
+      .meshInfo(id, meshInfoName -> generateMeshInfo(map));
     model.addMeshData(meshInfo.name());
     return model;
   }
 
-  public FontMeshInfo generateMeshInfo(TextGenerationData data) {
-    Font font = data.font();
-    String id = data.id();
-    String text = data.text();
-    boolean antiAlias = data.antiAlias();
-    Color color = data.color();
-    Color materialColor = data.materialColor();
+  public FontMeshInfo generateMeshInfo(ValueMap map) {
+    Font font = GlobalCache.instance().getFont(map.get("fontName"), map.getInt("fontSize"));
+    String id = map.get("id");
+    String text = map.get("text");
+    boolean antiAlias = map.getBool("antiAlias");
+    Color color = map.getColor("fontColor");
+    Color materialColor = map.getColor("diffuseColor");
 
     FontInfo info = GlobalCache
       .instance()

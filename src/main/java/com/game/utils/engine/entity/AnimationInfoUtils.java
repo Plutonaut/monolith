@@ -3,7 +3,7 @@ package com.game.utils.engine.entity;
 import com.game.engine.render.mesh.animations.AnimInfo;
 import com.game.engine.render.mesh.animations.Bone;
 import com.game.engine.render.mesh.animations.Weight;
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.math.MatrixUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.AIBone;

@@ -10,9 +10,7 @@ import lombok.experimental.Accessors;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 @Accessors(fluent = true)
 @Data
@@ -20,7 +18,7 @@ public class Mesh implements IGraphics {
   protected final int glId;
   protected final String name;
   protected final HashSet<VertexBufferObject> vbos;
-  protected final HashMap<String, VertexAttributeArray> vaas;
+  protected final HashSet<VertexAttributeArray> vaas;
   protected Material material;
   protected Vector3f min;
   protected Vector3f max;
@@ -31,7 +29,7 @@ public class Mesh implements IGraphics {
     this.name = name;
     glId = GL46.glGenVertexArrays();
     vbos = new HashSet<>();
-    vaas = new HashMap<>();
+    vaas = new HashSet<>();
     min = new Vector3f();
     max = new Vector3f();
   }
@@ -77,12 +75,16 @@ public class Mesh implements IGraphics {
     vbos.add(vertexBufferObject);
   }
 
-  public void setVertexAttributeArrays(List<VertexAttributeArray> vertexAttributeArrays) {
-    vertexAttributeArrays.forEach(this::setVertexAttributeArray);
+  public void setVertexAttributeArray(VertexAttributeArray vertexAttributeArray) {
+    vaas.add(vertexAttributeArray);
   }
 
-  public void setVertexAttributeArray(VertexAttributeArray vertexAttributeArray) {
-    vaas.put(vertexAttributeArray.key(), vertexAttributeArray);
+  public void enable() {
+    vaas.forEach(VertexAttributeArray::enable);
+  }
+
+  public void disable() {
+    vaas.forEach(VertexAttributeArray::disable);
   }
 
   public void updateBounds(Vector3f min, Vector3f max) {

@@ -19,7 +19,7 @@ import com.game.graphics.fonts.FontInfo;
 import com.game.graphics.shaders.Program;
 import com.game.graphics.shaders.Shader;
 import com.game.graphics.texture.Texture;
-import com.game.utils.application.ValueGrid;
+import com.game.utils.application.values.ValueGrid;
 import com.game.utils.engine.FontInfoUtils;
 import com.game.utils.engine.ModelUtils;
 import com.game.utils.engine.loaders.TextureLoader;

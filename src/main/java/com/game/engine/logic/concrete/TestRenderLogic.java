@@ -1,5 +1,6 @@
-package com.game.engine.logic;
+package com.game.engine.logic.concrete;
 
+import com.game.engine.logic.AbstractLogic;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.mesh.vertices.AttribInfo;
@@ -15,8 +16,8 @@ import java.nio.IntBuffer;
 
 @Slf4j
 public class TestRenderLogic extends AbstractLogic {
-  AttribInfo positionAttrib = new AttribInfo("position", 3, 1);
-  AttribInfo colorAttrib = new AttribInfo("color", 3, 1);
+  AttribInfo positionAttrib = new AttribInfo("position", 3, 1, 0);
+  AttribInfo colorAttrib = new AttribInfo("color", 3, 1, 0);
   Program program;
   Mesh mesh;
   int numVertices;
