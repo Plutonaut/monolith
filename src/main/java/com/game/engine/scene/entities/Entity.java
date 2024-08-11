@@ -9,7 +9,6 @@ import com.game.engine.scene.entities.controllers.EntityControllerManager;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EModifier;
 import com.game.utils.enums.EProjection;
-import com.game.utils.enums.ERenderer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joml.Vector3f;
@@ -61,15 +60,15 @@ public class Entity implements IRenderable {
     return parameters.projection;
   }
 
-  public boolean matches(ERenderer shader) {
-    return parameters.hasShader(shader);
-  }
-
   public Entity move(Vector3f position) {
     return move(position.x(), position.y(), position.z());
   }
 
-  public Entity move(float x, float y) {
+  public Entity move(float p) {
+    return move(p, p, p);
+  }
+
+  public Entity move2D(float x, float y) {
     return move(x, y, 0f);
   }
 

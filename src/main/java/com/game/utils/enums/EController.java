@@ -10,6 +10,7 @@ public enum EController {
   AUDIO("audio"),
   PHYS("physics"),
   BODY("physicsBody"),
+  INTERACTION("interaction"),
   COLL("collider"),
   INSTANCE("instance"),
   ANIM("animation");

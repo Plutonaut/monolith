@@ -4,7 +4,6 @@ import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.models.Model;
-import com.game.engine.scene.generators.data.SpriteGenerationData;
 import com.game.engine.scene.sprites.Sprite;
 import com.game.engine.scene.sprites.SpriteAtlas;
 import com.game.engine.scene.sprites.SpriteAtlasRecord;
@@ -12,24 +11,26 @@ import com.game.graphics.materials.Material;
 import com.game.graphics.texture.Texture;
 import com.game.utils.application.LoaderUtils;
 import com.game.utils.application.PathSanitizer;
+import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.loaders.TextureLoader;
 import com.game.utils.enums.EMaterialTexture;
 import org.lwjgl.opengl.GL46;
 
 import java.io.File;
 
-public class SpriteResourceModelGenerator extends AbstractModelGenerator<SpriteGenerationData> {
-  protected MeshInfo generateMeshInfo(SpriteGenerationData data) {
-    return generateMeshInfo(data.id(), data.path(), data.clamped());
+public class SpriteResourceModelGenerator extends AbstractModelGenerator {
+  protected MeshInfo generateMeshInfo(ValueMap map) {
+    return generateMeshInfo(map.get("id"), map.get("path"), map.getBool("clamped"));
   }
 
   @Override
-  public Model generateModel(SpriteGenerationData data) {
-    if (data.useAtlas()) return generateFromSpriteAtlas(data.path(), data.animated());
+  public Model generateModel(ValueMap map) {
+    if (map.get("strategy").equals("atlas"))
+      return generateFromSpriteAtlas(map.get("path"), map.getBool("animated"));
 
-    String id = data.id();
+    String id = map.get("id");
     Model model = new Model(id);
-    MeshInfo meshInfo = generateMeshInfo(data);
+    MeshInfo meshInfo = generateMeshInfo(map);
     model.addMeshData(meshInfo.name());
     return model;
   }

@@ -10,5 +10,10 @@ import lombok.experimental.Accessors;
 public class AttribInfo {
   protected String key;
   protected int size;
-  protected int instances;
+  protected int dimensions;
+  // Specify the number of instances that will pass between updates of the generic attribute at slot
+  protected int divisor;
+  public int totalSize() {
+    return size * dimensions;
+  }
 }

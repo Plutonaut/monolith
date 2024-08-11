@@ -1,0 +1,92 @@
+
+======================================================================================
+#	Scene
+======================================================================================
+
+	Timestamp: 08-11-2024-10-53-11
+	Log: 1
+
+======================================================================================
+#	Instance Render Test OpenGL GL Version {4}.{6}
+======================================================================================
+
+	width: 1280
+	height: 720
+	Log: 2
+
+======================================================================================
+#	Camera
+======================================================================================
+
+	Position: { x: 0, y: 0, z: 2 }
+	Rotation: { x: 0, y: 0, z: 0 }
+	Mouse Sensitivity: : 0.2
+	Camera Speed: : 0.05
+	Log: 3
+
+======================================================================================
+#	Lighting
+======================================================================================
+
+	Log: 4
+
+======================================================================================
+#	Entities
+======================================================================================
+
+	create_entity: 1772060867
+	Position: { x: 25, y: 25, z: 0 }
+	Rotation: { x: 0, y: 0, z: 0, w: 1 }
+	Scale: 1
+	Shader: font
+	Projection: ORTHOGRAPHIC_FONT_2D
+	Meshes
+	bg_mesh: 2
+	Vertex Count: 6
+	Is Complex: true
+	Min vertex: { x: -20, y: -20, z: 0 }
+	Max vertex: { x: 180, y: 44, z: 0 }
+	Material: bg_material
+	src/main/resources/textures/gui/gui_bg_01.png
+	$clr.diffuse: { x: 1, y: 1, z: 1, w: 1 }
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 1
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Log: 5
+
+======================================================================================
+#	Global Cache
+======================================================================================
+
+	MESH: Items: 1
+	create_entity
+	SHADER: Items: 2
+	render\font\font.vert
+	render\font\font.frag
+	FONT_INFO: Items: 1
+	Arial
+	TEXTURE: Items: 2
+	src/main/resources/textures/gui/gui_bg_01.png
+	src\main\resources\textures\fonts\Arial.png
+	MODEL: Items: 1
+	create_entity_model
+	MESH_INFO: Items: 2
+	create_entity_mesh_info
+	QUAD_mesh_info
+	PROGRAM: Items: 1
+	font
+	Log: 6
+Closing Print Stream

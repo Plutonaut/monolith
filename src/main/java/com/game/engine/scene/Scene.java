@@ -11,17 +11,14 @@ import com.game.engine.scene.camera.Camera;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.EntityManager;
 import com.game.engine.scene.entities.EntityRenderParameters;
-import com.game.engine.scene.generators.IGeneratorConsumer;
 import com.game.engine.scene.generators.ModelGenerator;
 import com.game.engine.scene.lighting.LightingManager;
 import com.game.engine.scene.projection.Projection;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
-import com.game.graphics.materials.Material;
-import com.game.graphics.texture.TextureMapData;
+import com.game.utils.application.values.ValueMap;
+import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.TextureUtils;
-import com.game.utils.engine.entity.ParameterUtils;
-import com.game.utils.engine.logging.DiagnosticLoggingHandler;
 import com.game.utils.enums.EGLParam;
 import com.game.utils.enums.EProjection;
 import com.game.utils.enums.ERenderer;
@@ -30,7 +27,8 @@ import lombok.experimental.Accessors;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import java.util.stream.Stream;
+import java.awt.*;
+import java.util.List;
 
 @Accessors(fluent = true)
 @Data
@@ -44,22 +42,20 @@ public class Scene {
   private final ModelGenerator models;
   private final GLParameters parameters;
   private final PacketManager packets;
-  private final DiagnosticLoggingHandler diagnostics;
+  private final SceneDiagnosticsHelper diagnostics;
 
   public Scene(EngineSettings settings, String name) {
-    window = new Window(
-      settings.width(),
-      settings.height(),
-      name,
-      settings.debug(),
-      true,
-      settings.vsync()
+    window = new Window(settings.width(),
+                        settings.height(),
+                        name,
+                        settings.debug(),
+                        true,
+                        settings.vsync()
     );
-    camera = new Camera(
-      settings.cameraPosition(),
-      new Vector3f(),
-      settings.mouseSensitivity(),
-      settings.movementSpeed()
+    camera = new Camera(settings.cameraPosition(),
+                        new Vector3f(),
+                        settings.mouseSensitivity(),
+                        settings.movementSpeed()
     );
     projection = new Projection(settings.fov(), settings.zNear(), settings.zFar());
 
@@ -69,171 +65,160 @@ public class Scene {
     parameters = new GLParameters();
     entities = new EntityManager();
     models = new ModelGenerator();
-    diagnostics = new DiagnosticLoggingHandler();
+    diagnostics = new SceneDiagnosticsHelper(settings.diagnostics());
   }
 
   public AudioSource audio(String key, String path) {
     return audio.load(key, path);
   }
 
+  public Model model(String id) {
+    return model(id, "");
+  }
+
+  public Model model(String id, String path) {
+    return model(id, path, ""); // default: "object"
+  }
+
+  public Model model(String id, String path, String type) {
+    return model(models.builder().id(id).path(path).type(type).build());
+  }
+
+  public Model model(ValueMap map) {
+    return GlobalCache.instance().model(map.get("id"), modelId -> models.generate(map));
+  }
+
+  public Model cloneModel(String modelId, String cloneId) {
+    Model model = model(modelId);
+    String copyId = modelId + "_" + cloneId;
+    List<String> meshInfo = model
+      .meshInfo()
+      .stream()
+      .map((d) -> GlobalCache
+        .instance()
+        .meshInfo(cloneId, n -> MeshInfoUtils.clone(d, cloneId))
+        .name())
+      .toList();
+
+    return GlobalCache.instance().model(copyId, (id) -> {
+      Model copy = new Model(id);
+      copy.meshData().addAll(meshInfo);
+      copy.animations().addAll(model.animations());
+      return copy;
+    });
+  }
+
   public Entity entity(String id) {
     return entities.get(id);
   }
 
-  public Entity create(String id, String modelId, ERenderer shader) {
-    return create(id, modelId, shader, EProjection.PERSPECTIVE);
-  }
-
-  public Entity create(String id, String modelId, ERenderer shader, EProjection projection) {
-    return create(id, modelId, shader, projection, null);
-  }
-
-  public Entity create(
-    String id, String modelId, ERenderer shader, EProjection projection, IGeneratorConsumer consumer
-  ) {
-    return create(id, modelId, shader, projection, consumer, 3);
+  public Entity createObject(String id, String path) {
+    ValueMap map = models.builder().id(id).path(path).animated(false).build();
+    Model model = model(map);
+    return createEntity(id,
+                        model,
+                        ERenderer.SCENE,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH,
+                        EGLParam.CULL
+    );
   }
 
   public Entity createText(String id, String text) {
-    return create(
-      id,
-      id + "_" + text,
-      ERenderer.FONT,
-      EProjection.ORTHOGRAPHIC_FONT_2D,
-      generator -> generator.generateText(id, text),
-      EGLParam.BLEND,
-      EGLParam.DEPTH
-    );
-  }
-
-  public Entity createModel(String id, String path) {
-    return create(
-      id,
-      path,
-      ERenderer.SCENE,
-      EProjection.PERSPECTIVE,
-      generator -> generator.generate3DModel(id, path),
-      EGLParam.DEPTH,
-      EGLParam.BLEND,
-      EGLParam.CULL
-    );
-  }
-
-  // TODO: Remove dependency on texture map
-  // TODO: Separate procedural terrain generation out into it's own more complex map generator.
-  public Entity generateProceduralTerrain(String id, int size) {
-    return generateProceduralTerrain(id, size, TextureUtils.MOSS_TEXTURE_MAP_DATA);
-  }
-
-  public Entity generateProceduralTerrain(
-    String id, int size, String diffuseTexture, String heightTexture
-  ) {
-    TextureMapData textureMapData = new TextureMapData()
-      .diffuse(diffuseTexture)
-      .height(heightTexture);
-    return generateProceduralTerrain(id, size, textureMapData);
-  }
-
-  Entity generateProceduralTerrain(String id, int size, TextureMapData textureMapData) {
-    return create(
-      id,
-      "proc_terrain" + id,
-      ERenderer.SCENE,
-      EProjection.PERSPECTIVE,
-      generator -> generator.generateProceduralTerrain(id, textureMapData, size, size),
-      EGLParam.CULL,
-      EGLParam.DEPTH,
-      EGLParam.BLEND
-    );
-  }
-
-  public Entity createSkyBox(String id, String path) {
-    return create(
-      id,
-      path,
-      ERenderer.SKYBOX,
-      EProjection.PERSPECTIVE,
-      generator -> generator.generate3DModel(id, path),
-      EGLParam.DEPTH,
-      EGLParam.BLEND
+    ValueMap map = models
+      .builder()
+      .id(id)
+      .text(text)
+      .antiAlias(true)
+      .diffuseColor(Color.white)
+      .asText()
+      .fontName("Arial")
+      .fontSize(20)
+      .fontColor(Color.white)
+      .build();
+    Model model = model(map);
+    return createEntity(id,
+                        model,
+                        ERenderer.FONT,
+                        EProjection.ORTHOGRAPHIC_FONT_2D,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH
     );
   }
 
   public Entity createSprite(String id, String path) {
-    return create(
-      id,
-      path,
-      ERenderer.SPRITE,
-      EProjection.ORTHOGRAPHIC_FONT_2D,
-      generator -> generator.generate2DModel(id, path),
-      EGLParam.BLEND,
-      EGLParam.DEPTH
+    ValueMap map = models
+      .builder()
+      .id(id)
+      .path(path)
+      .animated(false)
+      .clamped(false)
+      .useAtlas()
+      .asSprite()
+      .build();
+    Model model = model(map);
+    return createEntity(id,
+                        model,
+                        ERenderer.SPRITE,
+                        EProjection.ORTHOGRAPHIC_FONT_2D,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH
     );
   }
 
-  public Entity create(
-    String id,
-    String modelId,
-    ERenderer shader,
-    EProjection projection,
-    IGeneratorConsumer consumer,
-    EGLParam... params
-  ) {
-    int glFlags = ParameterUtils.toIntFlagValue(params);
-    return create(id, modelId, shader, projection, consumer, glFlags);
+  public Entity createSkyBox(String id, String path) {
+    ValueMap map = models.builder().id(id).path(path).animated(false).build();
+    Model model = model(map);
+    return createEntity(id,
+                        model,
+                        ERenderer.SKYBOX,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH
+    );
   }
 
-  public Entity create(
-    String id,
-    String modelId,
-    ERenderer shader,
-    EProjection projection,
-    IGeneratorConsumer consumer,
-    int glFlags
-  ) {
-    Model model = GlobalCache.instance().model(modelId, model_id -> consumer.consume(models));
-    return create(id, model, shader, projection, glFlags);
+  public Entity createTerrain(String id, int size) {
+    ValueMap map = models
+      .builder()
+      .id(id)
+      .width(size)
+      .height(size)
+      .minVertexHeight(0)
+      .maxVertexHeight(0.25f)
+      .asTerrain()
+      .heightMapTexturePath(TextureUtils.MOSS_HGHT_TEXTURE_PATH)
+      .diffuseTexturePath(TextureUtils.MOSS_DIFF_TEXTURE_PATH)
+      .build();
+    Model model = model(map);
+    return createEntity(id,
+                        model,
+                        ERenderer.SCENE,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.CULL,
+                        EGLParam.DEPTH
+    );
   }
 
-  public Entity create(
+  public Entity createEntity(
     String id, Model model, ERenderer shader, EProjection projection, EGLParam... params
   ) {
-    int glFlags = Stream.of(params).mapToInt(EGLParam::value).reduce((u, v) -> u | v).orElse(0);
-    return create(id, model, shader, projection, glFlags);
+    EntityRenderParameters parameters = new EntityRenderParameters(shader,
+                                                                   projection,
+                                                                   EGLParam.bitmap(params)
+    );
+    return createEntity(id, model, parameters);
   }
 
-  public Entity create(
-    String id, Model model, ERenderer shader, EProjection projection, int glFlags
-  ) {
-    return createEntity(id, model, shader, projection, glFlags, false);
+  // TODO: Remove fromCache, change mesh loading strategy.
+  public Entity createEntity(String id, Model model, EntityRenderParameters parameters) {
+    return entities.create(id, model, parameters, false);
   }
 
-  public Entity copy(
-    String id, String modelId, ERenderer shader, EProjection projection, int glFlags
-  ) {
-    Model model = GlobalCache.instance().model(modelId);
-    return copy(id, model, shader, projection, glFlags);
-  }
-
-  public Entity copy(
-    String id, Model model, ERenderer shader, EProjection projection, int glFlags
-  ) {
-    return createEntity(id, model, shader, projection, glFlags, true);
-  }
-
-  Entity createEntity(
-    String id, Model model, ERenderer shader, EProjection projection, int glFlags, boolean useCache
-  ) {
-    EntityRenderParameters parameters = new EntityRenderParameters(shader, projection, glFlags);
-    return entities.create(id, model, parameters, useCache);
-  }
-
-  public Entity copy(Entity from) {
-    return copy(from.name());
-  }
-
-  public Entity copy(String entityName) {
-    return entities.createFrom(entityName);
+  public Entity createEntity(Entity entity) {
+    return entities.createFrom(entity.name());
   }
 
   public Scene bind(Entity... entities) {
@@ -253,13 +238,12 @@ public class Scene {
   }
 
   public void rayCastMouseClick(boolean all, IHitListener listener) {
-    Raycaster.rayCastMouseClick(
-      listener,
-      all,
-      entities.getAll(),
-      window,
-      camera,
-      projectionMat(EProjection.PERSPECTIVE)
+    Raycaster.rayCastMouseClick(listener,
+                                all,
+                                entities.getAll(),
+                                window,
+                                camera,
+                                projectionMat(EProjection.PERSPECTIVE)
     );
   }
 
@@ -289,65 +273,6 @@ public class Scene {
     };
   }
 
-  // TODO: Display text that says gathering diagnostics and then pause rendering.
-  public void captureDiagnostics() {
-    diagnostics.init("Scene Diagnostics");
-    diagnostics
-      .open(window.title())
-      .row("width", window.width())
-      .row("height", window().height())
-      .close();
-    diagnostics
-      .open("Camera")
-      .row("Position", camera.position())
-      .row("Rotation", camera.rotation())
-      .row("Mouse Sensitivity: ", camera.mouseSensitivity())
-      .row("Camera Speed: ", camera.cameraSpeed())
-      .close();
-    diagnostics.open("Lighting");
-    lighting.lighting().forEach((key, value) -> {
-      diagnostics.row(key);
-      diagnostics.row("Color", value.color());
-      diagnostics.row("Factor", value.factor());
-    });
-    diagnostics.close();
-
-    diagnostics.open("Entities");
-    entities.entities().forEach((key, value) -> {
-      diagnostics.row(key, value.id())
-                 .row("Position", value.transform().position())
-                 .row("Rotation", value.transform().rotation())
-                 .row("Scale", value.transform().scale())
-                 .row("Shader", value.parameters().shader().key())
-                 .row("Projection", value.parameters().projection().name());
-      diagnostics.row("Meshes");
-      value.meshes().forEach((mesh) -> {
-        diagnostics
-          .row(mesh.key(), mesh.glId())
-          .row("Vertex Count", mesh.vertexCount())
-          .row("Is Complex", mesh.isComplex())
-          .row("Min vertex", mesh.min())
-          .row("Max vertex", mesh.max());
-        Material material = mesh.material();
-        diagnostics.row("Material", material.name());
-        material.textures().pack().values().forEach(diagnostics::row);
-        material.colors().colors().forEach(diagnostics::row);
-        mesh.vaas().forEach((a, v) ->
-                              diagnostics
-                                .row("Vertex Attribute Array", a)
-                                .row("Size", v.size())
-                                .row("Stride", v.stride())
-                                .row("Offset", v.offset())
-                                .row("Instances", v.instances())
-
-        );
-      });
-    });
-    GlobalCache.instance().computeDiagnostics(diagnostics);
-    diagnostics.close();
-    diagnostics.dispose();
-  }
-
   public void enter() {
     window().clear();
     window().viewport();
@@ -359,6 +284,7 @@ public class Scene {
   }
 
   public void dispose() {
+    diagnostics.capture(this);
     GlobalCache.instance().dispose();
     audio.dispose();
     window.dispose();

@@ -35,7 +35,7 @@ public class FontInfoUtils {
     );
     texturePath = PathSanitizer.sanitizeFilePath(texturePath);
 
-    return process(font,texturePath, antiAlias, color);
+    return process(font, texturePath, antiAlias, color);
   }
 
   public static FontInfo process(Font font, String texturePath, boolean antiAlias, Color color) {

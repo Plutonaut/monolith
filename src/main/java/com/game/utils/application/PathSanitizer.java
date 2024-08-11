@@ -20,7 +20,7 @@ public class PathSanitizer {
   }
 
   static void prependDirectory(String directory, StringBuilder builder) {
-    if (!builder.toString().startsWith(directory)) {
+    if (!builder.toString().contains(directory)) {
       if (!builder.toString().startsWith(File.separator)) builder.insert(0, File.separator);
       builder.insert(0, directory);
     }

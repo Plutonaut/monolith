@@ -4,7 +4,7 @@ import com.game.engine.render.mesh.FontMeshInfo;
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.graphics.fonts.CharInfo;
 import com.game.graphics.fonts.FontInfo;
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.engine.ColorUtils;
 
 import java.awt.*;

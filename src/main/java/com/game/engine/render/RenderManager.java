@@ -2,6 +2,7 @@ package com.game.engine.render;
 
 import com.game.engine.render.renderers.AbstractRenderer;
 import com.game.engine.render.renderers.IRenderer;
+import com.game.engine.render.renderers.concrete.*;
 import com.game.engine.scene.Scene;
 import com.game.utils.enums.ERenderer;
 
@@ -12,23 +13,36 @@ public class RenderManager implements IRenderer {
   // The order of each renderer matters
   protected static final List<ERenderer> orderedShaderRenderArray = List.of(
     ERenderer.BASIC,
-    ERenderer.FONT,
     ERenderer.SKYBOX,
+    ERenderer.PARTICLE,
     ERenderer.SPRITE,
     ERenderer.MESH,
-    ERenderer.SCENE
+    ERenderer.SCENE,
+    ERenderer.GUI,
+    ERenderer.FONT
   );
 
   protected final HashMap<ERenderer, AbstractRenderer> renderers;
-  protected final RendererFactory factory;
 
   public RenderManager() {
     renderers = new HashMap<>();
-    factory = new RendererFactory();
+  }
+
+  protected AbstractRenderer create(ERenderer shader) {
+    return switch (shader) {
+      case GUI -> new GUIRenderer();
+      case MESH -> new MeshRenderer();
+      case SCENE -> new SceneRenderer();
+      case SKYBOX -> new SkyBoxRenderer();
+      case SPRITE -> new SpriteRenderer();
+      case FONT -> new FontRenderer();
+      case PARTICLE -> new ParticleRenderer();
+      case BASIC -> new BasicRenderer();
+    };
   }
 
   AbstractRenderer getRenderer(ERenderer type) {
-    return renderers.computeIfAbsent(type, factory::create);
+    return renderers.computeIfAbsent(type, this::create);
   }
 
   public void render(Scene scene) {

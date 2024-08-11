@@ -65,7 +65,7 @@ j  com.game.caches.GlobalCache.model(Ljava/lang/String;Lcom/game/caches/models/i
 j  com.game.engine.scene.Scene.create(Ljava/lang/String;Ljava/lang/String;Lcom/game/utils/enums/ERenderer;Lcom/game/utils/enums/EProjection;Lcom/game/engine/scene/generators/IGeneratorConsumer;I)Lcom/game/engine/scene/entities/Entity;+12
 j  com.game.engine.scene.Scene.create(Ljava/lang/String;Ljava/lang/String;Lcom/game/utils/enums/ERenderer;Lcom/game/utils/enums/EProjection;Lcom/game/engine/scene/generators/IGeneratorConsumer;[Lcom/game/utils/enums/EGLParam;)Lcom/game/engine/scene/entities/Entity;+41
 j  com.game.engine.scene.Scene.createSprite(Ljava/lang/String;Ljava/lang/String;)Lcom/game/engine/scene/entities/Entity;+32
-j  com.game.engine.logic.Sandbox2DLogic.onStart()V+44
+j  com.game.engine.logic.concrete.Sandbox2DLogic.onStart()V+44
 j  com.game.engine.logic.EngineLogicRunner.use(Lcom/game/engine/settings/EngineSettings;)V+17
 j  com.game.engine.GameEngine.run()V+8
 j  java.lang.Thread.runWith(Ljava/lang/Object;Ljava/lang/Runnable;)V+5 java.base@21.0.1

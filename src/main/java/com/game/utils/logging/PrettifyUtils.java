@@ -1,12 +1,14 @@
 package com.game.utils.logging;
 
+import com.game.utils.application.LambdaCounter;
+import com.game.utils.application.values.ValueStore;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import java.text.DecimalFormat;
 
-public class LoggingPrettifyUtils {
+public class PrettifyUtils {
   static final DecimalFormat df = new DecimalFormat("#.##");
 
   public static String prettify(float f) {
@@ -25,5 +27,17 @@ public class LoggingPrettifyUtils {
   public static String prettify(Quaternionf q) {
     return "{ x: " + prettify(q.x) + ", y: " + prettify(q.y) + ", z: " + prettify(q.z) + ", w: " + prettify(
       q.w) + " }";
+  }
+
+  public static String prettify(ValueStore s, int cutoff) {
+    StringBuilder builder = new StringBuilder("{\n");
+    LambdaCounter counter = new LambdaCounter(0);
+    s.asStreamf().forEach(v -> {
+      builder.append(prettify(v));
+      counter.inc();
+      builder.append((counter.value() % cutoff == 0) ? "\n\t" : ", ");
+    });
+
+    return builder.append("}").toString();
   }
 }

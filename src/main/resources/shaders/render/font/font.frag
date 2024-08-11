@@ -18,5 +18,11 @@ uniform sampler2D textureSampler;
 uniform Material material;
 
 void main() {
-    fragColor = material.diffuse * texture(textureSampler, textureCoord);
+    vec4 textureColor = texture(textureSampler, textureCoord);
+
+    if (all(equal(textureColor.xyz, vec3(0)))) {
+        textureColor.w = 0;
+    }
+
+    fragColor = material.diffuse * textureColor;
 }

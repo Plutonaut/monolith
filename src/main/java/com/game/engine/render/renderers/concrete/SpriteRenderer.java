@@ -21,7 +21,7 @@ public class SpriteRenderer extends AbstractLitRenderer {
     entity.meshes().forEach(mesh -> {
       Material material = mesh.material();
       setMaterialUniform(material);
-      draw(mesh);
+      mesh.render();
     });
   }
 }

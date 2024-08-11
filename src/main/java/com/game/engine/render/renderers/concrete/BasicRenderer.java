@@ -1,6 +1,7 @@
 package com.game.engine.render.renderers.concrete;
 
 import com.game.engine.render.IRenderable;
+import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.renderers.AbstractRenderer;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
@@ -15,6 +16,6 @@ public class BasicRenderer extends AbstractRenderer {
   @Override
   protected void render(IRenderable item, Scene scene) {
     Entity entity = (Entity) item;
-    entity.meshes().forEach(this::draw);
+    entity.meshes().forEach(Mesh::render);
   }
 }

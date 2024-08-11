@@ -12,7 +12,7 @@ public enum EAttribute {
   TXC("texcoord"),
   WGT("boneweights"),
   BON("boneindices"),
-  IMT("instancematrices");
+  IMX("instancematrices");
 
   private final String value;
 

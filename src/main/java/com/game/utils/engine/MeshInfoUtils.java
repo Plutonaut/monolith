@@ -5,7 +5,7 @@ import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.enums.EAttribute;
 import org.joml.Vector3f;
 import org.lwjgl.assimp.AIFace;
@@ -17,6 +17,15 @@ import java.nio.IntBuffer;
 
 public class MeshInfoUtils {
   public static final int MAX_VERTEX_DATA = 9;
+
+  public static MeshInfo clone(MeshInfo info, String cloneName) {
+    MeshInfo clone = new MeshInfo(cloneName);
+    info.vertices().forEach(clone::addVertices);
+    clone.indices().add(info.indices());
+    clone.material(info.material());
+    clone.vertexCount(info.vertexCount());
+    return clone;
+  }
 
   public static Bounds3D calculateBounds(VertexInfo info) {
     Vector3f min = new Vector3f(Float.MAX_VALUE);
@@ -37,7 +46,7 @@ public class MeshInfoUtils {
       max.max(vertex);
     }
 
-    return new Bounds3D(min, max);
+    return new Bounds3D(new Vector3f(), min, max);
   }
 
   public static MeshInfo process(AIMesh aiMesh) {
@@ -83,7 +92,7 @@ public class MeshInfoUtils {
 
   static VertexInfo process(AIVector3D.Buffer buffer, int size, String attribute) {
     ValueStore vertices = process(buffer, size);
-    AttribInfo attribInfo = new AttribInfo(attribute, size, 1);
+    AttribInfo attribInfo = new AttribInfo(attribute, size, 1, 0);
 
     return new VertexInfo(vertices, GL46.GL_FLOAT, GL46.GL_STATIC_DRAW, attribInfo);
   }

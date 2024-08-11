@@ -1,5 +1,9 @@
 package com.game.engine.render.mesh;
 
+import com.game.engine.physics.Bounds3D;
+import com.game.engine.render.mesh.vertices.VertexInfo;
+import com.game.utils.engine.MeshInfoUtils;
+import com.game.utils.enums.EAttribute;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,6 +29,11 @@ public class FontMeshInfo extends MeshInfo {
     mesh.vertexCount(vertexCount);
     mesh.isComplex = !indices.isEmpty();
     mesh.material(material);
+    VertexInfo positions = getVerticesByAttribute(EAttribute.POS.getValue());
+    if (positions != null) {
+      Bounds3D bounds = MeshInfoUtils.calculateBounds(positions);
+      mesh.updateBounds(bounds.min(), bounds.max());
+    }
     return mesh;
   }
 }

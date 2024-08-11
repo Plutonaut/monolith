@@ -9,11 +9,12 @@ public class RandomNumberGenerator {
     random = new Random(seed);
   }
 
-  public float next(float bounds) {
-    final float max = bounds * 2;
-    final float value = random.nextFloat() * max;
+  public float nextf() {
+    return nextf(1);
+  }
 
-    return value - bounds;
+  public float nextf(float bounds) {
+    return random.nextFloat() * bounds;
   }
 
   public int next(int bounds) {

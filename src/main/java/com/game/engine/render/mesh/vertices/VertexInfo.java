@@ -1,6 +1,6 @@
 package com.game.engine.render.mesh.vertices;
 
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.lwjgl.opengl.GL46;
@@ -15,8 +15,8 @@ public class VertexInfo {
   protected final int glType;
   protected final int glUsage;
 
-  public VertexInfo(float[] vertices, String attribute, int size, int instances, int glUsage) {
-    AttribInfo attrib = new AttribInfo(attribute, size, instances);
+  public VertexInfo(float[] vertices, String attribute, int size, int dimensions, int divisor, int glUsage) {
+    AttribInfo attrib = new AttribInfo(attribute, size, dimensions, divisor);
     this.vertices = new ValueStore();
     this.vertices.add(vertices);
     this.glUsage = glUsage;
@@ -35,20 +35,17 @@ public class VertexInfo {
     addAttributes(attributes);
   }
 
-  public int stride() {
-    return attributes.size() == 1 ? 0 : totalSize();
-  }
-
   public int totalVertexCount() {
     return vertices.size() * maxInstances() / totalSize();
   }
 
+  // TODO: Replace with strategy to pull specific attribute data one at a time.
   public int maxInstances() {
-    return attributes().values().stream().mapToInt(AttribInfo::instances).max().orElse(1);
+    return attributes().values().stream().mapToInt(AttribInfo::dimensions).sum();
   }
 
   public int totalSize() {
-    return attributes.values().stream().mapToInt(AttribInfo::size).sum();
+    return attributes.values().stream().mapToInt(AttribInfo::totalSize).sum();
   }
 
   public VertexBufferObject create() {

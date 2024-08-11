@@ -1,17 +1,15 @@
 package com.game.engine.render.mesh;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.lwjgl.opengl.GL46;
 
 @Accessors(fluent = true)
 @Getter
+@Setter
 public class InstancedMesh extends Mesh {
   protected int instances;
-
-  public InstancedMesh(String name) {
-    this(name, 1);
-  }
 
   public InstancedMesh(String name, int instances) {
     super(name);

@@ -1,8 +1,8 @@
 package com.game.utils.engine.terrain.procedural;
 
-import com.game.engine.scene.terrain.procedural.ProceduralNoiseData;
 import com.game.utils.application.RandomNumberGenerator;
-import com.game.utils.application.ValueGrid;
+import com.game.utils.application.values.ValueGrid;
+import com.game.utils.application.values.ValueMap;
 import org.joml.SimplexNoise;
 import org.joml.Vector2f;
 
@@ -12,29 +12,31 @@ public class ProceduralNoiseUtils {
   public static final int SHARP_FALL_OFF_A = 3;
   public static final float SHARP_FALL_OFF_B = 2.2f;
 
-  public static ValueGrid process(int width, int height, ProceduralNoiseData data) {
-    int octaves = data.octaves();
-    Vector2f offset = data.offset();
+  public static ValueGrid process(ValueMap map) {
+    int width = map.getInt("width");
+    int height = map.getInt("height");
+    int octaves = map.getInt("octaves");
+    Vector2f offset = map.getVector2f("offset");
     Vector2f[] octaveOffsets = new Vector2f[octaves];
-    RandomNumberGenerator rng = new RandomNumberGenerator(data.seed());
+    RandomNumberGenerator rng = new RandomNumberGenerator(map.getInt("seed"));
 
     // Multiplied against output to control range of values by clamping them.
     float amplitude = 1f;
 //    float maxHeight = 0f;
 
-    for (int i = 0; i< octaves; i++) {
+    for (int i = 0; i < octaves; i++) {
       float x = rng.next(OCTAVE_BOUNDS) + offset.x;
       float y = rng.next(OCTAVE_BOUNDS) - offset.y;
 
       octaveOffsets[i] = new Vector2f(x, y);
 //      maxHeight += amplitude;
-      amplitude *= data.persistence();
+      amplitude *= map.getFloat("persistence");
     }
 
     ValueGrid grid = new ValueGrid(width, height);
-    float scale = data.scale();
-    float persistence = data.persistence();
-    float lacunarity = data.lacunarity();
+    float scale = map.getFloat("scale");
+    float persistence = map.getFloat("persistence");
+    float lacunarity = map.getFloat("lacunarity");
 
     float halfWidth = width / 2f;
     float halfHeight = height / 2f;

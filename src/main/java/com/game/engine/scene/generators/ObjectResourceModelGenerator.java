@@ -5,9 +5,9 @@ import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.animations.AnimInfo;
 import com.game.engine.render.mesh.animations.Bone;
 import com.game.engine.render.models.Model;
-import com.game.engine.scene.generators.data.ResourceGenerationData;
 import com.game.graphics.materials.Material;
 import com.game.utils.application.PathSanitizer;
+import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.MaterialUtils;
 import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.entity.AnimationInfoUtils;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.lwjgl.assimp.Assimp.*;
 
-public class ObjectResourceModelGenerator extends AbstractModelGenerator<ResourceGenerationData> {
+public class ObjectResourceModelGenerator extends AbstractModelGenerator {
   public static final int BASE_FLAGS = aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace | aiProcess_LimitBoneWeights;
 
   MeshInfo generateMeshInfo(AIMesh aiMesh, List<Bone> bones) {
@@ -41,7 +41,8 @@ public class ObjectResourceModelGenerator extends AbstractModelGenerator<Resourc
             GL46.GL_STATIC_DRAW,
             4,
             EAttribute.BON.getValue(),
-            1
+            1,
+            0
           )
           .addVertices(
             animInfo.weights(),
@@ -49,17 +50,18 @@ public class ObjectResourceModelGenerator extends AbstractModelGenerator<Resourc
             GL46.GL_STATIC_DRAW,
             4,
             EAttribute.WGT.getValue(),
-            1
+            1,
+            0
           );
       return meshInfo;
     });
   }
 
   @Override
-  public Model generateModel(ResourceGenerationData data) {
-    String name = data.id();
-    String path = data.path();
-    boolean animated = data.animated();
+  public Model generateModel(ValueMap map) {
+    String name = map.get("id");
+    String path = map.get("path");
+    boolean animated = map.getBool("animated");
 
     Model model = new Model(name);
     int flags = BASE_FLAGS;

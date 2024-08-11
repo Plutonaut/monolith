@@ -1,6 +1,7 @@
 package com.game.engine.settings;
 
 import com.game.loaders.ini.INIFileModel;
+import com.game.utils.application.values.ValueMap;
 import com.game.utils.enums.EFont;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -37,7 +38,7 @@ public class EngineSettings {
 
   public EngineSettings load() {
     INIFileModel model = INIFileModel.load(PATH);
-    INIModelSection window = model.modelSection("window");
+    ValueMap window = model.modelSection("window");
     antiAliasSamples = window.getInt("antiAliasSamples");
     targetFPS = window.getInt("targetFPS");
     targetUPS = window.getInt("targetUPS");
@@ -46,20 +47,20 @@ public class EngineSettings {
     height = window.getInt("height");
     width = window.getInt("width");
     vsync = window.getBool("vsync");
-    INIModelSection engine = model.modelSection("engine");
+    ValueMap engine = model.modelSection("engine");
     maxLogFiles = engine.getInt("maxLogFiles");
     fontType = engine.getEFont("fontType");
     threaded = engine.getBool("threaded");
     debug = engine.getBool("debug");
     diagnostics = engine.getBool("diagnostics");
     logic = engine.getELogic("logic");
-    INIModelSection camera = model.modelSection("camera");
+    ValueMap camera = model.modelSection("camera");
     cameraPosition = camera.getVector3f("cameraPosition");
     movementSpeed = camera.getFloat("movementSpeed");
     zNear = camera.getFloat("zNear");
     zFar = camera.getFloat("zFar");
     fov = camera.getFloat("fov");
-    INIModelSection controls = model.modelSection("controls");
+    ValueMap controls = model.modelSection("controls");
     mouseSensitivity = controls.getFloat("mouseSensitivity");
     return this;
   }

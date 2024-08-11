@@ -3,7 +3,7 @@ package com.game.engine.render.mesh;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.graphics.materials.Material;
-import com.game.utils.application.ValueStore;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.EMaterialColor;
 import com.game.utils.enums.EMaterialTexture;
@@ -22,13 +22,11 @@ public class MeshInfoBuilder {
   protected ValueStore indices;
   protected Material material;
   protected String name;
-  protected int instances;
 
   public MeshInfoBuilder() {
     attributes = new ArrayList<>();
     vertices = new ArrayList<>();
     indices = new ValueStore();
-    instances = 0;
     material = null;
     name = null;
   }
@@ -139,6 +137,16 @@ public class MeshInfoBuilder {
     return vertices(values, 4, EAttribute.WGT.getValue());
   }
 
+  public MeshInfoBuilder instanceMatrices(ValueStore store) {
+    int instances = store.size() / 16;
+    return vertices(store, 16, EAttribute.IMX.getValue(), instances);
+  }
+
+  public MeshInfoBuilder instanceMatrices(float[] values) {
+    int instances = values.length / 16;
+    return vertices(values, 16, EAttribute.IMX.getValue(), instances);
+  }
+
   public MeshInfoBuilder indices(int[] values) {
     indices.set(values);
     return this;
@@ -165,6 +173,16 @@ public class MeshInfoBuilder {
     return vertices(store, size, GL46.GL_FLOAT, attribute);
   }
 
+  public MeshInfoBuilder vertices(float[] values, int size, String attribute, int instances) {
+    ValueStore store = new ValueStore();
+    store.add(values);
+    return vertices(store, size, attribute, instances);
+  }
+
+  public MeshInfoBuilder vertices(ValueStore store, int size, String attribute, int instances) {
+    return vertices(store, size, GL46.GL_FLOAT, GL46.GL_STATIC_DRAW, attribute, instances);
+  }
+
   public MeshInfoBuilder vertices(ValueStore store, int size, int glType, String attribute) {
     return vertices(store, size, glType, GL46.GL_STATIC_DRAW, attribute);
   }
@@ -186,11 +204,10 @@ public class MeshInfoBuilder {
       log.error("{} already contains attribute: {}!", name, attribute);
       return null;
     } else if (!store.isEmpty()) {
-      AttribInfo attribInfo = new AttribInfo(attribute, size, instances);
+      AttribInfo attribInfo = new AttribInfo(attribute, size, instances, 0);
       VertexInfo vertexInfo = new VertexInfo(store, glType, glUsage, attribInfo);
       vertices.add(vertexInfo);
       attributes.add(attribute);
-      this.instances = Math.max(this.instances, instances);
     }
     return this;
   }
@@ -214,7 +231,6 @@ public class MeshInfoBuilder {
   MeshInfo constructMeshInfo(MeshInfo meshInfo) {
     vertices.forEach(meshInfo::addVertices);
     meshInfo.indices.set(indices);
-    meshInfo.instances(instances);
     int vertexCount = indices.size();
     if (vertexCount == 0) {
       VertexInfo info = meshInfo.getVerticesByAttribute(EAttribute.POS);
@@ -231,7 +247,6 @@ public class MeshInfoBuilder {
     attributes.clear();
     vertices.clear();
     indices.clear();
-    instances = 0;
     material = null;
     name = null;
   }

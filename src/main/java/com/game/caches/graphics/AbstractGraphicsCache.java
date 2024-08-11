@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractGraphicsCache extends AbstractCache {
   void handleDispose(String key, ICachable item) {
     if (item instanceof IGraphics graphics) {
-      log.info("Disposing {} from cache", key);
+      log.info("Disposing {} from {} cache", key, getClass().getName());
       graphics.dispose();
     }
   }
