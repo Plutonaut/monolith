@@ -69,10 +69,9 @@ public class MeshInfo implements IModel {
     return getVerticesByAttribute(key.getValue());
   }
 
-  public MeshInfo addVertices(VertexInfo vertexInfo) {
+  public void addVertices(VertexInfo vertexInfo) {
     if (vertexInfo != null && vertices.size() < MeshInfoUtils.MAX_VERTEX_DATA)
       this.vertices.add(vertexInfo);
-    return this;
   }
 
   public MeshInfo addVertices(

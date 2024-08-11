@@ -36,10 +36,6 @@ public class EntityRenderParameters {
     return (glParamFlags & flag) == flag;
   }
 
-  public boolean hasShader(ERenderer shader) {
-    return this.shader == shader;
-  }
-
   public boolean isModifierActive(EModifier modifier) {
     return modifiers.contains(modifier);
   }

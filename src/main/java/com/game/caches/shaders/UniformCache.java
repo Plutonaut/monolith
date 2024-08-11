@@ -35,8 +35,9 @@ public class UniformCache extends AbstractShaderCache {
 
   public void set(String uniform, Vector3f value) {
     final int location = get(uniform);
-    if (location < 0 || value == null) return;
+    if (location < 0) return;
     try (MemoryStack stack = MemoryStack.stackPush()) {
+      if (value == null) value = new Vector3f();
       final FloatBuffer buffer = stack.mallocFloat(3);
       value.get(buffer);
       GL46.glUniform3fv(location, buffer);
@@ -45,8 +46,9 @@ public class UniformCache extends AbstractShaderCache {
 
   public void set(String uniform, Vector4f value) {
     final int location = get(uniform);
-    if (location < 0 || value == null) return;
+    if (location < 0) return;
     try (MemoryStack stack = MemoryStack.stackPush()) {
+      if (value == null) value = new Vector4f();
       final FloatBuffer buffer = stack.mallocFloat(4);
       value.get(buffer);
       GL46.glUniform4fv(location, buffer);

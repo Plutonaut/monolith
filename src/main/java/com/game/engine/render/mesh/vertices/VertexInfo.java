@@ -15,8 +15,8 @@ public class VertexInfo {
   protected final int glType;
   protected final int glUsage;
 
-  public VertexInfo(float[] vertices, String attribute, int size, int instances, int divisor, int glUsage) {
-    AttribInfo attrib = new AttribInfo(attribute, size, instances, divisor);
+  public VertexInfo(float[] vertices, String attribute, int size, int dimensions, int divisor, int glUsage) {
+    AttribInfo attrib = new AttribInfo(attribute, size, dimensions, divisor);
     this.vertices = new ValueStore();
     this.vertices.add(vertices);
     this.glUsage = glUsage;

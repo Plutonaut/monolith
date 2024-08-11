@@ -35,7 +35,7 @@ public class SceneRenderer extends AbstractLitRenderer {
     setLightingUniforms(lighting, viewMatrix);
     entity.meshes().forEach(mesh -> {
       setMaterialUniform(mesh.material());
-      draw(mesh);
+      mesh.render();
     });
   }
 }

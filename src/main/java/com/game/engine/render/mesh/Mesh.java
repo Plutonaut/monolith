@@ -22,6 +22,7 @@ public class Mesh implements IGraphics {
   protected Material material;
   protected Vector3f min;
   protected Vector3f max;
+  protected int drawMode;
   protected int vertexCount;
   protected boolean isComplex;
 
@@ -32,6 +33,7 @@ public class Mesh implements IGraphics {
     vaas = new HashSet<>();
     min = new Vector3f();
     max = new Vector3f();
+    drawMode = GL46.GL_TRIANGLES;
   }
 
   @Override
@@ -54,7 +56,15 @@ public class Mesh implements IGraphics {
     vbos.forEach(VertexBufferObject::dispose);
   }
 
-  public void draw(int mode) {
+  public void render() {
+    bind();
+    enable();
+    draw(drawMode);
+    disable();
+    unbind();
+  }
+
+  protected void draw(int mode) {
     if (isComplex) drawComplex(mode);
     else drawSimple(mode);
   }

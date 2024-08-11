@@ -137,14 +137,6 @@ public class MeshInfoBuilder {
     return vertices(values, 4, EAttribute.WGT.getValue());
   }
 
-  public MeshInfoBuilder instanceColors(float[] values, int instances) {
-    return vertices(values, 3, EAttribute.ICR.getValue(), instances);
-  }
-
-  public MeshInfoBuilder instanceColors(ValueStore store, int instances) {
-    return vertices(store, 3, EAttribute.ICR.getValue(), instances);
-  }
-
   public MeshInfoBuilder instanceMatrices(ValueStore store) {
     int instances = store.size() / 16;
     return vertices(store, 16, EAttribute.IMX.getValue(), instances);

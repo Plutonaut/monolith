@@ -2,10 +2,8 @@ package com.game.engine.render.models;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.MeshInfo;
-import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.animations.Animation;
 import com.game.utils.enums.ECache;
-import com.game.utils.enums.EModifier;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -28,14 +26,6 @@ public class Model implements IModel {
 
   public List<MeshInfo> meshInfo() {
     return meshData.stream().map(GlobalCache.instance()::meshInfo).toList();
-  }
-
-  public Entity create(String entityName) {
-    Entity entity = new Entity(entityName);
-    if (!animations().isEmpty())
-      entity.addAnimations(animations).parameters().toggleModifier(EModifier.ANIMATED);
-
-    return entity;
   }
 
   public void addMeshData(String meshInfo) { this.meshData.add(meshInfo); }

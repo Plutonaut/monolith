@@ -37,7 +37,7 @@ public class Shader implements IGraphics {
     GL46.glCompileShader(glId);
 
     int status = GL46.glGetShaderi(glId, GL46.GL_COMPILE_STATUS);
-    if (status != GL46.GL_TRUE) throw new RuntimeException(GL46.glGetShaderInfoLog(glId));
+    if (status != GL46.GL_TRUE) throw new RuntimeException("GL Status: " + status + " Shader Info Log: " + GL46.glGetShaderInfoLog(glId));
   }
 
   @Override

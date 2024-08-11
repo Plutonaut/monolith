@@ -9,7 +9,6 @@ public enum EUniform {
   MODEL("model"),
   VIEW("view"),
   MODEL_VIEW("modelview"),
-  HAS_TEXTURE("hasTexture"),
   HAS_INSTANCED_COLORS("hasInstancedColors"),
   TEXTURE_COLOR("textureColor"),
   TEXTURE_SAMPLER("textureSampler"),
