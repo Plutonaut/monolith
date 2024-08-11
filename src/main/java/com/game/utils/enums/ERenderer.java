@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 public enum ERenderer {
   BASIC("render", "basic", "basic.vert", "basic.frag", null, null),
+  GUI("render", "gui", "gui.vert", "gui.frag", null, null),
   PARTICLE("render", "instanced", "instanced.vert","instanced.frag", null, null),
   SPRITE("render", "sprite", "sprite.vert", "sprite.frag", null, null),
   MESH("render", "mesh", "mesh.vert", "mesh.frag", null, null),

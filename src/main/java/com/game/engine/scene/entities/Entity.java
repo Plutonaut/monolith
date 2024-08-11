@@ -64,7 +64,11 @@ public class Entity implements IRenderable {
     return move(position.x(), position.y(), position.z());
   }
 
-  public Entity move(float x, float y) {
+  public Entity move(float p) {
+    return move(p, p, p);
+  }
+
+  public Entity move2D(float x, float y) {
     return move(x, y, 0f);
   }
 

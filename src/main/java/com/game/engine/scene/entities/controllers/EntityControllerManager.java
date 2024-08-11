@@ -28,6 +28,13 @@ public class EntityControllerManager {
     );
   }
 
+  public EntityInteractionController interaction() {
+    return (EntityInteractionController) controller(
+      EController.INTERACTION.value(),
+      k -> new EntityInteractionController()
+    );
+  }
+
   public EntityAudioController audio() {
     return (EntityAudioController) controller(
       EController.AUDIO.value(),

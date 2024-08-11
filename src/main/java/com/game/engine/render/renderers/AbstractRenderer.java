@@ -2,12 +2,10 @@ package com.game.engine.render.renderers;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.render.IRenderable;
-import com.game.engine.render.mesh.Mesh;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
 import com.game.graphics.shaders.Program;
 import com.game.utils.enums.ERenderer;
-import org.lwjgl.opengl.GL46;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,6 @@ public abstract class AbstractRenderer implements IRenderer {
   protected abstract void render(IRenderable item, Scene scene);
 
   public void render(Scene scene) {
-    // TODO: renderQueue should return strings, perform lookup in entityManager.
     ArrayBlockingQueue<String> queue = scene.packets().renderQueue(type());
     if (queue.isEmpty()) return;
     program.bind();
@@ -38,18 +35,6 @@ public abstract class AbstractRenderer implements IRenderer {
       render(entity, scene);
     }
     program.unbind();
-  }
-
-  protected void draw(Mesh mesh) {
-    draw(mesh, GL46.GL_TRIANGLES);
-  }
-
-  protected void draw(Mesh mesh, int mode) {
-    mesh.bind();
-    mesh.enable();
-    mesh.draw(mode);
-    mesh.disable();
-    mesh.unbind();
   }
 
   public void dispose() {

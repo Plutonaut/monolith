@@ -19,7 +19,6 @@ import com.game.engine.window.Window;
 import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.TextureUtils;
-import com.game.utils.enums.EFont;
 import com.game.utils.enums.EGLParam;
 import com.game.utils.enums.EProjection;
 import com.game.utils.enums.ERenderer;
@@ -134,10 +133,9 @@ public class Scene {
       .antiAlias(true)
       .diffuseColor(Color.white)
       .asText()
-      .fontName(EFont.FESTER.value())
-      .fontSize(24)
+      .fontName("Arial")
+      .fontSize(20)
       .fontColor(Color.white)
-      .asSprite()
       .build();
     Model model = model(map);
     return createEntity(id,

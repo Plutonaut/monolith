@@ -46,7 +46,7 @@ public class MeshInfoUtils {
       max.max(vertex);
     }
 
-    return new Bounds3D(min, max);
+    return new Bounds3D(new Vector3f(), min, max);
   }
 
   public static MeshInfo process(AIMesh aiMesh) {
