@@ -2,8 +2,8 @@ package com.game.engine.scene.entities.controllers;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.physics.Bounds2D;
-import com.game.engine.render.mesh.DynamicMesh;
 import com.game.engine.render.mesh.FontMeshInfo;
+import com.game.engine.render.mesh.Mesh;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.graphics.fonts.FontInfo;
 import com.game.utils.engine.ColorUtils;
@@ -13,6 +13,7 @@ import com.game.utils.enums.EMaterialColor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.joml.Vector4f;
 
 import java.awt.*;
 
@@ -21,7 +22,7 @@ import java.awt.*;
 @Data
 public class EntityTextController extends AbstractEntityController {
   protected final Bounds2D bounds;
-  protected DynamicMesh mesh;
+  protected Mesh mesh;
   protected String text;
   protected Font font;
   protected int borderSize;
@@ -54,7 +55,11 @@ public class EntityTextController extends AbstractEntityController {
   }
 
   public void setColor(Color color) {
-    mesh.material().color(EMaterialColor.DIF.getValue(), ColorUtils.convert(color));
+    setColor(ColorUtils.convert(color));
+  }
+
+  public void setColor(Vector4f color) {
+    mesh.material().color(EMaterialColor.DIF.getValue(), color);
   }
 
   public void redraw(String text, Font font, Color color) {
@@ -69,7 +74,7 @@ public class EntityTextController extends AbstractEntityController {
   }
 
   void updateBounds() {
-    bounds.min().set(mesh.min().x(), mesh.min().y());
-    bounds.max().set(mesh.max().x(), mesh.max().y());
+    bounds.min().set(mesh.bounds().min().x(), mesh.bounds().min().y());
+    bounds.max().set(mesh.bounds().max().x(), mesh.bounds().max().y());
   }
 }

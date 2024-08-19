@@ -2,23 +2,49 @@ package com.game.utils.engine.terrain.procedural;
 
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.engine.scene.terrain.IHeightMapper;
+import com.game.utils.application.values.ValueGrid;
 import com.game.utils.application.values.ValueMap;
 import com.game.utils.application.values.ValueStore;
 import com.game.utils.engine.terrain.TerrainUtils;
 
 public class ProceduralTerrainGeneratorUtils {
   public static void buildTerrainMeshInfo(
+    ValueMap map, final MeshInfoBuilder builder, ValueGrid valueGrid
+  ) {
+    buildTerrainMeshInfo(map, builder, valueGrid.width(), valueGrid.height(), valueGrid::get);
+  }
+
+  public static void buildTerrainMeshInfo(
     ValueMap map, final MeshInfoBuilder builder, IHeightMapper mapper
+  ) {
+    buildTerrainMeshInfo(map, builder, map.getInt("width"), map.getInt("height"), mapper);
+  }
+
+  public static void buildTerrainMeshInfo(
+    ValueMap map, final MeshInfoBuilder builder, int width, int height, IHeightMapper mapper
   ) {
     String id = map.get("id");
     String diffuseTexturePath = map.get("diffuseTexturePath");
     String normalTexturePath = map.get("normalTexturePath");
+    String heightMapTexturePath = map.get("heightMapTexturePath");
+    buildTerrainMeshInfo(id, builder, width, height, mapper)
+      .material(id + "_mat")
+      .materialHeightTexture(heightMapTexturePath)
+      .materialNormalTexture(normalTexturePath)
+      .materialDiffuseTexture(diffuseTexturePath);
+  }
+
+  public static MeshInfoBuilder buildTerrainMeshInfo(
+    String id,
+    final MeshInfoBuilder builder,
+    int width,
+    int height,
+    IHeightMapper mapper
+  ) {
     ValueStore positions = new ValueStore();
     ValueStore textureCoordinates = new ValueStore();
     ValueStore indices = new ValueStore();
 
-    int width = map.getInt("width");
-    int height = map.getInt("height");
     float xInc = TerrainUtils.incrementX(width);
     float zInc = TerrainUtils.incrementZ(height);
 
@@ -44,14 +70,12 @@ public class ProceduralTerrainGeneratorUtils {
       }
     }
     ValueStore normals = TerrainUtils.calculateNormals(positions, width, height);
-    builder
+
+    return builder
       .use(id)
       .positions(positions)
       .textureCoordinates(textureCoordinates)
       .normals(normals)
-      .indices(indices)
-      .material(id + "_mat")
-      .materialNormalTexture(normalTexturePath)
-      .materialDiffuseTexture(diffuseTexturePath);
+      .indices(indices);
   }
 }

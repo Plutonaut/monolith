@@ -31,6 +31,9 @@ public class EngineSettings {
   private float zNear;
   private float zFar;
   private float mouseSensitivity;
+  private float hudBorder;
+  private float hudTextScale;
+  private Vector3f hudTextColor;
 
   public EngineSettings() {
     load();
@@ -62,6 +65,10 @@ public class EngineSettings {
     fov = camera.getFloat("fov");
     ValueMap controls = model.modelSection("controls");
     mouseSensitivity = controls.getFloat("mouseSensitivity");
+    ValueMap hud = model.modelSection("hud");
+    hudBorder = hud.getFloat("hudBorder");
+    hudTextScale = hud.getFloat("hudTextScale");
+    hudTextColor = hud.getVector3f("hudTextColor");
     return this;
   }
 }

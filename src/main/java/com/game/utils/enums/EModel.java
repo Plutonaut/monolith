@@ -11,6 +11,7 @@ public enum EModel {
   BASIC_SKYBOX("src/main/resources/models/skybox/skybox.obj", false),
   SKYBOX_1("src/main/resources/models/blender/skybox_1/skybox_1.obj", false),
   BLUE_SHAPE("src/main/resources/models/blender/blue_shape/blue_shape.obj", false),
+  TREE_A("src/main/resources/models/blender/environment/treeA/tree_1A_fix.obj", false),
   RAILWAY_PART("src/main/resources/models/blender/railway_part/railway_part.obj", false),
   BOB("src/main/resources/models/blender/bob/bob_lamp_update.md5mesh", true);
 

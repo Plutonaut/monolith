@@ -1,5 +1,6 @@
 package com.game.engine.scene.camera;
 
+import com.game.utils.logging.PrettifyUtils;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.joml.Matrix4f;
@@ -69,5 +70,18 @@ public class Camera {
       .rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
       .rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
     return view.translate(negatedPosition);
+  }
+
+  @Override
+  public String toString() {
+    return "Camera" +
+      "\nposition: " +
+      PrettifyUtils.prettify(position) +
+      "\nrotation: " +
+      PrettifyUtils.prettify(rotation) +
+      "\nsensitivity: " +
+      PrettifyUtils.prettify(mouseSensitivity) +
+      "\nspeed: " +
+      PrettifyUtils.prettify(cameraSpeed);
   }
 }

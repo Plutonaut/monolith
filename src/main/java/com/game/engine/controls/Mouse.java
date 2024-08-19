@@ -35,12 +35,9 @@ public class Mouse extends InputDevice {
   }
 
   public void onClick(long handle, int button, int action, int m) {
-    boolean isPressed = action == GLFW.GLFW_PRESS;
+    if (button == GLFW.GLFW_MOUSE_BUTTON_1) leftPressed = action;
+    if (button == GLFW.GLFW_MOUSE_BUTTON_2) rightPressed = action;
 
-    if (isPressed) {
-      if (button == GLFW.GLFW_MOUSE_BUTTON_1) leftPressed = action;
-      if (button == GLFW.GLFW_MOUSE_BUTTON_2) rightPressed = action;
-    }
     emit(button, action);
   }
 

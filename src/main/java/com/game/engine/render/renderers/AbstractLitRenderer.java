@@ -23,15 +23,18 @@ import java.util.List;
 // TODO: Replace with some utility inner object used by UniformCache.
 public abstract class AbstractLitRenderer extends AbstractRenderer {
   protected void setMaterialUniform(Material material) {
-    program
-      .uniforms()
-      .set(EUniform.MATERIAL_AMBIENT.value(), material.color(EMaterialColor.AMB.getValue()));
-    program
-      .uniforms()
-      .set(EUniform.MATERIAL_DIFFUSE.value(), material.color(EMaterialColor.DIF.getValue()));
-    program
-      .uniforms()
-      .set(EUniform.MATERIAL_SPECULAR.value(), material.color(EMaterialColor.SPC.getValue()));
+    program.uniforms().set(
+      EUniform.MATERIAL_AMBIENT.value(),
+      material.color(EMaterialColor.AMB.getValue())
+    );
+    program.uniforms().set(
+      EUniform.MATERIAL_DIFFUSE.value(),
+      material.color(EMaterialColor.DIF.getValue())
+    );
+    program.uniforms().set(
+      EUniform.MATERIAL_SPECULAR.value(),
+      material.color(EMaterialColor.SPC.getValue())
+    );
     program.uniforms().set(EUniform.MATERIAL_REFLECTANCE.value(), material.reflectance());
 
     MaterialTexturePack textures = material.textures();
@@ -39,16 +42,18 @@ public abstract class AbstractLitRenderer extends AbstractRenderer {
   }
 
   protected void setMaterialTextureUniform(MaterialTexturePack textures) {
-    program
-      .uniforms()
-      .set(EUniform.MATERIAL_HAS_TEXTURE.value(),
-           textures.hasTexture(EMaterialTexture.DIF.value())
-      );
-    program
-      .uniforms()
-      .set(EUniform.MATERIAL_HAS_NORMAL_MAP.value(),
-           textures.hasTexture(EMaterialTexture.NRM.value())
-      );
+    program.uniforms().set(
+      EUniform.MATERIAL_HAS_TEXTURE.value(),
+      textures.hasTexture(EMaterialTexture.DIF.value())
+    );
+    program.uniforms().set(
+      EUniform.MATERIAL_HAS_NORMAL_MAP.value(),
+      textures.hasTexture(EMaterialTexture.NRM.value())
+    );
+    program.uniforms().set(
+      EUniform.MATERIAL_HAS_HEIGHT_MAP.value(),
+      textures.hasTexture(EMaterialTexture.HGT.value())
+    );
 
     LambdaCounter counter = new LambdaCounter();
     textures.pack().forEach((type, path) -> {
@@ -67,8 +72,10 @@ public abstract class AbstractLitRenderer extends AbstractRenderer {
 
   protected void setLightingUniforms(LightingManager lighting, Matrix4f viewMatrix) {
     if (lighting.hasAmbientLight()) setAmbientLightUniform(lighting.ambientLight());
-    if (lighting.hasDirectionalLight())
-      setDirectionalLightUniform(lighting.directionalLight(), viewMatrix);
+    if (lighting.hasDirectionalLight()) setDirectionalLightUniform(
+      lighting.directionalLight(),
+      viewMatrix
+    );
     if (lighting.hasPointLights()) setPointLightUniforms(lighting.pointLights(), viewMatrix);
     if (lighting.hasSpotLights()) setSpotLightUniforms(lighting.spotLights(), viewMatrix);
   }
@@ -155,14 +162,17 @@ public abstract class AbstractLitRenderer extends AbstractRenderer {
     program.uniforms().set(uniform + EUniform.POSITION.value(), lightPosition);
     program.uniforms().set(uniform + EUniform.COLOR.value(), color);
     program.uniforms().set(uniform + EUniform.INTENSITY.value(), intensity);
-    program
-      .uniforms()
-      .set(uniform + EUniform.ATTENUATION.value() + EUniform.CONSTANT.value(), constant);
-    program
-      .uniforms()
-      .set(uniform + EUniform.ATTENUATION.value() + EUniform.LINEAR.value(), linear);
-    program
-      .uniforms()
-      .set(uniform + EUniform.ATTENUATION.value() + EUniform.EXPONENT.value(), exponent);
+    program.uniforms().set(
+      uniform + EUniform.ATTENUATION.value() + EUniform.CONSTANT.value(),
+      constant
+    );
+    program.uniforms().set(
+      uniform + EUniform.ATTENUATION.value() + EUniform.LINEAR.value(),
+      linear
+    );
+    program.uniforms().set(
+      uniform + EUniform.ATTENUATION.value() + EUniform.EXPONENT.value(),
+      exponent
+    );
   }
 }

@@ -33,6 +33,7 @@ public abstract class AbstractRenderer implements IRenderer {
       Entity entity = scene.entity(item);
       scene.parameters().toggleParameters(entity.glParamFlags());
       render(entity, scene);
+      scene.diagnostics().entityRendered(entity);
     }
     program.unbind();
   }

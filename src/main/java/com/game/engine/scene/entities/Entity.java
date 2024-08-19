@@ -5,12 +5,14 @@ import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.scene.audio.AudioSource;
 import com.game.engine.scene.entities.animations.Animation;
+import com.game.engine.scene.entities.controllers.AbstractEntityController;
 import com.game.engine.scene.entities.controllers.EntityControllerManager;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.enums.EModifier;
 import com.game.utils.enums.EProjection;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class Entity implements IRenderable {
     this.parameters = parameters;
 
     transform = new ModelTransform();
-    controllers = new EntityControllerManager();
+    controllers = new EntityControllerManager(this::controllerMeshCallback);
 
     addMeshes(meshes);
   }
@@ -54,6 +56,27 @@ public class Entity implements IRenderable {
   @Override
   public int glParamFlags() {
     return parameters.glParamFlags;
+  }
+
+  public Mesh mesh() {
+    return meshes.getFirst();
+  }
+
+  public Mesh mesh(int glId) {
+    return meshes.stream().filter(m -> m.glId() == glId).findFirst().orElse(null);
+  }
+
+  public Mesh controllerMeshCallback(int glId, AbstractEntityController.IMeshGenerator generator) {
+    Mesh mesh = glId == -1 ? null : mesh(glId);
+    if (mesh == null && generator != null) {
+      mesh = generator.generate();
+      if (mesh != null) meshes.add(mesh);
+    }
+    return mesh;
+  }
+
+  public void onMeshSelected(int meshId) {
+    meshes().forEach(m -> m.selected(m.glId() == meshId));
   }
 
   public EProjection projection() {
@@ -77,6 +100,30 @@ public class Entity implements IRenderable {
     return onTransformUpdate();
   }
 
+  public Entity rotate(Vector3f axis, float angle) {
+    return rotate(axis.x, axis.y, axis.z, angle);
+  }
+
+  public Entity rotate(float x, float y, float z, float angle) {
+    transform.rotation().set(new Quaternionf(x, y, z, angle));
+    return onTransformUpdate();
+  }
+
+  public Entity rotateX(float angle) {
+    transform.rotation().rotateX(angle);
+    return onTransformUpdate();
+  }
+
+  public Entity rotateY(float angle) {
+    transform.rotation().rotateY(angle);
+    return onTransformUpdate();
+  }
+
+  public Entity rotateZ(float angle) {
+    transform.rotation().rotateZ(angle);
+    return onTransformUpdate();
+  }
+
   public Entity scale(float scale) {
     transform.scale(scale);
     return onTransformUpdate();
@@ -95,11 +142,6 @@ public class Entity implements IRenderable {
     meshes.add(mesh);
   }
 
-  public Entity addPhysics() {
-    controllers.physics();
-    return onTransformUpdate();
-  }
-
   public Entity addAnimations(List<Animation> animations) {
     controllers.animations().add(animations);
     return onTransformUpdate();
@@ -110,19 +152,24 @@ public class Entity implements IRenderable {
     return onTransformUpdate();
   }
 
+  public Entity addPhysics() {
+    controllers.physics();
+    return onTransformUpdate();
+  }
+
+  public Entity redrawText(String text) {
+    controllers().text().redraw(text);
+    return onTransformUpdate();
+  }
+
   public boolean isModifierActive(EModifier modifier) {
     return parameters().isModifierActive(modifier);
   }
 
-  public void redrawText(String text) {
-    controllers().text().redraw(text);
-    onTransformUpdate();
-  }
-
-  public boolean intersects(Ray ray) {
-    return controllers.hasPhysics() && onTransformUpdate()
-      .controllers()
-      .physics()
-      .intersects(meshes, ray);
+  public Mesh intersects(Ray ray) {
+    return controllers.hasPhysics() ? onTransformUpdate().controllers().physics().intersects(
+      meshes,
+      ray
+    ) : null;
   }
 }

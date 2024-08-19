@@ -36,25 +36,15 @@ public class VertexInfo {
   }
 
   public int totalVertexCount() {
-    return vertices.size() * maxInstances() / totalSize();
+    return vertices.size() * totalDimensions() / totalSize();
   }
 
-  // TODO: Replace with strategy to pull specific attribute data one at a time.
-  public int maxInstances() {
+  public int totalDimensions() {
     return attributes().values().stream().mapToInt(AttribInfo::dimensions).sum();
   }
 
   public int totalSize() {
     return attributes.values().stream().mapToInt(AttribInfo::totalSize).sum();
-  }
-
-  public VertexBufferObject create() {
-    VertexBufferObject vbo = new VertexBufferObject();
-    if (glType == GL46.GL_INT)
-      vbo.buffer(vertices.asIntArray(), glUsage);
-    else
-      vbo.buffer(vertices.asArray(), glUsage);
-    return vbo;
   }
 
   public AttribInfo getAttribute(String key) {
