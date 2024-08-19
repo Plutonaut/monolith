@@ -14,4 +14,11 @@ public class TextureUtils {
     .diffuse(MOSS_DIFF_TEXTURE_PATH)
     .normal(MOSS_NORM_TEXTURE_PATH)
     .height(MOSS_HGHT_TEXTURE_PATH);
+  public static final String HDRI_DIRECTORY = TEXTURE_DIRECTORY + "hdri/";
+  public static final String HDRI_A = HDRI_DIRECTORY + "dikhololo_night_4k.hdr";
+  public static final String HDRI_B = HDRI_DIRECTORY + "kloppenheim_02_4k.hdr";
+  public static final String HDRI_C = HDRI_DIRECTORY + "pump_station_4k.hdr";
+  public static final String HDRI_D = HDRI_DIRECTORY + "satara_night_8k.hdr";
+  public static final String SKYBOX_A = TEXTURE_DIRECTORY + "shared/skybox_attempt_1.png";
+  public static final String SKYBOX_B = TEXTURE_DIRECTORY + "shared/skybox_attempt_2.png";
 }

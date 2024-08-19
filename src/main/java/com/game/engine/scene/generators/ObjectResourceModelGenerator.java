@@ -8,11 +8,13 @@ import com.game.engine.render.models.Model;
 import com.game.graphics.materials.Material;
 import com.game.utils.application.PathSanitizer;
 import com.game.utils.application.values.ValueMap;
+import com.game.utils.application.values.ValueStore;
 import com.game.utils.engine.MaterialUtils;
 import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.entity.AnimationInfoUtils;
 import com.game.utils.engine.entity.AnimationUtils;
 import com.game.utils.enums.EAttribute;
+import com.game.utils.math.MatrixUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIScene;
@@ -27,11 +29,25 @@ import static org.lwjgl.assimp.Assimp.*;
 public class ObjectResourceModelGenerator extends AbstractModelGenerator {
   public static final int BASE_FLAGS = aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace | aiProcess_LimitBoneWeights;
 
-  MeshInfo generateMeshInfo(AIMesh aiMesh, List<Bone> bones) {
+  MeshInfo generateMeshInfo(AIMesh aiMesh, List<Bone> bones, int instances) {
     String meshId = aiMesh.mName().dataString();
     return GlobalCache.instance().meshInfo(meshId, name -> {
       MeshInfo meshInfo = MeshInfoUtils.process(aiMesh);
       AnimInfo animInfo = AnimationInfoUtils.process(aiMesh, bones);
+
+      if (instances > 1) {
+        ValueStore instanceMatrixValues = MatrixUtils.createInstanceMatrices(instances);
+        meshInfo.instances(instances);
+        meshInfo.addVertices(
+          instanceMatrixValues,
+          GL46.GL_FLOAT,
+          GL46.GL_DYNAMIC_DRAW,
+          4,
+          EAttribute.IMX.getValue(),
+          4,
+          1
+        );
+      }
 
       if (animInfo != null)
         meshInfo
@@ -62,6 +78,8 @@ public class ObjectResourceModelGenerator extends AbstractModelGenerator {
     String name = map.get("id");
     String path = map.get("path");
     boolean animated = map.getBool("animated");
+    int instances = 1;
+    if (map.has("instances")) instances = map.getInt("instances");
 
     Model model = new Model(name);
     int flags = BASE_FLAGS;
@@ -82,7 +100,7 @@ public class ObjectResourceModelGenerator extends AbstractModelGenerator {
       for (int i = 0; i < meshCount; i++) {
         AIMesh aiMesh = AIMesh.create(aiMeshes.get(i));
         int materialIndex = aiMesh.mMaterialIndex();
-        MeshInfo meshInfo = generateMeshInfo(aiMesh, bones);
+        MeshInfo meshInfo = generateMeshInfo(aiMesh, bones, instances);
         Material material = materialIndex >= 0 && materialIndex < materialCount
                             ? materials.get(materialIndex)
                             : null;

@@ -3,7 +3,7 @@ package com.game.engine.logic.concrete;
 import com.game.caches.GlobalCache;
 import com.game.engine.logic.AbstractLogic;
 import com.game.engine.physics.Bounds3D;
-import com.game.engine.render.mesh.DynamicMesh;
+import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.mesh.MeshInfo;
 import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.render.mesh.vertices.VertexInfo;
@@ -28,13 +28,13 @@ public class TestInstancingLogic extends AbstractLogic {
   public TestInstancingLogic(EngineSettings settings) {
     super(settings);
   }
-
   void onClick(EGUIEvent event) {
     log.info("On Click event {}", event);
 
     if (event == EGUIEvent.ENTER) uiEntity.controllers().text().setColor(Color.RED);
     else if (event == EGUIEvent.EXIT) uiEntity.controllers().text().setColor();
   }
+
 
   @Override
   protected String windowTitle() {
@@ -62,7 +62,7 @@ public class TestInstancingLogic extends AbstractLogic {
     ).meshInfo();
     VertexInfo positionVI = info.getVerticesByAttribute(EAttribute.POS);
 
-    DynamicMesh backgroundMesh = new DynamicMesh("bg_mesh");
+    Mesh backgroundMesh = new Mesh("bg_mesh");
     backgroundMesh.vertexCount(info.vertexCount());
     backgroundMesh.material(backgroundMaterial);
     backgroundMesh.isComplex(true);

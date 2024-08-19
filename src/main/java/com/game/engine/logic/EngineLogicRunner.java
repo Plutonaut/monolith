@@ -31,10 +31,11 @@ public class EngineLogicRunner {
   ILogic create(EngineSettings settings) {
     String logic = settings.logic();
     return switch (logic) {
+      case "testTerrain" -> new TestTerrainLogic(settings);
       case "testInstancing" -> new TestInstancingLogic(settings);
       case "testRender" -> new TestRenderLogic(settings);
-      case "testPipeline" -> new TestPipelineLogic(settings);
       case "testProcGen" -> new TestProceduralGenerationLogic(settings);
+      case "sandbox3D" -> new Sandbox3DLogic(settings);
       case "sandbox2D" -> new Sandbox2DLogic(settings);
       default -> new SafeModeLogic(settings);
     };

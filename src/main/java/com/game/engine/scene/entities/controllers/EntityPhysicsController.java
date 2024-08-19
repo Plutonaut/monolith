@@ -29,13 +29,13 @@ public class EntityPhysicsController extends AbstractEntityController {
     scale = transform.scale();
   }
 
-  public boolean intersects(List<Mesh> meshes, Ray ray) {
-    return meshes.stream().anyMatch(mesh -> intersects(mesh, ray));
+  public Mesh intersects(List<Mesh> meshes, Ray ray) {
+    return meshes.stream().filter(mesh -> intersects(mesh, ray)).findFirst().orElse(null);
   }
 
   boolean intersects(Mesh mesh, Ray ray) {
-    Vector3f min = vertex(mesh.min());
-    Vector3f max = vertex(mesh.max());
+    Vector3f min = vertex(mesh.bounds().minVertex());
+    Vector3f max = vertex(mesh.bounds().maxVertex());
 
     return Intersectionf.intersectRayAab(
       ray.origin(),

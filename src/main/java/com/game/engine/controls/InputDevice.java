@@ -10,8 +10,9 @@ public class InputDevice {
     listeners = new HashMap<>();
   }
 
-  public void addListener(int input, Consumer<Integer> listener) {
+  public InputDevice addListener(int input, Consumer<Integer> listener) {
     listeners.put(input, listener);
+    return this;
   }
 
   public void removeListener(int key) { listeners.remove(key); }

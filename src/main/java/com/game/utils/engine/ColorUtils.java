@@ -1,6 +1,7 @@
 package com.game.utils.engine;
 
 import com.game.utils.math.ScalarUtils;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.assimp.AIColor4D;
 
@@ -8,10 +9,10 @@ import java.awt.*;
 
 public class ColorUtils {
   public static Vector4f convert(Color color) {
-    float x = normalize(color.getRed());
-    float y = normalize(color.getGreen());
-    float z = normalize(color.getBlue());
-    float w = normalize(color.getAlpha());
+    float x = normalizei(color.getRed());
+    float y = normalizei(color.getGreen());
+    float z = normalizei(color.getBlue());
+    float w = normalizei(color.getAlpha());
 
     return new Vector4f(x, y, z, w);
   }
@@ -25,12 +26,25 @@ public class ColorUtils {
     return new Vector4f(x, y, z, w);
   }
 
-  public static float normalize(int value) {return (float) value / 255f;}
+  public static Vector4f normalize(Vector3f value) {
+    float x = normalize(value.x);
+    float y = normalize(value.y);
+    float z = normalize(value.z);
+
+    return new Vector4f(x, y, z, 1);
+  }
+
+  public static float normalizei(int value) { return normalize((float) value); }
+
+  public static float normalize(float value) { return value / 255f; }
 
   /**
-   * Values above 1 and below 0 are clamped to decrease scope of interpolation.
-   * Result is interpolated between 0 and 255, which are the base hex values for RGB.
-   * @param value Value to clamp, interpolate, and round.
+   * Values above 1 and below 0 are clamped to decrease scope of interpolation. Result is
+   * interpolated between 0 and 255, which are the base hex values for RGB.
+   *
+   * @param value
+   *   Value to clamp, interpolate, and round.
+   *
    * @return integer RGB value of resulting interpolated color value.
    */
   public static int interpolate(float value) {

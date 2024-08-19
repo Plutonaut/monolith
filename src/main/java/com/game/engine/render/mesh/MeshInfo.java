@@ -5,13 +5,14 @@ import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.engine.render.models.IModel;
 import com.game.graphics.materials.Material;
+import com.game.graphics.shaders.Program;
 import com.game.utils.application.values.ValueStore;
-import com.game.utils.engine.MaterialUtils;
 import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class MeshInfo implements IModel {
   protected final List<VertexInfo> vertices;
   protected final ValueStore indices;
   protected final String name;
+  protected final Vector3f origin;
   protected Material material;
   protected int vertexCount;
   protected int instances;
@@ -31,7 +33,8 @@ public class MeshInfo implements IModel {
 
     indices = new ValueStore();
     vertices = new ArrayList<>();
-    material = new Material(MaterialUtils.DFLT);
+    origin = new Vector3f();
+    material = null;
     instances = 1;
     vertexCount = 0;
   }
@@ -39,11 +42,7 @@ public class MeshInfo implements IModel {
   @Override
   public ECache type() { return ECache.MESH_INFO; }
 
-  public Mesh create() {
-    return create(instances());
-  }
-
-  public Mesh create(int instances) {
+  public Mesh create(Program program) {
     Mesh mesh = instances > 1 ? new InstancedMesh(name, instances) : new Mesh(name);
     mesh.vertexCount(vertexCount);
     mesh.isComplex = !indices.isEmpty();
@@ -51,11 +50,12 @@ public class MeshInfo implements IModel {
     VertexInfo positions = getVerticesByAttribute(EAttribute.POS.getValue());
     if (positions != null) {
       Bounds3D bounds = MeshInfoUtils.calculateBounds(positions);
+      mesh.bounds.origin().set(origin);
       mesh.updateBounds(bounds.min(), bounds.max());
     }
+    mesh.redraw(this, v -> mesh.setVertexAttributeArray(program.attributes().point(v)));
     return mesh;
   }
-
 
   public VertexInfo getVerticesByAttribute(String key) {
     return vertices
@@ -75,10 +75,16 @@ public class MeshInfo implements IModel {
   }
 
   public MeshInfo addVertices(
-    ValueStore values, int glType, int glUsage, int size, String attribute, int instances, int divisor
+    ValueStore values,
+    int glType,
+    int glUsage,
+    int size,
+    String attribute,
+    int dimensions,
+    int divisor
   ) {
     if (!values.isEmpty() && size > 0) {
-      AttribInfo attribInfo = new AttribInfo(attribute, size, instances, divisor);
+      AttribInfo attribInfo = new AttribInfo(attribute, size, dimensions, divisor);
       VertexInfo vertexInfo = new VertexInfo(values, glType, glUsage, attribInfo);
       addVertices(vertexInfo);
     }

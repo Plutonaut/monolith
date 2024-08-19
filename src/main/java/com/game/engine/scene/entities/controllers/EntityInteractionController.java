@@ -7,17 +7,19 @@ import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.utils.engine.PhysicsUtils;
 import com.game.utils.enums.EController;
 import com.game.utils.enums.EGUIEvent;
-
-import java.util.HashSet;
+import lombok.Getter;
 
 public class EntityInteractionController extends AbstractEntityController {
-  protected final HashSet<IEntityInteractionCallback> listeners;
+  protected IEntityInteractionCallback listener;
+  @Getter
   protected boolean hover;
   protected int leftMouse;
   protected int rightMouse;
 
   public EntityInteractionController() {
-    listeners = new HashSet<>();
+    listener = null;
+    leftMouse = -1;
+    rightMouse = -1;
   }
 
   @Override
@@ -31,7 +33,7 @@ public class EntityInteractionController extends AbstractEntityController {
   }
 
   public void listen(IEntityInteractionCallback listener) {
-    this.listeners.add(listener);
+    this.listener = listener;
   }
 
   public void onMouseInput(Mouse mouse, Bounds2D bounds) {
@@ -40,19 +42,10 @@ public class EntityInteractionController extends AbstractEntityController {
     if (isInside != hover) {
       hover = isInside;
       emit(isInside ? EGUIEvent.ENTER : EGUIEvent.EXIT);
-
-      if (mouse.leftPressed() != leftMouse) {
-        leftMouse = mouse.leftPressed();
-        emit(mouse.isLeftButtonPressed() ? EGUIEvent.LEFT_CLICK : EGUIEvent.LEFT_RELEASE);
-      }
-      if (mouse.rightPressed() != rightMouse) {
-        rightMouse = mouse.rightPressed();
-        emit(mouse.isRightButtonPressed() ? EGUIEvent.RIGHT_CLICK : EGUIEvent.LEFT_RELEASE);
-      }
     }
   }
 
   protected void emit(EGUIEvent event) {
-    listeners.forEach(l -> l.onEvent(event));
+    listener.onEvent(event);
   }
 }

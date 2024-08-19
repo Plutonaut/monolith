@@ -8,6 +8,7 @@ import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.EMaterialColor;
 import com.game.utils.enums.EMaterialTexture;
 import lombok.extern.slf4j.Slf4j;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL46;
 
@@ -20,6 +21,7 @@ public class MeshInfoBuilder {
   protected ArrayList<String> attributes;
   protected List<VertexInfo> vertices;
   protected ValueStore indices;
+  protected Vector3f origin;
   protected Material material;
   protected String name;
 
@@ -27,6 +29,7 @@ public class MeshInfoBuilder {
     attributes = new ArrayList<>();
     vertices = new ArrayList<>();
     indices = new ValueStore();
+    origin = new Vector3f();
     material = null;
     name = null;
   }
@@ -42,6 +45,11 @@ public class MeshInfoBuilder {
 
   public MeshInfoBuilder material(String materialId) {
     material = new Material(materialId);
+    return this;
+  }
+
+  public MeshInfoBuilder material(Material material) {
+    this.material = material;
     return this;
   }
 
@@ -78,6 +86,16 @@ public class MeshInfoBuilder {
   public MeshInfoBuilder materialColor(String colorType, Vector4f colorValue) {
     if (material != null && colorType != null && !colorType.isEmpty() && colorValue != null)
       material.color(colorType, colorValue);
+    return this;
+  }
+
+  public MeshInfoBuilder origin(float x, float y, float z) {
+    this.origin.set(x, y, z);
+    return this;
+  }
+
+  public MeshInfoBuilder origin(Vector3f origin) {
+    this.origin.set(origin);
     return this;
   }
 
@@ -238,6 +256,7 @@ public class MeshInfoBuilder {
     }
     meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material);
+    if (origin != null) meshInfo.origin().set(origin);
     dispose();
 
     return meshInfo;
@@ -247,6 +266,7 @@ public class MeshInfoBuilder {
     attributes.clear();
     vertices.clear();
     indices.clear();
+    origin = new Vector3f();
     material = null;
     name = null;
   }

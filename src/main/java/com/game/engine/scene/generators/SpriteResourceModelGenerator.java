@@ -50,7 +50,7 @@ public class SpriteResourceModelGenerator extends AbstractModelGenerator {
       })
     );
     material.texture(EMaterialTexture.DIF.value(), texture.path());
-    MeshInfo meshInfo = new Quad().meshInfo();
+    MeshInfo meshInfo = new Quad(texture.width(), texture.height()).meshInfo();
     meshInfo.material(material);
 
     return meshInfo;

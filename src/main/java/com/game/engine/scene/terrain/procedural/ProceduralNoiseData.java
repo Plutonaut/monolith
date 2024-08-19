@@ -55,15 +55,4 @@ public class ProceduralNoiseData {
     this.seed = seed;
     this.localNormalization = localNormalization;
   }
-
-  public ProceduralNoiseData copy() {
-    return new ProceduralNoiseData()
-      .scale(scale)
-      .offset(offset)
-      .seed(seed)
-      .octaves(octaves)
-      .lacunarity(lacunarity)
-      .persistence(persistence)
-      .localNormalization(localNormalization);
-  }
 }

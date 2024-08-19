@@ -1,24 +1,22 @@
 package com.game.engine.scene.entities.controllers;
 
 import com.game.engine.scene.entities.transforms.ModelTransform;
+import com.game.utils.engine.terrain.procedural.EntityTerrainController;
 import com.game.utils.enums.EController;
 
 import java.util.HashMap;
 
 public class EntityControllerManager {
   protected final HashMap<String, AbstractEntityController> controllers;
+  AbstractEntityController.IMeshUpdater updater;
 
-  public EntityControllerManager() {
+  public EntityControllerManager(AbstractEntityController.IMeshUpdater updater) {
     controllers = new HashMap<>();
+    this.updater = updater;
   }
 
   public void onUpdate(ModelTransform transform) {
     controllers.values().forEach(controller -> controller.onUpdate(transform));
-  }
-
-  public void copy(EntityControllerManager to) {
-    if (to == this) return;
-    controllers.forEach(to::controller);
   }
 
   public EntityTextController text() {
@@ -63,6 +61,13 @@ public class EntityControllerManager {
     );
   }
 
+  public EntityTerrainController terrain() {
+    return (EntityTerrainController) controller(
+      EController.TERRAIN.value(),
+      k -> new EntityTerrainController()
+    );
+  }
+
   public boolean hasAnimations() {
     return hasController(EController.ANIM.value());
   }
@@ -76,7 +81,9 @@ public class EntityControllerManager {
   }
 
   public AbstractEntityController controller(String type, IControllerGenerator generator) {
-    return controllers.computeIfAbsent(type, generator::generate);
+    AbstractEntityController controller = controllers.computeIfAbsent(type, generator::generate);
+    if (controller.updater == null) controller.updater = updater;
+    return controller;
   }
 
   boolean hasController(String type) {

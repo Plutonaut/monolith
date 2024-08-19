@@ -17,6 +17,7 @@ public class RenderManager implements IRenderer {
     ERenderer.PARTICLE,
     ERenderer.SPRITE,
     ERenderer.MESH,
+    ERenderer.TERRAIN,
     ERenderer.SCENE,
     ERenderer.GUI,
     ERenderer.FONT
@@ -33,6 +34,7 @@ public class RenderManager implements IRenderer {
       case GUI -> new GUIRenderer();
       case MESH -> new MeshRenderer();
       case SCENE -> new SceneRenderer();
+      case TERRAIN -> new TerrainRenderer();
       case SKYBOX -> new SkyBoxRenderer();
       case SPRITE -> new SpriteRenderer();
       case FONT -> new FontRenderer();
