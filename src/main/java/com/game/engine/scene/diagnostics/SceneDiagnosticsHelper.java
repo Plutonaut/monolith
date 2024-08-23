@@ -63,7 +63,7 @@ public class SceneDiagnosticsHelper {
       return;
     }
 
-    diagnostics.init("Diagnostics");
+    diagnostics.init("Scene Diagnostics");
     diagnostics.open("Scene").row(
       "Timestamp",
       LocalDateTime.now().format(LoggingUtils.LOG_DATE_TIME_FORMATTER)
@@ -89,12 +89,13 @@ public class SceneDiagnosticsHelper {
       diagnostics.row("Color", value.color());
       diagnostics.row("Factor", value.factor());
     });
-    diagnostics.close();
 
     diagnostics.open("Entities");
     scene.entities().entities().forEach((key, value) -> {
       diagnostics
+        .emdash()
         .row(key, value.id())
+        .emdash()
         .row("Position", value.transform().position())
         .row(
           "Rotation",
@@ -107,10 +108,16 @@ public class SceneDiagnosticsHelper {
         .row("Projection", value.parameters().projection().name());
       diagnostics.row("Meshes");
       value.meshes().forEach((mesh) -> {
-        diagnostics.row(mesh.key(), mesh.glId()).row("Vertex Count", mesh.vertexCount()).row(
-          "Is Complex",
-          mesh.isComplex()
-        ).row(mesh.bounds().toString());
+        diagnostics
+          .emdash()
+          .row(mesh.key(), mesh.glId())
+          .row("Vertex Count", mesh.vertexCount())
+          .emdash()
+          .row(
+            "Is Complex",
+            mesh.isComplex()
+          )
+          .row(mesh.bounds().toString());
         Material material = mesh.material();
         diagnostics.row("Material", material.name());
         material.textures().pack().values().forEach(diagnostics::row);
@@ -123,6 +130,21 @@ public class SceneDiagnosticsHelper {
           ).row("Size", a.size()).row("Offset", a.offset()).row("Divisor", a.divisor()));
         });
       });
+    });
+
+    diagnostics
+      .open("Active Terrain Chunks")
+      .row("Max LOD", scene.terrain().maxLOD())
+      .row("Min LOD", scene.terrain().minLOD())
+      .row("Number of chunks visible", scene.terrain().numChunksVisible());
+    scene.activeTerrainChunks().forEach((activeChunk) -> {
+      diagnostics
+        .emdash()
+        .row("Terrain Chunk", activeChunk.coordinates().toString())
+        .emdash()
+        .row(activeChunk.bounds().toString())
+        .row("LOD", activeChunk.lod())
+        .row("LOD Index", activeChunk.lodIndex());
     });
     GlobalCache.instance().computeDiagnostics(diagnostics);
     diagnostics.close();

@@ -7,7 +7,9 @@ import com.game.engine.render.mesh.Mesh;
 import com.game.engine.scene.entities.transforms.ModelTransform;
 import com.game.graphics.fonts.FontInfo;
 import com.game.utils.engine.ColorUtils;
+import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.loaders.FontResourceLoaderUtils;
+import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.EController;
 import com.game.utils.enums.EMaterialColor;
 import lombok.Data;
@@ -69,7 +71,10 @@ public class EntityTextController extends AbstractEntityController {
 
     FontInfo fontInfo = GlobalCache.instance().fontInfo(font.getFontName());
     FontMeshInfo meshInfo = FontResourceLoaderUtils.build(mesh.key(), text, color, fontInfo);
-    mesh.redraw(meshInfo, null);
+    mesh.redraw(meshInfo, v -> {
+      if (v.hasAttribute(EAttribute.POS.getValue()))
+        mesh.bounds().set(MeshInfoUtils.calculateBounds(v));
+    });
     updateBounds();
   }
 

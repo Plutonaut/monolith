@@ -35,10 +35,12 @@ public class GameEngine implements Runnable {
 
     logic.current().input();
 
+    logic.current().preUpdate(delta);
     while (timer.isUpdateReady()) {
       logic.current().update(timer.currentInterval());
       timer.onUpdate();
     }
+    logic.current().preRender();
 
     logic.current().render(timer.fps);
     timer.onFrameRendered();

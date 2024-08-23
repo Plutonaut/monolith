@@ -12,7 +12,6 @@ import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,8 @@ public class MeshInfo implements IModel {
   protected final List<VertexInfo> vertices;
   protected final ValueStore indices;
   protected final String name;
-  protected final Vector3f origin;
   protected Material material;
+  protected Bounds3D bounds;
   protected int vertexCount;
   protected int instances;
 
@@ -33,8 +32,8 @@ public class MeshInfo implements IModel {
 
     indices = new ValueStore();
     vertices = new ArrayList<>();
-    origin = new Vector3f();
     material = null;
+    bounds = null;
     instances = 1;
     vertexCount = 0;
   }
@@ -49,11 +48,10 @@ public class MeshInfo implements IModel {
     mesh.material(material);
     VertexInfo positions = getVerticesByAttribute(EAttribute.POS.getValue());
     if (positions != null) {
-      Bounds3D bounds = MeshInfoUtils.calculateBounds(positions);
-      mesh.bounds.origin().set(origin);
-      mesh.updateBounds(bounds.min(), bounds.max());
+      Bounds3D bounds = this.bounds == null ? MeshInfoUtils.calculateBounds(positions) : this.bounds;
+      mesh.bounds().set(bounds);
     }
-    mesh.redraw(this, v -> mesh.setVertexAttributeArray(program.attributes().point(v)));
+    mesh.redrawAttributes(this, program);
     return mesh;
   }
 

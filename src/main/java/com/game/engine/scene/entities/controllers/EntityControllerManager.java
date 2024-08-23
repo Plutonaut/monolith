@@ -1,7 +1,6 @@
 package com.game.engine.scene.entities.controllers;
 
 import com.game.engine.scene.entities.transforms.ModelTransform;
-import com.game.utils.engine.terrain.procedural.EntityTerrainController;
 import com.game.utils.enums.EController;
 
 import java.util.HashMap;
@@ -58,13 +57,6 @@ public class EntityControllerManager {
     return (EntityInstanceController) controller(
       EController.INSTANCE.value(),
       k -> new EntityInstanceController()
-    );
-  }
-
-  public EntityTerrainController terrain() {
-    return (EntityTerrainController) controller(
-      EController.TERRAIN.value(),
-      k -> new EntityTerrainController()
     );
   }
 

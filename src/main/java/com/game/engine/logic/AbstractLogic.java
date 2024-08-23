@@ -21,6 +21,7 @@ public abstract class AbstractLogic implements ILogic {
   protected Vector3f viewMovement;
   protected Vector2f viewRotation;
   protected int currentFPS;
+  protected float currentDelta;
 
   public AbstractLogic(EngineSettings settings) {
     renderer = new RenderManager();
@@ -33,7 +34,7 @@ public abstract class AbstractLogic implements ILogic {
 
   protected abstract String windowTitle();
 
-  protected void loadLights() {
+  protected void loadSceneLights() {
     scene.lighting().addAmbientLight().addDirectionalLight().addPointLight("test_A").addSpotLight(
       "test_A").addPointLight("test_B").addSpotLight("test_B");
     scene.lighting().directionalLight().factor(0.5f);
@@ -70,6 +71,14 @@ public abstract class AbstractLogic implements ILogic {
   public boolean isRunning() {
     return !scene.window().windowShouldClose();
   }
+
+  @Override
+  public void preUpdate(float delta) {
+    currentDelta = delta;
+  }
+
+  @Override
+  public void preRender() {}
 
   @Override
   public void render(int fps) {

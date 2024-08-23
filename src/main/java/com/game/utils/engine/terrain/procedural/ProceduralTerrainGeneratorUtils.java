@@ -6,7 +6,9 @@ import com.game.utils.application.values.ValueGrid;
 import com.game.utils.application.values.ValueMap;
 import com.game.utils.application.values.ValueStore;
 import com.game.utils.engine.terrain.TerrainUtils;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ProceduralTerrainGeneratorUtils {
   public static void buildTerrainMeshInfo(
     ValueMap map, final MeshInfoBuilder builder, ValueGrid valueGrid
@@ -27,7 +29,7 @@ public class ProceduralTerrainGeneratorUtils {
     String diffuseTexturePath = map.get("diffuseTexturePath");
     String normalTexturePath = map.get("normalTexturePath");
     String heightMapTexturePath = map.get("heightMapTexturePath");
-    buildTerrainMeshInfo(id, builder, width, height, mapper)
+    buildTerrainMeshInfo(id, builder, 1, width, height, mapper)
       .material(id + "_mat")
       .materialHeightTexture(heightMapTexturePath)
       .materialNormalTexture(normalTexturePath)
@@ -37,6 +39,7 @@ public class ProceduralTerrainGeneratorUtils {
   public static MeshInfoBuilder buildTerrainMeshInfo(
     String id,
     final MeshInfoBuilder builder,
+    int lod,
     int width,
     int height,
     IHeightMapper mapper
@@ -45,31 +48,34 @@ public class ProceduralTerrainGeneratorUtils {
     ValueStore textureCoordinates = new ValueStore();
     ValueStore indices = new ValueStore();
 
-    float xInc = TerrainUtils.incrementX(width);
-    float zInc = TerrainUtils.incrementZ(height);
+    int lodWidth = width / lod;
+    int lodHeight = height / lod;
 
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
+    float xInc = TerrainUtils.incrementX(lodWidth);
+    float zInc = TerrainUtils.incrementZ(lodHeight);
+
+    for (int i = 0; i < lodHeight; i++) {
+      for (int j = 0; j < lodWidth; j++) {
         float posX = TerrainUtils.X_AXIS + j * xInc;
-        float posY = mapper.getHeight(j, i);
+        float posY = mapper.getHeight(j * lod, i * lod);
         float posZ = TerrainUtils.Z_AXIS + i * zInc;
+
         positions.add(posX, posY, posZ);
 
-        float txcX = TerrainUtils.TEX_COORD_INC * j / width;
-        float txcY = TerrainUtils.TEX_COORD_INC * i / height;
+        float txcX = TerrainUtils.TEX_COORD_INC * j / lodWidth;
+        float txcY = TerrainUtils.TEX_COORD_INC * i / lodHeight;
         textureCoordinates.add(txcX, txcY);
 
-        if (j < width - 1 && i < height - 1) {
-          int leftTop = i * width + j;
-          int leftBottom = (i + 1) * width + j;
-          int rightBottom = (i + 1) * width + j + 1;
-          int rightTop = i * width + j + 1;
-
-          indices.add(rightTop, leftBottom, rightBottom, leftTop, leftBottom, rightTop);
+        if (j < lodWidth - 1 && i < lodHeight - 1) {
+          int bottomLeft = i * lodWidth + j;
+          int topLeft = (i + 1) * lodWidth + j;
+          int topRight = (i + 1) * lodWidth + j + 1;
+          int bottomRight = i * lodWidth + j + 1;
+          indices.add(topRight, bottomRight, bottomLeft, topRight, bottomLeft, topLeft);
         }
       }
     }
-    ValueStore normals = TerrainUtils.calculateNormals(positions, width, height);
+    ValueStore normals = TerrainUtils.calculateNormals(positions, lodWidth, lodHeight);
 
     return builder
       .use(id)

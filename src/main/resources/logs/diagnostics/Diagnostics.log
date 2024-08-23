@@ -3,7 +3,7 @@
 #	Scene
 ======================================================================================
 
-	Timestamp: 08-19-2024-17-50-46
+	Timestamp: 08-19-2024-19-20-11
 	Log: 1
 
 ======================================================================================
@@ -18,8 +18,8 @@
 #	Camera
 ======================================================================================
 
-	Position: { x: 0, y: 3.2, z: -77.3 }
-	Rotation: { x: 0, y: 0, z: 0 }
+	Position: { x: 0, y: 0, z: 2 }
+	Rotation: { x: -18.4, y: -19.6, z: 0 }
 	Mouse Sensitivity: : 0.2
 	Camera Speed: : 0.1
 	Log: 3
@@ -52,36 +52,7 @@
 #	Entities
 ======================================================================================
 
-	diagnostics: 44062915
-	Position: { x: 25, y: 55, z: 0 }
-	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.75
-	Shader: font
-	Projection: ORTHOGRAPHIC_FONT_2D
-	Meshes
-	diagnostics: 12
-	Vertex Count: 1158
-	Is Complex: true
-	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 575, y: 96, z: 0 }
-	Material: diagnostics_mat
-	src\main\resources\textures\fonts\Arial.png
-	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
-	Vertex Attribute Array
-	Stride: 2
-	Attribute: texcoord
-	Location: 1
-	Size: 2
-	Offset: 0
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 3
-	Attribute: position
-	Location: 0
-	Size: 3
-	Offset: 0
-	Divisor: 0
-	BASIC_SKYBOX: 387915370
+	BASIC_SKYBOX: 55406167
 	Position: { x: 0, y: 0, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
 	Scale: 100
@@ -116,7 +87,7 @@ Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -1, y: -1, z: -1 } Max Vertex: { x
 	Size: 3
 	Offset: 0
 	Divisor: 0
-	toggle: 1779503333
+	toggle: 2134264525
 	Position: { x: 25, y: 25, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
 	Scale: 0.75
@@ -127,7 +98,7 @@ Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -1, y: -1, z: -1 } Max Vertex: { x
 	Vertex Count: 96
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 146, y: 24, z: 0 }
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 156, y: 24, z: 0 }
 	Material: toggle_mat
 	src\main\resources\textures\fonts\Arial.png
 	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
@@ -145,7 +116,7 @@ Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 1
 	Size: 3
 	Offset: 0
 	Divisor: 0
-	noiseTerrain_A: 1307322167
+	noiseTerrain_A: 61445021
 	Position: { x: 0, y: 0, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
 	Scale: 1
@@ -156,7 +127,7 @@ Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 1
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 0, y: 0.05, z: -100 } Min Vertex: { x: -25, y: 0.11, z: -125 } Max Vertex: { x: 25, y: 0.11, z: -75 }
+Origin: { x: 0, y: 0.05, z: 0 } Min Vertex: { x: -25, y: 0.11, z: -25 } Max Vertex: { x: 25, y: 0.11, z: 25 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -186,7 +157,7 @@ Origin: { x: 0, y: 0.05, z: -100 } Min Vertex: { x: -25, y: 0.11, z: -125 } Max 
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: -50, y: 0.05, z: -150 } Min Vertex: { x: -75, y: 0.11, z: -175 } Max Vertex: { x: -25, y: 0.11, z: -125 }
+Origin: { x: -50, y: 0.05, z: -50 } Min Vertex: { x: -75, y: 0.11, z: -75 } Max Vertex: { x: -25, y: 0.11, z: -25 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -216,7 +187,7 @@ Origin: { x: -50, y: 0.05, z: -150 } Min Vertex: { x: -75, y: 0.11, z: -175 } Ma
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 0, y: 0.05, z: -150 } Min Vertex: { x: -25, y: 0.11, z: -175 } Max Vertex: { x: 25, y: 0.11, z: -125 }
+Origin: { x: 0, y: 0.05, z: -50 } Min Vertex: { x: -25, y: 0.11, z: -75 } Max Vertex: { x: 25, y: 0.11, z: -25 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -246,7 +217,7 @@ Origin: { x: 0, y: 0.05, z: -150 } Min Vertex: { x: -25, y: 0.11, z: -175 } Max 
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 50, y: 0.05, z: -150 } Min Vertex: { x: 25, y: 0.11, z: -175 } Max Vertex: { x: 75, y: 0.11, z: -125 }
+Origin: { x: 50, y: 0.05, z: -50 } Min Vertex: { x: 25, y: 0.11, z: -75 } Max Vertex: { x: 75, y: 0.11, z: -25 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -276,7 +247,7 @@ Origin: { x: 50, y: 0.05, z: -150 } Min Vertex: { x: 25, y: 0.11, z: -175 } Max 
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: -50, y: 0.05, z: -100 } Min Vertex: { x: -75, y: 0.11, z: -125 } Max Vertex: { x: -25, y: 0.11, z: -75 }
+Origin: { x: -50, y: 0.05, z: 0 } Min Vertex: { x: -75, y: 0.11, z: -25 } Max Vertex: { x: -25, y: 0.11, z: 25 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -306,7 +277,7 @@ Origin: { x: -50, y: 0.05, z: -100 } Min Vertex: { x: -75, y: 0.11, z: -125 } Ma
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 50, y: 0.05, z: -100 } Min Vertex: { x: 25, y: 0.11, z: -125 } Max Vertex: { x: 75, y: 0.11, z: -75 }
+Origin: { x: 50, y: 0.05, z: 0 } Min Vertex: { x: 25, y: 0.11, z: -25 } Max Vertex: { x: 75, y: 0.11, z: 25 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -336,7 +307,7 @@ Origin: { x: 50, y: 0.05, z: -100 } Min Vertex: { x: 25, y: 0.11, z: -125 } Max 
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: -50, y: 0.05, z: -50 } Min Vertex: { x: -75, y: 0.11, z: -75 } Max Vertex: { x: -25, y: 0.11, z: -25 }
+Origin: { x: -50, y: 0.05, z: 50 } Min Vertex: { x: -75, y: 0.11, z: 25 } Max Vertex: { x: -25, y: 0.11, z: 75 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -366,7 +337,7 @@ Origin: { x: -50, y: 0.05, z: -50 } Min Vertex: { x: -75, y: 0.11, z: -75 } Max 
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 0, y: 0.05, z: -50 } Min Vertex: { x: -25, y: 0.11, z: -75 } Max Vertex: { x: 25, y: 0.11, z: -25 }
+Origin: { x: 0, y: 0.05, z: 50 } Min Vertex: { x: -25, y: 0.11, z: 25 } Max Vertex: { x: 25, y: 0.11, z: 75 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -396,7 +367,7 @@ Origin: { x: 0, y: 0.05, z: -50 } Min Vertex: { x: -25, y: 0.11, z: -75 } Max Ve
 	Vertex Count: 14406
 	Is Complex: true
 	Bounds 3D
-Origin: { x: 50, y: 0.05, z: -50 } Min Vertex: { x: 25, y: 0.11, z: -75 } Max Vertex: { x: 75, y: 0.11, z: -25 }
+Origin: { x: 50, y: 0.05, z: 50 } Min Vertex: { x: 25, y: 0.11, z: 25 } Max Vertex: { x: 75, y: 0.11, z: 75 }
 	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_height.png
@@ -422,87 +393,12 @@ Origin: { x: 50, y: 0.05, z: -50 } Min Vertex: { x: 25, y: 0.11, z: -75 } Max Ve
 	Size: 3
 	Offset: 0
 	Divisor: 0
-	camera: 1695037010
-	Position: { x: 25, y: 620, z: 0 }
-	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.75
-	Shader: font
-	Projection: ORTHOGRAPHIC_FONT_2D
-	Meshes
-	camera: 13
-	Vertex Count: 612
-	Is Complex: true
-	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 278, y: 120, z: 0 }
-	Material: camera_mat
-	src\main\resources\textures\fonts\Arial.png
-	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
-	Vertex Attribute Array
-	Stride: 2
-	Attribute: texcoord
-	Location: 1
-	Size: 2
-	Offset: 0
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 3
-	Attribute: position
-	Location: 0
-	Size: 3
-	Offset: 0
-	Divisor: 0
-	selected: 528852723
-	Position: { x: 960, y: 25, z: 0 }
-	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.75
-	Shader: font
-	Projection: ORTHOGRAPHIC_FONT_2D
-	Meshes
-	selected: 14
-	Vertex Count: 966
-	Is Complex: true
-	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 342, y: 168, z: 0 }
-	Material: selected_mat
-	src\main\resources\textures\fonts\Arial.png
-	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
-	Vertex Attribute Array
-	Stride: 2
-	Attribute: texcoord
-	Location: 1
-	Size: 2
-	Offset: 0
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 3
-	Attribute: position
-	Location: 0
-	Size: 3
-	Offset: 0
-	Divisor: 0
 	Log: 5
 
 ======================================================================================
 #	Global Cache
 ======================================================================================
 
-	MESH: Items: 5
-	diagnostics
-	skyboxmtl
-	toggle
-	camera
-	selected
-	TEXTURE: Items: 4
-	src/main/resources/textures/moss_surface/moss_surface_albedo.png
-	src/main/resources/textures/moss_surface/moss_surface_normal.png
-	src\main\resources\textures\fonts\Arial.png
-	src\main\resources\models\skybox\skybox.png
-	PROGRAM: Items: 3
-	skybox
-	terrain
-	font
-	FONT_INFO: Items: 1
-	Arial
 	SHADER: Items: 6
 	render\terrain\terrain.vert
 	render\font\font.vert
@@ -510,32 +406,34 @@ Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 3
 	render\terrain\terrain.frag
 	render\skybox\skybox.frag
 	render\font\font.frag
-	MESH_INFO: Items: 20
-	terrain_chunk_(1, -2)_mesh_info
-	terrain_chunk_(0, -3)_mesh_info
-	terrain_chunk_(0, 1)_mesh_info
-	terrain_chunk_(0, -1)_mesh_info
-	terrain_chunk_(-1, 1)_mesh_info
-	diagnostics_mesh_info
-	terrain_chunk_(1, 0)_mesh_info
-	terrain_chunk_(-1, -2)_mesh_info
+	FONT_INFO: Items: 1
+	Arial
+	TEXTURE: Items: 4
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	src\main\resources\textures\fonts\Arial.png
+	src\main\resources\models\skybox\skybox.png
+	MESH: Items: 2
+	skyboxmtl
+	toggle
+	MESH_INFO: Items: 11
 	skyboxmtl_mesh_info
 	toggle_mesh_info
 	terrain_chunk_(0, 0)_mesh_info
+	terrain_chunk_(0, 1)_mesh_info
+	terrain_chunk_(0, -1)_mesh_info
 	terrain_chunk_(-1, 0)_mesh_info
-	terrain_chunk_(1, -3)_mesh_info
 	terrain_chunk_(1, -1)_mesh_info
-	terrain_chunk_(0, -2)_mesh_info
+	terrain_chunk_(-1, 1)_mesh_info
 	terrain_chunk_(1, 1)_mesh_info
-	camera_mesh_info
 	terrain_chunk_(-1, -1)_mesh_info
-	selected_mesh_info
-	terrain_chunk_(-1, -3)_mesh_info
-	MODEL: Items: 5
+	terrain_chunk_(1, 0)_mesh_info
+	PROGRAM: Items: 3
+	skybox
+	terrain
+	font
+	MODEL: Items: 2
 	BASIC_SKYBOX_model
-	selected_model
 	toggle_model
-	camera_model
-	diagnostics_model
 	Log: 6
 Closing Print Stream

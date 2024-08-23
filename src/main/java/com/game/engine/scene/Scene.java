@@ -18,6 +18,8 @@ import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
 import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.TextureUtils;
+import com.game.utils.engine.terrain.procedural.TerrainChunk;
+import com.game.utils.engine.terrain.procedural.TerrainChunkManager;
 import com.game.utils.enums.EGLParam;
 import com.game.utils.enums.EProjection;
 import com.game.utils.enums.ERenderer;
@@ -27,6 +29,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.stream.Stream;
 
 @Accessors(fluent = true)
@@ -43,6 +46,7 @@ public class Scene {
   private final PacketManager packets;
   private final SceneDiagnosticsHelper diagnostics;
   private final RayCaster raycaster;
+  private final TerrainChunkManager terrain;
 
   public Scene(EngineSettings settings, String name) {
     window = new Window(
@@ -69,6 +73,7 @@ public class Scene {
     models = new ModelGenerator();
     diagnostics = new SceneDiagnosticsHelper(settings.diagnostics());
     raycaster = new RayCaster(); // TODO: pass in max distance.
+    terrain = new TerrainChunkManager();
   }
 
   public AudioSource audio(String key, String path) {
@@ -186,6 +191,19 @@ public class Scene {
     );
   }
 
+  public Entity generateTerrain(String id, String terrainName) {
+    Model model = terrain.loadFromFile(terrainName);
+    return createEntity(
+      id,
+      model,
+      ERenderer.TERRAIN,
+      EProjection.PERSPECTIVE,
+      EGLParam.CULL,
+      EGLParam.DEPTH,
+      EGLParam.BLEND
+    );
+  }
+
   public Entity createEntity(
     String id, ValueMap map, ERenderer shader, EProjection projection, EGLParam... params
   ) {
@@ -202,7 +220,7 @@ public class Scene {
     return entities.create(id, model, shader, projection, params);
   }
 
-  public Scene bind(ERenderer shader, String...entityIds) {
+  public Scene bind(ERenderer shader, String... entityIds) {
     for (String id : entityIds) packets.bind(shader, id);
     return this;
   }
@@ -219,7 +237,7 @@ public class Scene {
     return this;
   }
 
-  public Scene unbind(ERenderer shader, String...entityIds) {
+  public Scene unbind(ERenderer shader, String... entityIds) {
     for (String id : entityIds) packets.unbind(shader, id);
     return this;
   }
@@ -241,6 +259,14 @@ public class Scene {
       camera,
       projectionMat(EProjection.PERSPECTIVE)
     );
+  }
+
+  public void updateTerrainOnCameraMovement() {
+    terrain.onObserverPositionUpdate(camera.position());
+  }
+
+  public HashSet<TerrainChunk> activeTerrainChunks() {
+    return terrain.active();
   }
 
   public Matrix4f modelViewMat3D(Entity entity) {

@@ -16,8 +16,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
-import java.awt.Color;
 
+import java.awt.*;
 import java.util.HashMap;
 
 @Accessors(fluent = true)
@@ -26,6 +26,7 @@ public class Hud {
   private static final String DIA = "diagnostics";
   private static final String SEL = "selected";
   private static final String CAM = "camera";
+  private static final String CTR = "center";
   private static final String SEL_DFLT_TEXT = "<Please reselect an entity>";
 
   private final HashMap<String, Entity> hudEntityMap;
@@ -78,28 +79,44 @@ public class Hud {
     if (diagnosticsVisible) redrawText(CAM, scene.camera().toString());
   }
 
+  public void handleLeftMouseClick(int action) {
+    if (action == GLFW.GLFW_PRESS) {
+      if (toggleDiagnosticsInteractionController.isHover()) onDiagnosticsToggled();
+      else scene.rayCastMouseClick(false, this::onHit);
+    }
+  }
+
+  public void updateCenterText(String text) {
+    if (text != null) redrawEntity(
+      CTR,
+      text,
+      scene.window().width() / 2f,
+      scene.window().height() / 2f
+    );
+  }
+
+  public void showCenterText() {
+
+    scene.bind(ERenderer.FONT, CTR);
+  }
+
+  public void hideCenterText() {
+    scene.unbind(ERenderer.FONT, CTR);
+  }
+
   void onHit(Hit hit) {
-    if (hit == null) return;
     Entity entity = hit.entity();
     scene.boundEntities().forEach(e -> e.onMeshSelected(hit.meshId()));
     if (diagnosticsVisible) {
       if (entity == null) redrawText(SEL, SEL_DFLT_TEXT);
       else {
-        Mesh m = entity.mesh(hit.meshId());
-        String builder = "Hit: " +
-          PrettifyUtils.prettify(hit.ray().result()) +
-          "\nEntity: " +
-          entity.name() +
-          "\nposition: " +
-          PrettifyUtils.prettify(entity.transform().position()) +
-          "\nscale: " +
-          entity.transform().scale +
-          "\nmesh: " +
-          m.name() +
-          "\n\tglId: " +
-          m.glId() +
-          "\n\tvertex count: " +
-          m.vertexCount();
+        Mesh m = entity.meshByGlID(hit.meshId());
+        String builder = "Hit: " + PrettifyUtils.prettify(hit
+                                                            .ray()
+                                                            .result()) + "\nEntity: " + entity.name() + "\nposition: " + PrettifyUtils.prettify(
+          entity
+            .transform()
+            .position()) + "\nscale: " + entity.transform().scale + "\nmesh: " + m.name() + "\n\tglId: " + m.glId() + "\n\tvertex count: " + m.vertexCount();
         redrawText(SEL, builder);
       }
     }
@@ -128,13 +145,6 @@ public class Hud {
     switch (event) {
       case EGUIEvent.ENTER -> toggleDiagnosticsTextController.setColor(Color.decode("#038C8C"));
       case EGUIEvent.EXIT -> toggleDiagnosticsTextController.setColor(color);
-    }
-  }
-
-  void handleLeftMouseClick(int action) {
-    if (action == GLFW.GLFW_PRESS) {
-      if (toggleDiagnosticsInteractionController.isHover()) onDiagnosticsToggled();
-      else scene.rayCastMouseClick(false, this::onHit);
     }
   }
 

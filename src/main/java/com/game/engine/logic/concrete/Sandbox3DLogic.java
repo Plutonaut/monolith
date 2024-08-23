@@ -46,7 +46,7 @@ public class Sandbox3DLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-    loadLights();
+    loadSceneLights();
 
     Entity skyBox = scene
       .createSkyBox(EModel.BASIC_SKYBOX.name(), EModel.BASIC_SKYBOX.path())

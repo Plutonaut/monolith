@@ -38,3 +38,4 @@ build/
 .DS_Store
 /src/main/resources/textures/hdri
 /src/main/resources/logs/opengl
+/src/main/resources/logs

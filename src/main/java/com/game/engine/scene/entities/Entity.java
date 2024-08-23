@@ -62,12 +62,16 @@ public class Entity implements IRenderable {
     return meshes.getFirst();
   }
 
-  public Mesh mesh(int glId) {
+  public Mesh meshAtIndex(int index) {
+    return index < meshes.size() ? meshes.get(index) : null;
+  }
+
+  public Mesh meshByGlID(int glId) {
     return meshes.stream().filter(m -> m.glId() == glId).findFirst().orElse(null);
   }
 
   public Mesh controllerMeshCallback(int glId, AbstractEntityController.IMeshGenerator generator) {
-    Mesh mesh = glId == -1 ? null : mesh(glId);
+    Mesh mesh = glId == -1 ? null : meshByGlID(glId);
     if (mesh == null && generator != null) {
       mesh = generator.generate();
       if (mesh != null) meshes.add(mesh);
@@ -167,9 +171,8 @@ public class Entity implements IRenderable {
   }
 
   public Mesh intersects(Ray ray) {
-    return controllers.hasPhysics() ? onTransformUpdate().controllers().physics().intersects(
-      meshes,
-      ray
+    return controllers.hasPhysics() ? onTransformUpdate().controllers().physics().intersects(meshes,
+                                                                                             ray
     ) : null;
   }
 }
