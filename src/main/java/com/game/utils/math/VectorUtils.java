@@ -6,6 +6,14 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class VectorUtils {
+  public static boolean greaterThan(Vector3f point, Vector3f position) {
+    return point.x > position.x && point.y > position.y && point.z > position.z;
+  }
+
+  public static boolean lessThan(Vector3f point, Vector3f position) {
+    return point.x < position.x && point.y < position.y && point.z < position.z;
+  }
+
   public static Vector2f screenSpace(Vector3f point, int width, int height) {
     float x = (point.x + point.x * 0.5f) * width;
     float y = (point.y - point.y * 0.5f) * height;

@@ -22,6 +22,7 @@ struct Material
     float reflectance;
     int hasTexture;
     int hasNormalMap;
+	int hasHeightMap;
 };
 // Light Structs -----------------------------------------------------------------------
 struct Attenuation 

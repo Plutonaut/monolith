@@ -18,6 +18,11 @@ public class GeneratorParameterBuilder {
     return this;
   }
 
+  public GeneratorParameterBuilder instances(int instances) {
+    map.setInt("instances", instances);
+    return this;
+  }
+
   public GeneratorParameterBuilder type(String type) {
     map.set("type", type);
     return this;
@@ -57,10 +62,6 @@ public class GeneratorParameterBuilder {
   public GeneratorParameterBuilder clamped(boolean clamped) {
     map.setBool("clamped", clamped);
     return this;
-  }
-
-  public GeneratorParameterBuilder useAtlas() {
-    return strategy("atlas");
   }
 
   public GeneratorParameterBuilder fontName(String fontName) {

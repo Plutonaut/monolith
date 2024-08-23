@@ -3,22 +3,23 @@ package com.game.engine.scene;
 import com.game.caches.GlobalCache;
 import com.game.engine.audio.AudioManager;
 import com.game.engine.physics.IHitListener;
-import com.game.engine.physics.Raycaster;
+import com.game.engine.physics.RayCaster;
 import com.game.engine.render.models.Model;
 import com.game.engine.render.pipeline.packets.PacketManager;
 import com.game.engine.scene.audio.AudioSource;
 import com.game.engine.scene.camera.Camera;
+import com.game.engine.scene.diagnostics.SceneDiagnosticsHelper;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.EntityManager;
-import com.game.engine.scene.entities.EntityRenderParameters;
 import com.game.engine.scene.generators.ModelGenerator;
 import com.game.engine.scene.lighting.LightingManager;
 import com.game.engine.scene.projection.Projection;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
 import com.game.utils.application.values.ValueMap;
-import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.engine.TextureUtils;
+import com.game.utils.engine.terrain.procedural.TerrainChunk;
+import com.game.utils.engine.terrain.procedural.TerrainChunkManager;
 import com.game.utils.enums.EGLParam;
 import com.game.utils.enums.EProjection;
 import com.game.utils.enums.ERenderer;
@@ -28,7 +29,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.awt.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.stream.Stream;
 
 @Accessors(fluent = true)
 @Data
@@ -43,19 +45,23 @@ public class Scene {
   private final GLParameters parameters;
   private final PacketManager packets;
   private final SceneDiagnosticsHelper diagnostics;
+  private final RayCaster raycaster;
+  private final TerrainChunkManager terrain;
 
   public Scene(EngineSettings settings, String name) {
-    window = new Window(settings.width(),
-                        settings.height(),
-                        name,
-                        settings.debug(),
-                        true,
-                        settings.vsync()
+    window = new Window(
+      settings.width(),
+      settings.height(),
+      name,
+      settings.debug(),
+      true,
+      settings.vsync()
     );
-    camera = new Camera(settings.cameraPosition(),
-                        new Vector3f(),
-                        settings.mouseSensitivity(),
-                        settings.movementSpeed()
+    camera = new Camera(
+      settings.cameraPosition(),
+      new Vector3f(),
+      settings.mouseSensitivity(),
+      settings.movementSpeed()
     );
     projection = new Projection(settings.fov(), settings.zNear(), settings.zFar());
 
@@ -66,6 +72,8 @@ public class Scene {
     entities = new EntityManager();
     models = new ModelGenerator();
     diagnostics = new SceneDiagnosticsHelper(settings.diagnostics());
+    raycaster = new RayCaster(); // TODO: pass in max distance.
+    terrain = new TerrainChunkManager();
   }
 
   public AudioSource audio(String key, String path) {
@@ -88,40 +96,20 @@ public class Scene {
     return GlobalCache.instance().model(map.get("id"), modelId -> models.generate(map));
   }
 
-  public Model cloneModel(String modelId, String cloneId) {
-    Model model = model(modelId);
-    String copyId = modelId + "_" + cloneId;
-    List<String> meshInfo = model
-      .meshInfo()
-      .stream()
-      .map((d) -> GlobalCache
-        .instance()
-        .meshInfo(cloneId, n -> MeshInfoUtils.clone(d, cloneId))
-        .name())
-      .toList();
-
-    return GlobalCache.instance().model(copyId, (id) -> {
-      Model copy = new Model(id);
-      copy.meshData().addAll(meshInfo);
-      copy.animations().addAll(model.animations());
-      return copy;
-    });
-  }
-
   public Entity entity(String id) {
     return entities.get(id);
   }
 
   public Entity createObject(String id, String path) {
     ValueMap map = models.builder().id(id).path(path).animated(false).build();
-    Model model = model(map);
-    return createEntity(id,
-                        model,
-                        ERenderer.SCENE,
-                        EProjection.PERSPECTIVE,
-                        EGLParam.BLEND,
-                        EGLParam.DEPTH,
-                        EGLParam.CULL
+    return createEntity(
+      id,
+      map,
+      ERenderer.SCENE,
+      EProjection.PERSPECTIVE,
+      EGLParam.BLEND,
+      EGLParam.DEPTH,
+      EGLParam.CULL
     );
   }
 
@@ -137,45 +125,46 @@ public class Scene {
       .fontSize(20)
       .fontColor(Color.white)
       .build();
-    Model model = model(map);
-    return createEntity(id,
-                        model,
-                        ERenderer.FONT,
-                        EProjection.ORTHOGRAPHIC_FONT_2D,
-                        EGLParam.BLEND,
-                        EGLParam.DEPTH
+    return createEntity(
+      id,
+      map,
+      ERenderer.FONT,
+      EProjection.ORTHOGRAPHIC_FONT_2D,
+      EGLParam.BLEND,
+      EGLParam.DEPTH
     );
   }
 
-  public Entity createSprite(String id, String path) {
+  public Entity createSprite(String id, String path, boolean useAtlas) {
     ValueMap map = models
       .builder()
       .id(id)
       .path(path)
       .animated(false)
       .clamped(false)
-      .useAtlas()
+      .strategy(useAtlas ? "atlas" : "")
       .asSprite()
       .build();
-    Model model = model(map);
-    return createEntity(id,
-                        model,
-                        ERenderer.SPRITE,
-                        EProjection.ORTHOGRAPHIC_FONT_2D,
-                        EGLParam.BLEND,
-                        EGLParam.DEPTH
+    return createEntity(
+      id,
+      map,
+      ERenderer.SPRITE,
+      EProjection.ORTHOGRAPHIC_FONT_2D,
+      EGLParam.BLEND,
+      EGLParam.DEPTH,
+      EGLParam.CULL
     );
   }
 
   public Entity createSkyBox(String id, String path) {
     ValueMap map = models.builder().id(id).path(path).animated(false).build();
-    Model model = model(map);
-    return createEntity(id,
-                        model,
-                        ERenderer.SKYBOX,
-                        EProjection.PERSPECTIVE,
-                        EGLParam.BLEND,
-                        EGLParam.DEPTH
+    return createEntity(
+      id,
+      map,
+      ERenderer.SKYBOX,
+      EProjection.PERSPECTIVE,
+      EGLParam.BLEND,
+      EGLParam.DEPTH
     );
   }
 
@@ -191,34 +180,49 @@ public class Scene {
       .heightMapTexturePath(TextureUtils.MOSS_HGHT_TEXTURE_PATH)
       .diffuseTexturePath(TextureUtils.MOSS_DIFF_TEXTURE_PATH)
       .build();
-    Model model = model(map);
-    return createEntity(id,
-                        model,
-                        ERenderer.SCENE,
-                        EProjection.PERSPECTIVE,
-                        EGLParam.BLEND,
-                        EGLParam.CULL,
-                        EGLParam.DEPTH
+    return createEntity(
+      id,
+      map,
+      ERenderer.SCENE,
+      EProjection.PERSPECTIVE,
+      EGLParam.BLEND,
+      EGLParam.CULL,
+      EGLParam.DEPTH
+    );
+  }
+
+  public Entity generateTerrain(String id, String terrainName) {
+    Model model = terrain.loadFromFile(terrainName);
+    return createEntity(
+      id,
+      model,
+      ERenderer.TERRAIN,
+      EProjection.PERSPECTIVE,
+      EGLParam.CULL,
+      EGLParam.DEPTH,
+      EGLParam.BLEND
     );
   }
 
   public Entity createEntity(
-    String id, Model model, ERenderer shader, EProjection projection, EGLParam... params
+    String id, ValueMap map, ERenderer shader, EProjection projection, EGLParam... params
   ) {
-    EntityRenderParameters parameters = new EntityRenderParameters(shader,
-                                                                   projection,
-                                                                   EGLParam.bitmap(params)
-    );
-    return createEntity(id, model, parameters);
+    return createEntity(id, model(map), shader, projection, params);
   }
 
-  // TODO: Remove fromCache, change mesh loading strategy.
-  public Entity createEntity(String id, Model model, EntityRenderParameters parameters) {
-    return entities.create(id, model, parameters, false);
+  public Entity createEntity(
+    String id,
+    Model model,
+    ERenderer shader,
+    EProjection projection,
+    EGLParam... params
+  ) {
+    return entities.create(id, model, shader, projection, params);
   }
 
-  public Entity createEntity(Entity entity) {
-    return entities.createFrom(entity.name());
+  public Scene bind(ERenderer shader, String... entityIds) {
+    for (String id : entityIds) packets.bind(shader, id);
+    return this;
   }
 
   public Scene bind(Entity... entities) {
@@ -233,18 +237,36 @@ public class Scene {
     return this;
   }
 
+  public Scene unbind(ERenderer shader, String... entityIds) {
+    for (String id : entityIds) packets.unbind(shader, id);
+    return this;
+  }
+
+  public Stream<Entity> boundEntities() {
+    return diagnostics.boundEntityNames().stream().map(this::entity);
+  }
+
   public boolean hasPacket(ERenderer shader) {
     return packets.contains(shader);
   }
 
   public void rayCastMouseClick(boolean all, IHitListener listener) {
-    Raycaster.rayCastMouseClick(listener,
-                                all,
-                                entities.getAll(),
-                                window,
-                                camera,
-                                projectionMat(EProjection.PERSPECTIVE)
+    raycaster.rayCastMouseClick(
+      listener,
+      all,
+      boundEntities(),
+      window,
+      camera,
+      projectionMat(EProjection.PERSPECTIVE)
     );
+  }
+
+  public void updateTerrainOnCameraMovement() {
+    terrain.onObserverPositionUpdate(camera.position());
+  }
+
+  public HashSet<TerrainChunk> activeTerrainChunks() {
+    return terrain.active();
   }
 
   public Matrix4f modelViewMat3D(Entity entity) {
@@ -276,6 +298,7 @@ public class Scene {
   public void enter() {
     window().clear();
     window().viewport();
+    diagnostics().onRenderBegin();
   }
 
   public void exit() {

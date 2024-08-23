@@ -16,6 +16,7 @@ public enum ERenderer {
   SPRITE("render", "sprite", "sprite.vert", "sprite.frag", null, null),
   MESH("render", "mesh", "mesh.vert", "mesh.frag", null, null),
   SCENE("render", "scene", "scene.vert", "scene.frag", null, null),
+  TERRAIN("render", "terrain", "terrain.vert", "terrain.frag", null, null),
   FONT("render", "font", "font.vert", "font.frag", null, null),
   SKYBOX("render", "skybox", "skybox.vert", "skybox.frag", null, null);
 

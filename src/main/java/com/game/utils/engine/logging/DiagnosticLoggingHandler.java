@@ -2,6 +2,7 @@ package com.game.utils.engine.logging;
 
 import com.game.utils.logging.PrettifyUtils;
 import org.joml.Quaternionf;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -32,6 +33,10 @@ public class DiagnosticLoggingHandler extends AbstractLoggingHandler {
     return row("Message", message);
   }
 
+  public DiagnosticLoggingHandler emdash() {
+    return row("------------------------------------------------------------------------------");
+  }
+
   public DiagnosticLoggingHandler row(String label, Quaternionf value) {
     return row(label, PrettifyUtils.prettify(value));
   }
@@ -41,6 +46,10 @@ public class DiagnosticLoggingHandler extends AbstractLoggingHandler {
   }
 
   public DiagnosticLoggingHandler row(String label, Vector3f value) {
+    return row(label, PrettifyUtils.prettify(value));
+  }
+
+  public DiagnosticLoggingHandler row(String label, Vector2f value) {
     return row(label, PrettifyUtils.prettify(value));
   }
 

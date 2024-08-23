@@ -1,5 +1,6 @@
 package com.game.engine.render.mesh;
 
+import com.game.engine.physics.Bounds3D;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.graphics.materials.Material;
@@ -8,6 +9,7 @@ import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.EMaterialColor;
 import com.game.utils.enums.EMaterialTexture;
 import lombok.extern.slf4j.Slf4j;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL46;
 
@@ -20,6 +22,7 @@ public class MeshInfoBuilder {
   protected ArrayList<String> attributes;
   protected List<VertexInfo> vertices;
   protected ValueStore indices;
+  protected Bounds3D bounds;
   protected Material material;
   protected String name;
 
@@ -27,6 +30,7 @@ public class MeshInfoBuilder {
     attributes = new ArrayList<>();
     vertices = new ArrayList<>();
     indices = new ValueStore();
+    bounds = null;
     material = null;
     name = null;
   }
@@ -42,6 +46,11 @@ public class MeshInfoBuilder {
 
   public MeshInfoBuilder material(String materialId) {
     material = new Material(materialId);
+    return this;
+  }
+
+  public MeshInfoBuilder material(Material material) {
+    this.material = material;
     return this;
   }
 
@@ -78,6 +87,24 @@ public class MeshInfoBuilder {
   public MeshInfoBuilder materialColor(String colorType, Vector4f colorValue) {
     if (material != null && colorType != null && !colorType.isEmpty() && colorValue != null)
       material.color(colorType, colorValue);
+    return this;
+  }
+
+  public MeshInfoBuilder origin(float x, float y, float z) {
+    if (bounds == null) bounds(new Bounds3D());
+    this.bounds.origin().set(x, y, z);
+    return this;
+  }
+
+  public MeshInfoBuilder origin(Vector3f origin) {
+    if (bounds == null) bounds(new Bounds3D());
+    this.bounds.origin().set(origin);
+    return this;
+  }
+
+  public MeshInfoBuilder bounds(Bounds3D bounds) {
+    this.bounds = new Bounds3D();
+    this.bounds.set(bounds);
     return this;
   }
 
@@ -238,6 +265,7 @@ public class MeshInfoBuilder {
     }
     meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material);
+    if (bounds != null) meshInfo.bounds(bounds);
     dispose();
 
     return meshInfo;
@@ -247,6 +275,7 @@ public class MeshInfoBuilder {
     attributes.clear();
     vertices.clear();
     indices.clear();
+    bounds = null;
     material = null;
     name = null;
   }

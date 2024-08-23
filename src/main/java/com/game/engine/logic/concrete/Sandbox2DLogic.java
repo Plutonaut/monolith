@@ -1,18 +1,39 @@
 package com.game.engine.logic.concrete;
 
 import com.game.engine.logic.AbstractLogic;
+import com.game.engine.physics.Bounds2D;
 import com.game.engine.scene.entities.Entity;
+import com.game.engine.scene.entities.controllers.EntityInteractionController;
 import com.game.engine.settings.EngineSettings;
-import com.game.utils.enums.EModel;
+import com.game.utils.enums.EGUIEvent;
 import com.game.utils.enums.ESprite;
 import org.lwjgl.glfw.GLFW;
 
 public class Sandbox2DLogic extends AbstractLogic {
   Entity iggySprite;
   Entity textEntity;
+  EntityInteractionController textInteractionController;
+  Bounds2D bounds;
+  boolean iggyIsBound = false;
 
   public Sandbox2DLogic(EngineSettings settings) {
     super(settings);
+  }
+
+  void handleMouseInput(EGUIEvent event) {
+    if (iggyIsBound) return;
+
+    switch (event) {
+      case EGUIEvent.ENTER -> textEntity.redrawText("Prepare for his arrival");
+      case EGUIEvent.EXIT -> textEntity.redrawText("COWARD!");
+    }
+  }
+
+  void handleLeftMouseClick(int action) {
+    if (action == GLFW.GLFW_PRESS && textInteractionController.isHover()) {
+      scene.bind(iggySprite);
+      iggyIsBound = true;
+    }
   }
 
   @Override
@@ -22,33 +43,24 @@ public class Sandbox2DLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-    textEntity = scene.createText("test", "Wait for it...");
-    textEntity.move2D(25, 25);
+    textEntity = scene.createText("test", "Click and he shall appear...").move2D(25, 25);
+    textInteractionController = textEntity.controllers().interaction();
+    textInteractionController.listen(this::handleMouseInput);
+    bounds = textEntity.controllers().text().bounds();
 
-    iggySprite = scene.createSprite(ESprite.IGGY.atlasName(), ESprite.IGGY.path());
-    iggySprite.scale(50f).move2D(scene.window().width() / 2f, scene.window().height() / 2f);
+    iggySprite = scene.createSprite(ESprite.IGGY.atlasName(), ESprite.IGGY.path(), false).scale(5);
+    iggySprite.move2D(scene.window().width() / 2f, scene.window().height() / 2f);
 
-    Entity skyBox = scene.createSkyBox("sky", EModel.BASIC_SKYBOX.path());
-    skyBox.scale(25f);
-
+    scene.window().mouse().addListener(GLFW.GLFW_MOUSE_BUTTON_1, this::handleLeftMouseClick);
     scene.bind(textEntity);
-    scene.window().keyboard().addListener(GLFW.GLFW_KEY_E, (action) -> {
-      textEntity.redrawText("Tada~");
-      scene.bind(iggySprite);
-    });
-
-    scene.window().keyboard().addListener(GLFW.GLFW_KEY_Q, (action) -> {
-      textEntity.redrawText("Wait for it...");
-      scene.unbind(iggySprite);
-    });
   }
 
   @Override
   public void input() {
+    textInteractionController.onMouseInput(scene.window().mouse(), bounds);
   }
 
   @Override
   public void update(float interval) {
-
   }
 }

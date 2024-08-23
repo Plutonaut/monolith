@@ -113,6 +113,11 @@ public class GlobalCache {
     return meshInfo(name, MeshInfo::new);
   }
 
+  public MeshInfo meshInfo(String name, MeshInfo info) {
+    String meshInfoName = ModelUtils.resolveMeshInfoName(name);
+    return (MeshInfo) cacheItem(meshInfoName, ECache.MESH_INFO, info);
+  }
+
   public Model model(String name, ICachableGenerator generator) {
     String modelName = ModelUtils.resolveModelName(name);
     return (Model) getItem(modelName, ECache.MODEL, generator);

@@ -19,7 +19,6 @@ public class AttributeCache extends AbstractShaderCache {
     return check(location, "Attribute", key);
   }
 
-  // TODO: Return a single vertex attribute array containing multiple attributes/locations/offsets...
   public VertexAttributeArray point(VertexInfo info) {
     Collection<AttribInfo> attributes = info.attributes().values();
     VertexAttributeArray vertexAttributeArray = new VertexAttributeArray(

@@ -3,6 +3,7 @@ package com.game.engine.logic;
 import com.game.engine.controls.Keyboard;
 import com.game.engine.controls.Mouse;
 import com.game.engine.render.RenderManager;
+import com.game.engine.scene.hud.Hud;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.camera.Camera;
 import com.game.engine.settings.EngineSettings;
@@ -13,20 +14,33 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public abstract class AbstractLogic implements ILogic {
-  protected Scene scene;
-  protected RenderManager renderer;
+  protected final RenderManager renderer;
+  protected final Scene scene;
+  protected final Hud hud;
+
   protected Vector3f viewMovement;
   protected Vector2f viewRotation;
   protected int currentFPS;
+  protected float currentDelta;
 
   public AbstractLogic(EngineSettings settings) {
-    scene = new Scene(settings, windowTitle());
     renderer = new RenderManager();
+    scene = new Scene(settings, windowTitle());
+    hud = new Hud(scene, settings);
+
     viewMovement = new Vector3f();
     viewRotation = new Vector2f();
   }
 
   protected abstract String windowTitle();
+
+  protected void loadSceneLights() {
+    scene.lighting().addAmbientLight().addDirectionalLight().addPointLight("test_A").addSpotLight(
+      "test_A").addPointLight("test_B").addSpotLight("test_B");
+    scene.lighting().directionalLight().factor(0.5f);
+    scene.lighting().pointLight("test_A").move(0.75f);
+    scene.lighting().spotLight("test_B").pointConeToward(0.5f);
+  }
 
   protected void captureCameraMovementInput() {
     Window window = scene.window();
@@ -57,6 +71,14 @@ public abstract class AbstractLogic implements ILogic {
   public boolean isRunning() {
     return !scene.window().windowShouldClose();
   }
+
+  @Override
+  public void preUpdate(float delta) {
+    currentDelta = delta;
+  }
+
+  @Override
+  public void preRender() {}
 
   @Override
   public void render(int fps) {

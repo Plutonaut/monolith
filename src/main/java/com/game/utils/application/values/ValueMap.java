@@ -23,6 +23,8 @@ public class ValueMap {
     copy(section);
   }
 
+  public boolean has(String key) { return section.containsKey(key); }
+
   public int getInt(String key) {
     return Integer.parseInt(get(key));
   }

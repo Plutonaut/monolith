@@ -3,8 +3,8 @@ package com.game.engine.render.mesh.definitions;
 import com.game.engine.physics.Bounds2D;
 import com.game.engine.render.mesh.MeshInfoBuilder;
 import com.game.utils.application.values.ValueStore;
+import com.game.utils.math.VertexUtils;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 // TODO: Make TexturedQuad object with texture path/coordinate overrides...
 public class Quad extends MeshDefinition {
@@ -18,10 +18,10 @@ public class Quad extends MeshDefinition {
   // frog - Making values smaller increases the size of the texture.
   // Making values larger has the inverse effect...
   public static final float[] TEXTURE_COORDINATES = {
-    0f, 0f,
     0f, 1f,
-    1f, 1f,
+    0f, 0f,
     1f, 0f,
+    1f, 1f,
     };
   public static final float[] COLORS = {
     0.5f, 0.0f, 0.0f,
@@ -52,21 +52,7 @@ public class Quad extends MeshDefinition {
 
   public Quad(Bounds2D bounds) {
     builder = new MeshInfoBuilder();
-
-    Vector2f min = bounds.min();
-    Vector2f max = bounds.max();
-    Vector3f bl = new Vector3f(min.x(), min.y(), 0f);
-    Vector3f tr = new Vector3f(max.x(), max.y(), 0f);
-    Vector3f br = new Vector3f(max.x(), min.y(), 0f);
-    Vector3f tl = new Vector3f(min.x(), max.y(), 0f);
-
-    ValueStore positionStore = new ValueStore();
-
-    positionStore.add(tl);
-    positionStore.add(bl);
-    positionStore.add(br);
-    positionStore.add(tr);
-
+    ValueStore positionStore = VertexUtils.scalePositionVertices2D(bounds);
     positions(positionStore.asArray())
       .textureCoordinates(TEXTURE_COORDINATES)
       .colors(COLORS)

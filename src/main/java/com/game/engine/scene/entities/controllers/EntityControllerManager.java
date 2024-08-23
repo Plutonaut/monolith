@@ -7,18 +7,15 @@ import java.util.HashMap;
 
 public class EntityControllerManager {
   protected final HashMap<String, AbstractEntityController> controllers;
+  AbstractEntityController.IMeshUpdater updater;
 
-  public EntityControllerManager() {
+  public EntityControllerManager(AbstractEntityController.IMeshUpdater updater) {
     controllers = new HashMap<>();
+    this.updater = updater;
   }
 
   public void onUpdate(ModelTransform transform) {
     controllers.values().forEach(controller -> controller.onUpdate(transform));
-  }
-
-  public void copy(EntityControllerManager to) {
-    if (to == this) return;
-    controllers.forEach(to::controller);
   }
 
   public EntityTextController text() {
@@ -76,7 +73,9 @@ public class EntityControllerManager {
   }
 
   public AbstractEntityController controller(String type, IControllerGenerator generator) {
-    return controllers.computeIfAbsent(type, generator::generate);
+    AbstractEntityController controller = controllers.computeIfAbsent(type, generator::generate);
+    if (controller.updater == null) controller.updater = updater;
+    return controller;
   }
 
   boolean hasController(String type) {

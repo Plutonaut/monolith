@@ -11,16 +11,16 @@ public class TerrainUtils {
   public static final int MAX_COLOR = 255 * 255 * 255;
   public static final float TEX_COORD_INC = 40f; // Offset used to tile texture across terrain.
 
-  public static float incrementX(int side) {
-    return increment(X_AXIS, side);
+  public static float incrementX(int dimension) {
+    return increment(X_AXIS, dimension);
   }
 
-  public static float incrementZ(int side) {
-    return increment(Z_AXIS, side);
+  public static float incrementZ(int dimension) {
+    return increment(Z_AXIS, dimension);
   }
 
-  static float increment(float axis, int side) {
-    return Math.abs(-axis * 2) / (side - 1);
+  static float increment(float axis, int dimension) {
+    return Math.abs(axis * 2) / (dimension - 1);
   }
 
   // frog - byte instantiation logic replaced with for loop.
