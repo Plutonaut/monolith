@@ -6,8 +6,8 @@ import com.game.engine.render.mesh.vertices.VertexAttributeArray;
 import com.game.engine.render.mesh.vertices.VertexBufferObject;
 import com.game.graphics.IGraphics;
 import com.game.graphics.materials.Material;
+import com.game.graphics.shaders.Program;
 import com.game.utils.application.values.ValueStore;
-import com.game.utils.engine.MeshInfoUtils;
 import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.ECache;
 import lombok.Data;
@@ -111,6 +111,10 @@ public class Mesh implements IGraphics {
     this.bounds.max().set(max);
   }
 
+  public void redrawAttributes(MeshInfo info, Program program) {
+    redraw(info, (v) -> setVertexAttributeArray(program.attributes().point(v)));
+  }
+
   public void redraw(MeshInfo info, IVertexCallback callback) {
     bind();
     try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -120,11 +124,6 @@ public class Mesh implements IGraphics {
           (key) -> new VertexBufferObject()
         );
         updateVboData(vbo, vertex.vertices().asArray(), stack);
-        if (vertex.hasAttribute(EAttribute.POS.getValue())) {
-          Bounds3D bounds = MeshInfoUtils.calculateBounds(vertex);
-          updateBounds(bounds.min(), bounds.max());
-          this.bounds.origin().set(info.origin);
-        }
         if (callback != null) callback.onComplete(vertex);
       });
       if (isComplex()) {

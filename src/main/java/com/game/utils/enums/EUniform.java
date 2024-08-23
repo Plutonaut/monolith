@@ -10,6 +10,7 @@ public enum EUniform {
   VIEW("view"),
   MODEL_VIEW("modelview"),
   TERRAIN_CHUNK_MODEL("terrainmodel"),
+  USE_TERRAIN_MODEL("useTerrainModel"),
   IS_INSTANCED("isInstanced"),
   HAS_INSTANCED_COLORS("hasInstancedColors"),
   TEXTURE_COLOR("textureColor"),

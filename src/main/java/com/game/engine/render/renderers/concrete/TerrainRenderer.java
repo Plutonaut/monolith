@@ -1,7 +1,9 @@
 package com.game.engine.render.renderers.concrete;
 
+import com.game.caches.GlobalCache;
 import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.InstancedMesh;
+import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.renderers.AbstractLitRenderer;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
@@ -11,9 +13,8 @@ import com.game.utils.enums.ERenderer;
 import com.game.utils.enums.EUniform;
 import org.joml.Matrix4f;
 
-import java.util.HashMap;
-
 public class TerrainRenderer extends AbstractLitRenderer {
+
   @Override
   public ERenderer type() { return ERenderer.TERRAIN; }
 
@@ -27,17 +28,16 @@ public class TerrainRenderer extends AbstractLitRenderer {
     program.uniforms().set(EUniform.MODEL.value(), entity.transform().worldModelMat());
     LightingManager lighting = scene.lighting();
     setLightingUniforms(lighting, viewMatrix);
-    HashMap<Integer, TerrainChunk> activeTerrainChunkMap = entity.controllers().terrain().active();
-    entity.meshes().forEach(mesh -> {
-      int meshId = mesh.glId();
-      if (activeTerrainChunkMap.containsKey(meshId)) {
-        setMaterialUniform(mesh.material());
-        TerrainChunk chunk = activeTerrainChunkMap.get(meshId);
-        program.uniforms().set(EUniform.TERRAIN_CHUNK_MODEL.value(), chunk.terrainModel());
-        program.uniforms().set(EUniform.IS_INSTANCED.value(), mesh instanceof InstancedMesh);
-        program.uniforms().set(EUniform.SELECTED.value(), mesh.selected());
-        mesh.render();
-      }
-    });
+    TerrainChunk[] sortedTerrainChunks = scene.terrain().getSortedChunkArray();
+
+    for (TerrainChunk chunk : sortedTerrainChunks) {
+      Mesh mesh = GlobalCache.instance().mesh(chunk.coordinates().toString());
+      if (mesh.material() != null) setMaterialUniform(mesh.material());
+      program.uniforms().set(EUniform.IS_INSTANCED.value(), mesh instanceof InstancedMesh);
+      program.uniforms().set(EUniform.SELECTED.value(), mesh.selected());
+      program.uniforms().set(EUniform.USE_TERRAIN_MODEL.value(), true);
+      program.uniforms().set(EUniform.TERRAIN_CHUNK_MODEL.value(), chunk.getWorldModel());
+      mesh.render();
+    }
   }
 }

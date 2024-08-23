@@ -91,7 +91,7 @@ public class TestProceduralGenerationLogic extends AbstractLogic {
 
   @Override
   public void onStart() {
-    loadLights();
+    loadSceneLights();
     musicSource = scene.audio("Creepy music", EAudio.MUSIC_WOO.value());
     hudEntity = scene.createText("hud_fps", FPS_HUD_TEXT.formatted(currentFPS)).move2D(20, 25);
     Entity skyboxEntity = scene.createSkyBox("skybox", EModel.BASIC_SKYBOX.path()).scale(100f);

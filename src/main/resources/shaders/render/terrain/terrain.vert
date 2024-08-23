@@ -15,13 +15,18 @@ uniform mat4 view;
 uniform mat4 model;
 uniform mat4 terrainmodel;
 uniform int isInstanced;
+uniform int useTerrainModel;
 
 void main() {
     vec4 initPos 			= vec4(position, 1.0);
     vec4 initNormal 		= vec4(normal, 0.0);
-    mat4 modelMat           = terrainmodel * model;
+    mat4 modelMat           = model;
+
+    if (useTerrainModel > 0) {
+        modelMat            = modelMat * terrainmodel;
+    }
     if (isInstanced > 0) {
-        modelMat = model * instancematrices;
+        modelMat            = modelMat * instancematrices;
     }
     mat4 modelview          = view * modelMat;
     vec4 mvPosition 		= modelview * initPos;

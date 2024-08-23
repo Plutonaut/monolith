@@ -31,6 +31,7 @@ public class EngineLogicRunner {
   ILogic create(EngineSettings settings) {
     String logic = settings.logic();
     return switch (logic) {
+      case "genTerrain" -> new TerrainGenerationLogic(settings);
       case "testTerrain" -> new TestTerrainLogic(settings);
       case "testInstancing" -> new TestInstancingLogic(settings);
       case "testRender" -> new TestRenderLogic(settings);

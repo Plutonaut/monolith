@@ -4,6 +4,7 @@ import com.game.engine.scene.terrain.procedural.ProceduralNoiseData;
 import com.game.utils.application.RandomNumberGenerator;
 import com.game.utils.application.values.ValueGrid;
 import com.game.utils.application.values.ValueMap;
+import com.game.utils.engine.logging.DiagnosticLoggingHandler;
 import com.game.utils.math.ScalarUtils;
 import org.joml.SimplexNoise;
 import org.joml.Vector2f;
@@ -25,18 +26,21 @@ public class ProceduralNoiseUtils {
     float lacunarity = map.getFloat("lacunarity");
     float minHeight = map.getFloat("minVertexHeight");
     float maxHeight = map.getFloat("maxVertexHeight");
+    boolean localNormalization = map.getBool("localNormalization");
+    boolean captureDiagnostics = map.has("captureDiagnostics") && map.getBool("captureDiagnostics");
 
-    return process(
-      offset,
-      width,
-      height,
-      minHeight,
-      maxHeight,
-      octaves,
-      seed,
-      persistence,
-      scale,
-      lacunarity
+    return process(offset,
+                   width,
+                   height,
+                   minHeight,
+                   maxHeight,
+                   octaves,
+                   seed,
+                   persistence,
+                   scale,
+                   lacunarity,
+                   localNormalization,
+                   captureDiagnostics
     );
   }
 
@@ -47,8 +51,21 @@ public class ProceduralNoiseUtils {
     float persistence = data.persistence();
     float scale = data.scale();
     float lacunarity = data.lacunarity();
+    boolean localNormalization = data.localNormalization();
 
-    return process(offset, width, height, 0f, 0.01f, octaves, seed, persistence, scale, lacunarity);
+    return process(offset,
+                   width,
+                   height,
+                   0f,
+                   0.01f,
+                   octaves,
+                   seed,
+                   persistence,
+                   scale,
+                   lacunarity,
+                   localNormalization,
+                   false
+    );
   }
 
   public static ValueGrid process(
@@ -61,27 +78,32 @@ public class ProceduralNoiseUtils {
     int seed,
     float persistence,
     float scale,
-    float lacunarity
+    float lacunarity,
+    boolean localNormalization,
+    boolean captureDiagnostics
   ) {
     Vector2f[] octaveOffsets = new Vector2f[octaves];
     RandomNumberGenerator rng = new RandomNumberGenerator(seed);
 
     // Multiplied against output to control range of values by clamping them.
     float amplitude = 1f;
-//    float maxHeight = 0f;
+    float maxHeight = 0f;
 
     for (int i = 0; i < octaves; i++) {
       float x = rng.next(OCTAVE_BOUNDS) + offset.x;
       float y = rng.next(OCTAVE_BOUNDS) - offset.y;
 
       octaveOffsets[i] = new Vector2f(x, y);
-//      maxHeight += amplitude;
+      maxHeight += amplitude;
       amplitude *= persistence;
     }
 
     ValueGrid grid = new ValueGrid(width, height);
     float halfWidth = width / 2f;
     float halfHeight = height / 2f;
+
+    float minH = Float.MAX_VALUE;
+    float maxH = Float.MIN_VALUE;
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -91,8 +113,8 @@ public class ProceduralNoiseUtils {
 
         for (int i = 0; i < octaves; i++) {
           float scaleFrequency = scale * frequency;
-          float scaleX = x - halfWidth + octaveOffsets[i].x / scaleFrequency;
-          float scaleY = y - halfHeight + octaveOffsets[i].y / scaleFrequency;
+          float scaleX = (x - halfWidth + octaveOffsets[i].x) / scaleFrequency;
+          float scaleY = (y - halfHeight + octaveOffsets[i].y) / scaleFrequency;
 
           float noiseValue = SimplexNoise.noise(scaleX, scaleY);
           float value = (noiseValue + 1) * 0.5f;
@@ -101,9 +123,61 @@ public class ProceduralNoiseUtils {
           amplitude *= persistence;
           frequency *= lacunarity;
         }
-        noiseHeight = ScalarUtils.lerp(minVertexHeight, maxVertexHeight, noiseHeight);
+        if (noiseHeight > maxH) maxH = noiseHeight;
+        if (noiseHeight < minH) minH = noiseHeight;
+
         grid.set(y, x, noiseHeight);
       }
+    }
+
+    DiagnosticLoggingHandler handler = new DiagnosticLoggingHandler();
+
+    if (captureDiagnostics) {
+      handler.init("Noise Generation Diagnostics");
+      handler.open("Procedural Noise Utils");
+      handler.row("Use local normalization", localNormalization).row("Min Height", minH).row("Max Height",
+                                                                                             maxH
+      ).row("Max Global Height", maxHeight);
+      handler.close();
+
+      handler.open("Noise Height Map Values");
+    }
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        float noiseHeightValue = grid.get(x, y);
+        float globalNormalization = ScalarUtils.globalNormalization(noiseHeightValue, maxHeight);
+        float inverseLerped = ScalarUtils.invLerp(minH, maxH, noiseHeightValue);
+        float resolvedValue = localNormalization ? inverseLerped : globalNormalization;
+        grid.set(y, x, resolvedValue);
+
+        if (captureDiagnostics) {
+          float lerpedVertexHeight = ScalarUtils.lerp(minVertexHeight,
+                                                      maxVertexHeight,
+                                                      noiseHeightValue
+          );
+          float inverseLerpedVertexHeight = ScalarUtils.invLerp(minH, maxH, noiseHeightValue);
+          float lerped = ScalarUtils.lerp(minH, maxH, noiseHeightValue);
+          float smoothStepped = ScalarUtils.smoothStep(minH, maxH, noiseHeightValue);
+          handler
+            .row("Coordinates", new Vector2f(x, y))
+            .row("Min Vertex Height", minVertexHeight)
+            .row("Max Vertex Height", maxVertexHeight)
+            .row("Noise Height", noiseHeightValue)
+            .row("Lerped Vertex Height", lerpedVertexHeight)
+            .row("Inverse Lerped Vertex Height", inverseLerpedVertexHeight)
+            .row("Global Normalization", globalNormalization)
+            .row("Lerped", lerped)
+            .row("Inverse Lerped", inverseLerped)
+            .row("Smooth Step", smoothStepped)
+            .row("Resolved Value", resolvedValue)
+            .emdash();
+        }
+      }
+    }
+    if (captureDiagnostics) {
+      handler.close();
+      handler.dispose();
     }
 
     return grid;

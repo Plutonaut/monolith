@@ -15,7 +15,6 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,10 +42,6 @@ public class EntityManager {
 
   public Entity get(String id) {
     return entities.get(id);
-  }
-
-  public Collection<Entity> getAll() {
-    return entities.values();
   }
 
   public Entity create(

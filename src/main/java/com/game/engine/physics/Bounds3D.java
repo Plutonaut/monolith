@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 @AllArgsConstructor
@@ -23,8 +24,12 @@ public class Bounds3D {
     max = new Vector3f();
   }
 
+  public float distanceXZ(Vector3f position) {
+    Vector2f xzPos = new Vector2f(position.x, position.z);
+    return new Vector2f(origin.x, origin.z).distance(xzPos);
+  }
+
   public boolean contains(Vector3f position) {
-    log.info("Bounds: {}", this);
     return VectorUtils.lessThan(minVertex(), position) && VectorUtils.greaterThan(
       maxVertex(),
       position
@@ -60,9 +65,7 @@ public class Bounds3D {
 
   @Override
   public String toString() {
-    return "Bounds 3D" +
-      "\nOrigin: " + PrettifyUtils.prettify(origin) +
-      " Min Vertex: " + PrettifyUtils.prettify(minVertex()) +
-      " Max Vertex: " + PrettifyUtils.prettify(maxVertex());
+    return "Bounds 3D" + "\nOrigin: " + PrettifyUtils.prettify(origin) + " Min Vertex: " + PrettifyUtils.prettify(
+      minVertex()) + " Max Vertex: " + PrettifyUtils.prettify(maxVertex());
   }
 }

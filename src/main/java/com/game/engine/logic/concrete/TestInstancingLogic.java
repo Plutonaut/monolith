@@ -28,6 +28,7 @@ public class TestInstancingLogic extends AbstractLogic {
   public TestInstancingLogic(EngineSettings settings) {
     super(settings);
   }
+
   void onClick(EGUIEvent event) {
     log.info("On Click event {}", event);
 
@@ -49,16 +50,14 @@ public class TestInstancingLogic extends AbstractLogic {
     textController.borderSize(20);
 
     Material backgroundMaterial = new Material("bg_material");
-    backgroundMaterial.texture(
-      EMaterialTexture.DIF.value(),
-      "src/main/resources/textures/gui/gui_bg_01.png"
+    backgroundMaterial.texture(EMaterialTexture.DIF.value(),
+                               "src/main/resources/textures/gui/gui_bg_01.png"
     );
     backgroundMaterial.color(EMaterialColor.DIF.getValue(), new Vector4f(1));
 
-    MeshInfo info = new Quad(
-      new Vector2f(textController.borderSize()),
-      textController.bounds().size().x(),
-      textController.bounds().size().y()
+    MeshInfo info = new Quad(new Vector2f(textController.borderSize()),
+                             textController.bounds().size().x(),
+                             textController.bounds().size().y()
     ).meshInfo();
     VertexInfo positionVI = info.getVerticesByAttribute(EAttribute.POS);
 
@@ -71,10 +70,7 @@ public class TestInstancingLogic extends AbstractLogic {
     backgroundMesh.updateBounds(bounds.min(), bounds.max());
 
     Program program = GlobalCache.instance().program(ERenderer.FONT.key());
-    backgroundMesh.redraw(
-      info,
-      v -> backgroundMesh.setVertexAttributeArray(program.attributes().point(v))
-    );
+    backgroundMesh.redrawAttributes(info, program);
 
     uiEntity.addMesh(backgroundMesh);
 
@@ -84,10 +80,10 @@ public class TestInstancingLogic extends AbstractLogic {
   @Override
   public void input() {
     captureCameraMovementInput();
-    uiEntity
-      .controllers()
-      .interaction()
-      .onMouseInput(scene.window().mouse(), textController.bounds());
+    uiEntity.controllers().interaction().onMouseInput(
+      scene.window().mouse(),
+      textController.bounds()
+    );
   }
 
   @Override

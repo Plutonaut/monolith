@@ -1,223 +1,3364 @@
 
 ======================================================================================
-#	Test Procedural Generation OpenGL GL Version {4}.{6}
+#	Scene
+======================================================================================
+
+	Timestamp: 08-23-2024-18-49-52
+	Log: 1
+
+======================================================================================
+#	Simplex Noise Procedural Terrain Generation OpenGL GL Version {4}.{6}
 ======================================================================================
 
 	width: 1280
 	height: 720
-	Log: 1
+	Log: 2
 
 ======================================================================================
 #	Camera
 ======================================================================================
 
-	Position: { x: 0, y: 0, z: 2 }
-	Rotation: { x: 0, y: 0, z: 0 }
+	Position: { x: 19.3, y: 3.3, z: -20.09 }
+	Rotation: { x: 30.6, y: 204.4, z: 0 }
 	Mouse Sensitivity: : 0.2
-	Camera Speed: : 0.05
-	Log: 2
+	Camera Speed: : 0.1
+	Log: 3
 
 ======================================================================================
 #	Lighting
 ======================================================================================
 
+	point.test_B
+	Color: { x: 1, y: 1, z: 1 }
+	Factor: 0.25
+	point.test_A
+	Color: { x: 1, y: 1, z: 1 }
+	Factor: 0.25
+	directional
+	Color: { x: 1, y: 1, z: 1 }
+	Factor: 0.5
+	spot.test_A
+	Color: { x: 1, y: 1, z: 1 }
+	Factor: 0.25
+	spot.test_B
+	Color: { x: 1, y: 1, z: 1 }
+	Factor: 0.25
 	ambient
 	Color: { x: 1, y: 1, z: 1 }
 	Factor: 0.25
-	Log: 3
+	Log: 4
 
 ======================================================================================
 #	Entities
 ======================================================================================
 
-	skybox: 1430458746
+	------------------------------------------------------------------------------
+	BASIC_SKYBOX: 1111321873
+	------------------------------------------------------------------------------
 	Position: { x: 0, y: 0, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
 	Scale: 100
 	Shader: skybox
 	Projection: PERSPECTIVE
 	Meshes
+	------------------------------------------------------------------------------
 	skyboxmtl: 2
 	Vertex Count: 36
+	------------------------------------------------------------------------------
 	Is Complex: true
-	Min vertex: { x: -1, y: -1, z: -1 }
-	Max vertex: { x: 1, y: 1, z: 1 }
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -1, y: -1, z: -1 } Max Vertex: { x: 1, y: 1, z: 1 }
 	Material: src\main\resources\models\skybox_1
 	src\main\resources\models\skybox\skybox.png
 	$clr.ambient: { x: 0, y: 0, z: 0, w: 1 }
 	$clr.diffuse: { x: 0.64, y: 0.64, z: 0.64, w: 1 }
 	$clr.specular: { x: 0.5, y: 0.5, z: 0.5, w: 1 }
-	Vertex Attribute Array: normal
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: tangent
+	Vertex Attribute Array
+	Stride: 2
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 1
 	Size: 2
-	Stride: 0
 	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: texcoord
-	Size: 2
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: position
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
 	Size: 3
-	Stride: 0
 	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: bitangent
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	CUBE(1): 487608132
-	Position: { x: 1, y: 0, z: 1 }
+	Divisor: 0
+	------------------------------------------------------------------------------
+	center: 1519748766
+	------------------------------------------------------------------------------
+	Position: { x: 640, y: 360, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.5
-	Shader: scene
-	Projection: PERSPECTIVE
+	Scale: 0.75
+	Shader: font
+	Projection: ORTHOGRAPHIC_FONT_2D
 	Meshes
-	cube: 1
-	Vertex Count: 36
+	------------------------------------------------------------------------------
+	center: 67
+	Vertex Count: 330
+	------------------------------------------------------------------------------
 	Is Complex: true
-	Min vertex: { x: -0.5, y: -0.5, z: -0.5 }
-	Max vertex: { x: 0.5, y: 0.5, z: 0.5 }
-	Material: src\main\resources\models\cube_1
-	src\main\resources\models\cube\cube.png
-	$clr.ambient: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
-	$clr.diffuse: { x: 0, y: 0, z: 0, w: 1 }
-	$clr.specular: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
-	Vertex Attribute Array: normal
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: tangent
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 285, y: 48, z: 0 }
+	Material: center_mat
+	src\main\resources\textures\fonts\Arial.png
+	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 1
 	Size: 2
-	Stride: 0
 	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: texcoord
-	Size: 2
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: position
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
 	Size: 3
-	Stride: 0
 	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: bitangent
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	CUBE: 2063281585
-	Position: { x: 0, y: 1, z: 1 }
-	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.25
-	Shader: scene
-	Projection: PERSPECTIVE
-	Meshes
-	cube: 1
-	Vertex Count: 36
-	Is Complex: true
-	Min vertex: { x: -0.5, y: -0.5, z: -0.5 }
-	Max vertex: { x: 0.5, y: 0.5, z: 0.5 }
-	Material: src\main\resources\models\cube_1
-	src\main\resources\models\cube\cube.png
-	$clr.ambient: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
-	$clr.diffuse: { x: 0, y: 0, z: 0, w: 1 }
-	$clr.specular: { x: 0.59, y: 0.45, z: 0.35, w: 1 }
-	Vertex Attribute Array: normal
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: tangent
-	Size: 2
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: texcoord
-	Size: 2
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: position
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: bitangent
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	proc_moss: 696910157
+	Divisor: 0
+	------------------------------------------------------------------------------
+	moss_terrain: 284833835
+	------------------------------------------------------------------------------
 	Position: { x: 0, y: 0, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 10
-	Shader: scene
+	Scale: 1
+	Shader: terrain
 	Projection: PERSPECTIVE
 	Meshes
-	proc_moss: 3
-	Vertex Count: 96774
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, -3): 3
+	Vertex Count: 294
+	------------------------------------------------------------------------------
 	Is Complex: true
-	Min vertex: { x: -0.5, y: -0.04, z: -0.5 }
-	Max vertex: { x: 0.5, y: 0, z: 0.5 }
-	Material: proc_moss_mat
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -96 } Min Vertex: { x: -112, y: 0.76, z: -112 } Max Vertex: { x: -80, y: 1.5, z: -80 }
+	Material: noise_terrain_A_mat
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
 	src/main/resources/textures/moss_surface/moss_surface_normal.png
-	Vertex Attribute Array: normal
-	Size: 3
-	Stride: 0
-	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: texcoord
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
 	Size: 2
-	Stride: 0
 	Offset: 0
-	Instances: 1
-	Vertex Attribute Array: position
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
 	Size: 3
-	Stride: 0
 	Offset: 0
-	Instances: 1
-	Log: 4
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, -4): 4
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -128 } Min Vertex: { x: -80, y: 0.74, z: -144 } Max Vertex: { x: -48, y: 1.5, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, -4): 5
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -128 } Min Vertex: { x: -16, y: 0.74, z: -144 } Max Vertex: { x: 16, y: 1.5, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, 1): 6
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 32 } Min Vertex: { x: 16, y: 0.75, z: 16 } Max Vertex: { x: 48, y: 1.5, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, 3): 7
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 96 } Min Vertex: { x: -144, y: 0.73, z: 80 } Max Vertex: { x: -112, y: 1.47, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, -1): 8
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -32 } Min Vertex: { x: -48, y: 0.75, z: -48 } Max Vertex: { x: -16, y: 1.48, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, 3): 9
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 96 } Min Vertex: { x: 80, y: 0.72, z: 80 } Max Vertex: { x: 112, y: 1.5, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, -4): 10
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -128 } Min Vertex: { x: -112, y: 0.73, z: -144 } Max Vertex: { x: -80, y: 1.49, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, -3): 11
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -96 } Min Vertex: { x: 80, y: 0.74, z: -112 } Max Vertex: { x: 112, y: 1.52, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, 3): 12
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 96 } Min Vertex: { x: -112, y: 0.76, z: 80 } Max Vertex: { x: -80, y: 1.51, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, -1): 13
+	Vertex Count: 6144
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -32 } Min Vertex: { x: 16, y: 0.75, z: -48 } Max Vertex: { x: 48, y: 1.52, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, -3): 14
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -96 } Min Vertex: { x: 48, y: 0.76, z: -112 } Max Vertex: { x: 80, y: 1.5, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, 3): 15
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 96 } Min Vertex: { x: 48, y: 0.72, z: 80 } Max Vertex: { x: 80, y: 1.5, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, 2): 16
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 64 } Min Vertex: { x: -80, y: 0.73, z: 48 } Max Vertex: { x: -48, y: 1.52, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, -1): 17
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -32 } Min Vertex: { x: 48, y: 0.75, z: -48 } Max Vertex: { x: 80, y: 1.5, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, 1): 18
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 32 } Min Vertex: { x: -80, y: 0.74, z: 16 } Max Vertex: { x: -48, y: 1.5, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, 0): 19
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 0 } Min Vertex: { x: -112, y: 0.74, z: -16 } Max Vertex: { x: -80, y: 1.51, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, 0): 20
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 0 } Min Vertex: { x: 80, y: 0.75, z: -16 } Max Vertex: { x: 112, y: 1.5, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, 1): 21
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 32 } Min Vertex: { x: -144, y: 0.75, z: 16 } Max Vertex: { x: -112, y: 1.51, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, 2): 22
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 64 } Min Vertex: { x: -48, y: 0.76, z: 48 } Max Vertex: { x: -16, y: 1.52, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, -4): 23
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -128 } Min Vertex: { x: -144, y: 0.75, z: -144 } Max Vertex: { x: -112, y: 1.5, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, 1): 24
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 32 } Min Vertex: { x: 48, y: 0.75, z: 16 } Max Vertex: { x: 80, y: 1.51, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, -3): 25
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -96 } Min Vertex: { x: -48, y: 0.76, z: -112 } Max Vertex: { x: -16, y: 1.53, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, 0): 26
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 0 } Min Vertex: { x: 48, y: 0.76, z: -16 } Max Vertex: { x: 80, y: 1.48, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, 1): 27
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 32 } Min Vertex: { x: -112, y: 0.75, z: 16 } Max Vertex: { x: -80, y: 1.52, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, 2): 28
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 64 } Min Vertex: { x: -16, y: 0.72, z: 48 } Max Vertex: { x: 16, y: 1.48, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, -4): 29
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -128 } Min Vertex: { x: -48, y: 0.76, z: -144 } Max Vertex: { x: -16, y: 1.5, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, -3): 30
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -96 } Min Vertex: { x: -16, y: 0.75, z: -112 } Max Vertex: { x: 16, y: 1.52, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, -1): 31
+	Vertex Count: 6144
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -32 } Min Vertex: { x: -16, y: 0.75, z: -48 } Max Vertex: { x: 16, y: 1.52, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, 3): 32
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 96 } Min Vertex: { x: -16, y: 0.76, z: 80 } Max Vertex: { x: 16, y: 1.53, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, 1): 33
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 32 } Min Vertex: { x: 80, y: 0.72, z: 16 } Max Vertex: { x: 112, y: 1.51, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, 2): 34
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 64 } Min Vertex: { x: 16, y: 0.75, z: 48 } Max Vertex: { x: 48, y: 1.53, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, -4): 35
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -128 } Min Vertex: { x: 48, y: 0.76, z: -144 } Max Vertex: { x: 80, y: 1.51, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, 2): 36
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 64 } Min Vertex: { x: -112, y: 0.75, z: 48 } Max Vertex: { x: -80, y: 1.5, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, -3): 37
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -96 } Min Vertex: { x: 16, y: 0.73, z: -112 } Max Vertex: { x: 48, y: 1.48, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, -1): 38
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -32 } Min Vertex: { x: 80, y: 0.78, z: -48 } Max Vertex: { x: 112, y: 1.49, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, -1): 39
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -32 } Min Vertex: { x: -112, y: 0.71, z: -48 } Max Vertex: { x: -80, y: 1.51, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, 0): 40
+	Vertex Count: 6144
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -16, y: 0.75, z: -16 } Max Vertex: { x: 16, y: 1.53, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, 2): 41
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 64 } Min Vertex: { x: -144, y: 0.73, z: 48 } Max Vertex: { x: -112, y: 1.49, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, 2): 42
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 64 } Min Vertex: { x: 80, y: 0.75, z: 48 } Max Vertex: { x: 112, y: 1.5, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, 0): 43
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 0 } Min Vertex: { x: -80, y: 0.77, z: -16 } Max Vertex: { x: -48, y: 1.52, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, -4): 44
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -128 } Min Vertex: { x: 80, y: 0.76, z: -144 } Max Vertex: { x: 112, y: 1.53, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, 1): 45
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 32 } Min Vertex: { x: -16, y: 0.76, z: 16 } Max Vertex: { x: 16, y: 1.48, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, 3): 46
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 96 } Min Vertex: { x: 16, y: 0.74, z: 80 } Max Vertex: { x: 48, y: 1.51, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, -3): 47
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -96 } Min Vertex: { x: -80, y: 0.69, z: -112 } Max Vertex: { x: -48, y: 1.52, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, -2): 48
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -64 } Min Vertex: { x: 16, y: 0.7, z: -80 } Max Vertex: { x: 48, y: 1.5, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(0, -2): 49
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -64 } Min Vertex: { x: -16, y: 0.74, z: -80 } Max Vertex: { x: 16, y: 1.49, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, 0): 50
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 0 } Min Vertex: { x: -144, y: 0.78, z: -16 } Max Vertex: { x: -112, y: 1.47, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, 3): 51
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 96 } Min Vertex: { x: -80, y: 0.76, z: 80 } Max Vertex: { x: -48, y: 1.48, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, -2): 52
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -64 } Min Vertex: { x: 48, y: 0.75, z: -80 } Max Vertex: { x: 80, y: 1.5, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, 0): 53
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 0 } Min Vertex: { x: -48, y: 0.77, z: -16 } Max Vertex: { x: -16, y: 1.52, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, 0): 54
+	Vertex Count: 6144
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 0 } Min Vertex: { x: 16, y: 0.75, z: -16 } Max Vertex: { x: 48, y: 1.52, z: 16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, -1): 55
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -32 } Min Vertex: { x: -80, y: 0.73, z: -48 } Max Vertex: { x: -48, y: 1.49, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-2, -2): 56
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -64 } Min Vertex: { x: -80, y: 0.72, z: -80 } Max Vertex: { x: -48, y: 1.52, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(3, -2): 57
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -64 } Min Vertex: { x: 80, y: 0.76, z: -80 } Max Vertex: { x: 112, y: 1.48, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, 3): 58
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 96 } Min Vertex: { x: -48, y: 0.77, z: 80 } Max Vertex: { x: -16, y: 1.47, z: 112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, -3): 59
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -96 } Min Vertex: { x: -144, y: 0.73, z: -112 } Max Vertex: { x: -112, y: 1.51, z: -80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(1, -4): 60
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -128 } Min Vertex: { x: 16, y: 0.7, z: -144 } Max Vertex: { x: 48, y: 1.49, z: -112 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, 1): 61
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 32 } Min Vertex: { x: -48, y: 0.76, z: 16 } Max Vertex: { x: -16, y: 1.5, z: 48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-1, -2): 62
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -64 } Min Vertex: { x: -48, y: 0.76, z: -80 } Max Vertex: { x: -16, y: 1.5, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-3, -2): 63
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -64 } Min Vertex: { x: -112, y: 0.74, z: -80 } Max Vertex: { x: -80, y: 1.52, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, -1): 64
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -32 } Min Vertex: { x: -144, y: 0.73, z: -48 } Max Vertex: { x: -112, y: 1.54, z: -16 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(2, 2): 65
+	Vertex Count: 1350
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 64 } Min Vertex: { x: 48, y: 0.75, z: 48 } Max Vertex: { x: 80, y: 1.53, z: 80 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	terrain_chunk_(-4, -2): 66
+	Vertex Count: 294
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -64 } Min Vertex: { x: -144, y: 0.77, z: -80 } Max Vertex: { x: -112, y: 1.49, z: -48 }
+	Material: noise_terrain_A_mat
+	src/main/resources/textures/moss_surface/moss_surface_albedo.png
+	src/main/resources/textures/moss_surface/moss_surface_height.png
+	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 2
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: normal
+	Location: 1
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	------------------------------------------------------------------------------
+	toggle: 1106928867
+	------------------------------------------------------------------------------
+	Position: { x: 25, y: 25, z: 0 }
+	Rotation: { x: 0, y: 0, z: 0, w: 1 }
+	Scale: 0.75
+	Shader: font
+	Projection: ORTHOGRAPHIC_FONT_2D
+	Meshes
+	------------------------------------------------------------------------------
+	toggle: 1
+	Vertex Count: 96
+	------------------------------------------------------------------------------
+	Is Complex: true
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 156, y: 24, z: 0 }
+	Material: toggle_mat
+	src\main\resources\textures\fonts\Arial.png
+	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
+	Vertex Attribute Array
+	Stride: 2
+	Attribute: texcoord
+	Location: 1
+	Size: 2
+	Offset: 0
+	Divisor: 0
+	Vertex Attribute Array
+	Stride: 3
+	Attribute: position
+	Location: 0
+	Size: 3
+	Offset: 0
+	Divisor: 0
+	Log: 5
+
+======================================================================================
+#	Active Terrain Chunks
+======================================================================================
+
+	Max LOD: 0
+	Min LOD: 3
+	Number of chunks visible: 4
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -96 } Min Vertex: { x: -112, y: 0.76, z: -112 } Max Vertex: { x: -80, y: 1.5, z: -80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -32 } Min Vertex: { x: 80, y: 0.78, z: -48 } Max Vertex: { x: 112, y: 1.49, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -128 } Min Vertex: { x: -80, y: 0.74, z: -144 } Max Vertex: { x: -48, y: 1.5, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -32 } Min Vertex: { x: -112, y: 0.71, z: -48 } Max Vertex: { x: -80, y: 1.51, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -32 } Min Vertex: { x: -48, y: 0.75, z: -48 } Max Vertex: { x: -16, y: 1.48, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 96 } Min Vertex: { x: 80, y: 0.72, z: 80 } Max Vertex: { x: 112, y: 1.5, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -32 } Min Vertex: { x: -48, y: 0.75, z: -48 } Max Vertex: { x: -16, y: 1.48, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -128 } Min Vertex: { x: -112, y: 0.73, z: -144 } Max Vertex: { x: -80, y: 1.49, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -96 } Min Vertex: { x: 80, y: 0.74, z: -112 } Max Vertex: { x: 112, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 96 } Min Vertex: { x: -112, y: 0.76, z: 80 } Max Vertex: { x: -80, y: 1.51, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 64 } Min Vertex: { x: 80, y: 0.75, z: 48 } Max Vertex: { x: 112, y: 1.5, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -96 } Min Vertex: { x: 48, y: 0.76, z: -112 } Max Vertex: { x: 80, y: 1.5, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -128 } Min Vertex: { x: 80, y: 0.76, z: -144 } Max Vertex: { x: 112, y: 1.53, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 64 } Min Vertex: { x: -80, y: 0.73, z: 48 } Max Vertex: { x: -48, y: 1.52, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 64 } Min Vertex: { x: -80, y: 0.73, z: 48 } Max Vertex: { x: -48, y: 1.52, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -32 } Min Vertex: { x: 48, y: 0.75, z: -48 } Max Vertex: { x: 80, y: 1.5, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 96 } Min Vertex: { x: 48, y: 0.72, z: 80 } Max Vertex: { x: 80, y: 1.5, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 32 } Min Vertex: { x: -80, y: 0.74, z: 16 } Max Vertex: { x: -48, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 0 } Min Vertex: { x: -112, y: 0.74, z: -16 } Max Vertex: { x: -80, y: 1.51, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 64 } Min Vertex: { x: -48, y: 0.76, z: 48 } Max Vertex: { x: -16, y: 1.52, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -128 } Min Vertex: { x: -144, y: 0.75, z: -144 } Max Vertex: { x: -112, y: 1.5, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -128 } Min Vertex: { x: -144, y: 0.75, z: -144 } Max Vertex: { x: -112, y: 1.5, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 32 } Min Vertex: { x: 48, y: 0.75, z: 16 } Max Vertex: { x: 80, y: 1.51, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -96 } Min Vertex: { x: -48, y: 0.76, z: -112 } Max Vertex: { x: -16, y: 1.53, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 0 } Min Vertex: { x: 48, y: 0.76, z: -16 } Max Vertex: { x: 80, y: 1.48, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 96 } Min Vertex: { x: -48, y: 0.77, z: 80 } Max Vertex: { x: -16, y: 1.47, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -128 } Min Vertex: { x: 16, y: 0.7, z: -144 } Max Vertex: { x: 48, y: 1.49, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -96 } Min Vertex: { x: -144, y: 0.73, z: -112 } Max Vertex: { x: -112, y: 1.51, z: -80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 32 } Min Vertex: { x: -112, y: 0.75, z: 16 } Max Vertex: { x: -80, y: 1.52, z: 48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 64 } Min Vertex: { x: -16, y: 0.72, z: 48 } Max Vertex: { x: 16, y: 1.48, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -96 } Min Vertex: { x: -16, y: 0.75, z: -112 } Max Vertex: { x: 16, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 96 } Min Vertex: { x: -16, y: 0.76, z: 80 } Max Vertex: { x: 16, y: 1.53, z: 112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 64 } Min Vertex: { x: 16, y: 0.75, z: 48 } Max Vertex: { x: 48, y: 1.53, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -128 } Min Vertex: { x: 48, y: 0.76, z: -144 } Max Vertex: { x: 80, y: 1.51, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 32 } Min Vertex: { x: -112, y: 0.75, z: 16 } Max Vertex: { x: -80, y: 1.52, z: 48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 64 } Min Vertex: { x: -112, y: 0.75, z: 48 } Max Vertex: { x: -80, y: 1.5, z: 80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -32 } Min Vertex: { x: 80, y: 0.78, z: -48 } Max Vertex: { x: 112, y: 1.49, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -32 } Min Vertex: { x: -112, y: 0.71, z: -48 } Max Vertex: { x: -80, y: 1.51, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 96 } Min Vertex: { x: -144, y: 0.73, z: 80 } Max Vertex: { x: -112, y: 1.47, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 32 } Min Vertex: { x: 16, y: 0.75, z: 16 } Max Vertex: { x: 48, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 96 } Min Vertex: { x: -80, y: 0.76, z: 80 } Max Vertex: { x: -48, y: 1.48, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 64 } Min Vertex: { x: -144, y: 0.73, z: 48 } Max Vertex: { x: -112, y: 1.49, z: 80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 64 } Min Vertex: { x: 80, y: 0.75, z: 48 } Max Vertex: { x: 112, y: 1.5, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 0 } Min Vertex: { x: -80, y: 0.77, z: -16 } Max Vertex: { x: -48, y: 1.52, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -128 } Min Vertex: { x: 80, y: 0.76, z: -144 } Max Vertex: { x: 112, y: 1.53, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 0 } Min Vertex: { x: -112, y: 0.74, z: -16 } Max Vertex: { x: -80, y: 1.51, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 0 } Min Vertex: { x: 80, y: 0.75, z: -16 } Max Vertex: { x: 112, y: 1.5, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 96 } Min Vertex: { x: 16, y: 0.74, z: 80 } Max Vertex: { x: 48, y: 1.51, z: 112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -96 } Min Vertex: { x: -80, y: 0.69, z: -112 } Max Vertex: { x: -48, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -32 } Min Vertex: { x: 16, y: 0.75, z: -48 } Max Vertex: { x: 48, y: 1.52, z: -16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -64 } Min Vertex: { x: 16, y: 0.7, z: -80 } Max Vertex: { x: 48, y: 1.5, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -64 } Min Vertex: { x: -16, y: 0.74, z: -80 } Max Vertex: { x: 16, y: 1.49, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 0 } Min Vertex: { x: -144, y: 0.78, z: -16 } Max Vertex: { x: -112, y: 1.47, z: 16 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 0 } Min Vertex: { x: -144, y: 0.78, z: -16 } Max Vertex: { x: -112, y: 1.47, z: 16 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 96 } Min Vertex: { x: -80, y: 0.76, z: 80 } Max Vertex: { x: -48, y: 1.48, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -64 } Min Vertex: { x: 48, y: 0.75, z: -80 } Max Vertex: { x: 80, y: 1.5, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -64 } Min Vertex: { x: 48, y: 0.75, z: -80 } Max Vertex: { x: 80, y: 1.5, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -32 } Min Vertex: { x: -80, y: 0.73, z: -48 } Max Vertex: { x: -48, y: 1.49, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -64 } Min Vertex: { x: 80, y: 0.76, z: -80 } Max Vertex: { x: 112, y: 1.48, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -96 } Min Vertex: { x: -48, y: 0.76, z: -112 } Max Vertex: { x: -16, y: 1.53, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 96 } Min Vertex: { x: -48, y: 0.77, z: 80 } Max Vertex: { x: -16, y: 1.47, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -128 } Min Vertex: { x: 16, y: 0.7, z: -144 } Max Vertex: { x: 48, y: 1.49, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 32 } Min Vertex: { x: -48, y: 0.76, z: 16 } Max Vertex: { x: -16, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -128 } Min Vertex: { x: 16, y: 0.7, z: -144 } Max Vertex: { x: 48, y: 1.49, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 32 } Min Vertex: { x: -48, y: 0.76, z: 16 } Max Vertex: { x: -16, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -64 } Min Vertex: { x: -48, y: 0.76, z: -80 } Max Vertex: { x: -16, y: 1.5, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 32 } Min Vertex: { x: 80, y: 0.72, z: 16 } Max Vertex: { x: 112, y: 1.51, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -128 } Min Vertex: { x: -48, y: 0.76, z: -144 } Max Vertex: { x: -16, y: 1.5, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -64 } Min Vertex: { x: -144, y: 0.77, z: -80 } Max Vertex: { x: -112, y: 1.49, z: -48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -96 } Min Vertex: { x: 16, y: 0.73, z: -112 } Max Vertex: { x: 48, y: 1.48, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -96 } Min Vertex: { x: -112, y: 0.76, z: -112 } Max Vertex: { x: -80, y: 1.5, z: -80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -128 } Min Vertex: { x: -80, y: 0.74, z: -144 } Max Vertex: { x: -48, y: 1.5, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -128 } Min Vertex: { x: -16, y: 0.74, z: -144 } Max Vertex: { x: 16, y: 1.5, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 32 } Min Vertex: { x: 16, y: 0.75, z: 16 } Max Vertex: { x: 48, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 96 } Min Vertex: { x: -144, y: 0.73, z: 80 } Max Vertex: { x: -112, y: 1.47, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -128 } Min Vertex: { x: -16, y: 0.74, z: -144 } Max Vertex: { x: 16, y: 1.5, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 32 } Min Vertex: { x: 16, y: 0.75, z: 16 } Max Vertex: { x: 48, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 96 } Min Vertex: { x: 80, y: 0.72, z: 80 } Max Vertex: { x: 112, y: 1.5, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 64 } Min Vertex: { x: -112, y: 0.75, z: 48 } Max Vertex: { x: -80, y: 1.5, z: 80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -96 } Min Vertex: { x: 80, y: 0.74, z: -112 } Max Vertex: { x: 112, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 96 } Min Vertex: { x: -112, y: 0.76, z: 80 } Max Vertex: { x: -80, y: 1.51, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -32 } Min Vertex: { x: 16, y: 0.75, z: -48 } Max Vertex: { x: 48, y: 1.52, z: -16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 96 } Min Vertex: { x: 48, y: 0.72, z: 80 } Max Vertex: { x: 80, y: 1.5, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -96 } Min Vertex: { x: -80, y: 0.69, z: -112 } Max Vertex: { x: -48, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 32 } Min Vertex: { x: -16, y: 0.76, z: 16 } Max Vertex: { x: 16, y: 1.48, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -32 } Min Vertex: { x: 48, y: 0.75, z: -48 } Max Vertex: { x: 80, y: 1.5, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 32 } Min Vertex: { x: -80, y: 0.74, z: 16 } Max Vertex: { x: -48, y: 1.5, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 0 } Min Vertex: { x: 80, y: 0.75, z: -16 } Max Vertex: { x: 112, y: 1.5, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 96 } Min Vertex: { x: 16, y: 0.74, z: 80 } Max Vertex: { x: 48, y: 1.51, z: 112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 32 } Min Vertex: { x: -144, y: 0.75, z: 16 } Max Vertex: { x: -112, y: 1.51, z: 48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 32 } Min Vertex: { x: -144, y: 0.75, z: 16 } Max Vertex: { x: -112, y: 1.51, z: 48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -96 } Min Vertex: { x: -80, y: 0.69, z: -112 } Max Vertex: { x: -48, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 64 } Min Vertex: { x: -48, y: 0.76, z: 48 } Max Vertex: { x: -16, y: 1.52, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 0 } Min Vertex: { x: -48, y: 0.77, z: -16 } Max Vertex: { x: -16, y: 1.52, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 32 } Min Vertex: { x: 48, y: 0.75, z: 16 } Max Vertex: { x: 80, y: 1.51, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -64 } Min Vertex: { x: 80, y: 0.76, z: -80 } Max Vertex: { x: 112, y: 1.48, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 0 } Min Vertex: { x: 48, y: 0.76, z: -16 } Max Vertex: { x: 80, y: 1.48, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 64 } Min Vertex: { x: -16, y: 0.72, z: 48 } Max Vertex: { x: 16, y: 1.48, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -128 } Min Vertex: { x: -48, y: 0.76, z: -144 } Max Vertex: { x: -16, y: 1.5, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -128 } Min Vertex: { x: -48, y: 0.76, z: -144 } Max Vertex: { x: -16, y: 1.5, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -32 } Min Vertex: { x: -16, y: 0.75, z: -48 } Max Vertex: { x: 16, y: 1.52, z: -16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: 32 } Min Vertex: { x: 80, y: 0.72, z: 16 } Max Vertex: { x: 112, y: 1.51, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -32 } Min Vertex: { x: -16, y: 0.75, z: -48 } Max Vertex: { x: 16, y: 1.52, z: -16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 64 } Min Vertex: { x: 16, y: 0.75, z: 48 } Max Vertex: { x: 48, y: 1.53, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -128 } Min Vertex: { x: 48, y: 0.76, z: -144 } Max Vertex: { x: 80, y: 1.51, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(3, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 96, y: 0, z: -96 } Min Vertex: { x: 80, y: 0.74, z: -112 } Max Vertex: { x: 112, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -96 } Min Vertex: { x: 16, y: 0.73, z: -112 } Max Vertex: { x: 48, y: 1.48, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -16, y: 0.75, z: -16 } Max Vertex: { x: 16, y: 1.53, z: 16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -16, y: 0.75, z: -16 } Max Vertex: { x: 16, y: 1.53, z: 16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -128 } Min Vertex: { x: -112, y: 0.73, z: -144 } Max Vertex: { x: -80, y: 1.49, z: -112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: 64 } Min Vertex: { x: -144, y: 0.73, z: 48 } Max Vertex: { x: -112, y: 1.49, z: 80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -96 } Min Vertex: { x: 48, y: 0.76, z: -112 } Max Vertex: { x: 80, y: 1.5, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: 0 } Min Vertex: { x: -80, y: 0.77, z: -16 } Max Vertex: { x: -48, y: 1.52, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 96 } Min Vertex: { x: 48, y: 0.72, z: 80 } Max Vertex: { x: 80, y: 1.5, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 32 } Min Vertex: { x: -16, y: 0.76, z: 16 } Max Vertex: { x: 16, y: 1.48, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 32 } Min Vertex: { x: -16, y: 0.76, z: 16 } Max Vertex: { x: 16, y: 1.48, z: 48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 96 } Min Vertex: { x: -48, y: 0.77, z: 80 } Max Vertex: { x: -16, y: 1.47, z: 112 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -128 } Min Vertex: { x: -16, y: 0.74, z: -144 } Max Vertex: { x: 16, y: 1.5, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: -64 } Min Vertex: { x: 16, y: 0.7, z: -80 } Max Vertex: { x: 48, y: 1.5, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -64 } Min Vertex: { x: -16, y: 0.74, z: -80 } Max Vertex: { x: 16, y: 1.49, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -64 } Min Vertex: { x: -112, y: 0.74, z: -80 } Max Vertex: { x: -80, y: 1.52, z: -48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: 0 } Min Vertex: { x: -48, y: 0.77, z: -16 } Max Vertex: { x: -16, y: 1.52, z: 16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 0 } Min Vertex: { x: 16, y: 0.75, z: -16 } Max Vertex: { x: 48, y: 1.52, z: 16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(1, 0)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 32, y: 0, z: 0 } Min Vertex: { x: 16, y: 0.75, z: -16 } Max Vertex: { x: 48, y: 1.52, z: 16 }
+	LOD: 1
+	LOD Index: 0
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -64 } Min Vertex: { x: -80, y: 0.72, z: -80 } Max Vertex: { x: -48, y: 1.52, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -32 } Min Vertex: { x: -80, y: 0.73, z: -48 } Max Vertex: { x: -48, y: 1.49, z: -16 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-2, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -64, y: 0, z: -64 } Min Vertex: { x: -80, y: 0.72, z: -80 } Max Vertex: { x: -48, y: 1.52, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -96 } Min Vertex: { x: -144, y: 0.73, z: -112 } Max Vertex: { x: -112, y: 1.51, z: -80 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, 1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: 32 } Min Vertex: { x: -112, y: 0.75, z: 16 } Max Vertex: { x: -80, y: 1.52, z: 48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, -3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: -96 } Min Vertex: { x: -16, y: 0.75, z: -112 } Max Vertex: { x: 16, y: 1.52, z: -80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, -4)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: -128 } Min Vertex: { x: 48, y: 0.76, z: -144 } Max Vertex: { x: 80, y: 1.51, z: -112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-1, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -32, y: 0, z: -64 } Min Vertex: { x: -48, y: 0.76, z: -80 } Max Vertex: { x: -16, y: 1.5, z: -48 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-3, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -96, y: 0, z: -64 } Min Vertex: { x: -112, y: 0.74, z: -80 } Max Vertex: { x: -80, y: 1.52, z: -48 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(0, 3)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 0, y: 0, z: 96 } Min Vertex: { x: -16, y: 0.76, z: 80 } Max Vertex: { x: 16, y: 1.53, z: 112 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -32 } Min Vertex: { x: -144, y: 0.73, z: -48 } Max Vertex: { x: -112, y: 1.54, z: -16 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -1)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -32 } Min Vertex: { x: -144, y: 0.73, z: -48 } Max Vertex: { x: -112, y: 1.54, z: -16 }
+	LOD: 4
+	LOD Index: 2
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 64 } Min Vertex: { x: 48, y: 0.75, z: 48 } Max Vertex: { x: 80, y: 1.53, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(2, 2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: 64, y: 0, z: 64 } Min Vertex: { x: 48, y: 0.75, z: 48 } Max Vertex: { x: 80, y: 1.53, z: 80 }
+	LOD: 2
+	LOD Index: 1
+	------------------------------------------------------------------------------
+	Terrain Chunk: terrain_chunk_(-4, -2)
+	------------------------------------------------------------------------------
+	Bounds 3D
+Origin: { x: -128, y: 0, z: -64 } Min Vertex: { x: -144, y: 0.77, z: -80 } Max Vertex: { x: -112, y: 1.49, z: -48 }
+	LOD: 4
+	LOD Index: 2
+	Log: 6
 
 ======================================================================================
 #	Global Cache
 ======================================================================================
 
-	AUDIO: Items: 1
-	music/woo_scary.ogg
-	MESH: Items: 3
-	skyboxmtl
-	cube
-	proc_moss
-	SHADER: Items: 4
-	render\scene\scene.vert
+	MESH_INFO: Items: 67
+	terrain_chunk_(-2, -2)_mesh_info
+	terrain_chunk_(-4, 2)_mesh_info
+	terrain_chunk_(2, -1)_mesh_info
+	terrain_chunk_(2, 0)_mesh_info
+	terrain_chunk_(-1, 3)_mesh_info
+	terrain_chunk_(-2, 1)_mesh_info
+	terrain_chunk_(2, -4)_mesh_info
+	terrain_chunk_(1, 2)_mesh_info
+	terrain_chunk_(-1, -4)_mesh_info
+	terrain_chunk_(3, 1)_mesh_info
+	terrain_chunk_(0, 2)_mesh_info
+	terrain_chunk_(0, -4)_mesh_info
+	terrain_chunk_(-3, 2)_mesh_info
+	terrain_chunk_(3, -2)_mesh_info
+	terrain_chunk_(2, 3)_mesh_info
+	terrain_chunk_(-4, -2)_mesh_info
+	terrain_chunk_(-1, -3)_mesh_info
+	terrain_chunk_(-3, -1)_mesh_info
+	terrain_chunk_(1, 3)_mesh_info
+	terrain_chunk_(-1, 1)_mesh_info
+	terrain_chunk_(3, 0)_mesh_info
+	terrain_chunk_(-3, -4)_mesh_info
+	terrain_chunk_(2, 2)_mesh_info
+	terrain_chunk_(-4, 1)_mesh_info
+	terrain_chunk_(-2, -3)_mesh_info
+	terrain_chunk_(-2, -1)_mesh_info
+	terrain_chunk_(-4, 3)_mesh_info
+	terrain_chunk_(-1, 0)_mesh_info
+	terrain_chunk_(3, -1)_mesh_info
+	terrain_chunk_(2, 1)_mesh_info
+	terrain_chunk_(-4, -4)_mesh_info
+	terrain_chunk_(-3, -3)_mesh_info
+	terrain_chunk_(-1, -1)_mesh_info
+	terrain_chunk_(-3, 0)_mesh_info
+	terrain_chunk_(0, -3)_mesh_info
+	terrain_chunk_(3, 2)_mesh_info
+	terrain_chunk_(-3, 3)_mesh_info
+	terrain_chunk_(-4, -3)_mesh_info
+	center_mesh_info
+	terrain_chunk_(-3, -2)_mesh_info
+	terrain_chunk_(-1, -2)_mesh_info
+	skyboxmtl_mesh_info
+	terrain_chunk_(-1, 2)_mesh_info
+	terrain_chunk_(2, -2)_mesh_info
+	terrain_chunk_(1, -1)_mesh_info
+	terrain_chunk_(0, 3)_mesh_info
+	terrain_chunk_(-2, 0)_mesh_info
+	terrain_chunk_(1, -4)_mesh_info
+	terrain_chunk_(1, 1)_mesh_info
+	terrain_chunk_(-2, -4)_mesh_info
+	terrain_chunk_(-4, 0)_mesh_info
+	terrain_chunk_(1, -2)_mesh_info
+	terrain_chunk_(0, 1)_mesh_info
+	terrain_chunk_(0, -1)_mesh_info
+	terrain_chunk_(-2, 3)_mesh_info
+	terrain_chunk_(3, -3)_mesh_info
+	terrain_chunk_(-3, 1)_mesh_info
+	terrain_chunk_(-4, -1)_mesh_info
+	terrain_chunk_(1, 0)_mesh_info
+	toggle_mesh_info
+	terrain_chunk_(0, 0)_mesh_info
+	terrain_chunk_(1, -3)_mesh_info
+	terrain_chunk_(-2, 2)_mesh_info
+	terrain_chunk_(0, -2)_mesh_info
+	terrain_chunk_(3, 3)_mesh_info
+	terrain_chunk_(2, -3)_mesh_info
+	terrain_chunk_(3, -4)_mesh_info
+	SHADER: Items: 6
+	render\terrain\terrain.vert
+	render\font\font.vert
 	render\skybox\skybox.vert
+	render\terrain\terrain.frag
 	render\skybox\skybox.frag
-	render\scene\scene.frag
-	MODEL: Items: 3
-	proc_terrainproc_moss_model
-	src/main/resources/models/cube/cube.obj_model
-	src/main/resources/models/skybox/skybox.obj_model
+	render\font\font.frag
+	PROGRAM: Items: 3
+	skybox
+	terrain
+	font
 	TEXTURE: Items: 4
-	src\main\resources\models\cube\cube.png
 	src/main/resources/textures/moss_surface/moss_surface_albedo.png
 	src/main/resources/textures/moss_surface/moss_surface_normal.png
+	src\main\resources\textures\fonts\Arial.png
 	src\main\resources\models\skybox\skybox.png
-	PROGRAM: Items: 2
-	skybox
-	scene
-	MESH_INFO: Items: 3
-	skyboxmtl_mesh_info
-	cube_mesh_info
-	proc_moss_mesh_info
-	Log: 5
+	FONT_INFO: Items: 1
+	Arial
+	MESH: Items: 67
+	terrain_chunk_(2, 2)
+	terrain_chunk_(-4, -4)
+	terrain_chunk_(0, 1)
+	terrain_chunk_(1, -2)
+	terrain_chunk_(2, -3)
+	terrain_chunk_(3, 2)
+	terrain_chunk_(-2, 1)
+	terrain_chunk_(-2, -3)
+	terrain_chunk_(-4, 2)
+	terrain_chunk_(1, 2)
+	terrain_chunk_(-3, -4)
+	terrain_chunk_(-1, 1)
+	terrain_chunk_(-1, -1)
+	terrain_chunk_(0, -1)
+	terrain_chunk_(-3, 2)
+	terrain_chunk_(3, -3)
+	terrain_chunk_(1, -1)
+	terrain_chunk_(2, 3)
+	terrain_chunk_(0, 0)
+	terrain_chunk_(-4, -1)
+	terrain_chunk_(2, -2)
+	terrain_chunk_(1, 3)
+	terrain_chunk_(-2, 0)
+	terrain_chunk_(3, 3)
+	terrain_chunk_(-2, -2)
+	terrain_chunk_(-2, -1)
+	terrain_chunk_(3, -4)
+	terrain_chunk_(-4, 3)
+	terrain_chunk_(-3, -3)
+	terrain_chunk_(-1, 0)
+	terrain_chunk_(0, -4)
+	terrain_chunk_(-3, 3)
+	terrain_chunk_(2, 0)
+	terrain_chunk_(-1, -4)
+	terrain_chunk_(1, -4)
+	terrain_chunk_(-4, -2)
+	terrain_chunk_(-2, 3)
+	terrain_chunk_(2, -1)
+	terrain_chunk_(3, 0)
+	terrain_chunk_(1, 0)
+	terrain_chunk_(0, 3)
+	terrain_chunk_(-3, -2)
+	terrain_chunk_(0, -3)
+	terrain_chunk_(3, -1)
+	terrain_chunk_(-3, 0)
+	terrain_chunk_(-1, 3)
+	terrain_chunk_(2, 1)
+	terrain_chunk_(-1, -3)
+	terrain_chunk_(1, -3)
+	terrain_chunk_(-4, -3)
+	skyboxmtl
+	center
+	terrain_chunk_(2, -4)
+	toggle
+	terrain_chunk_(3, 1)
+	terrain_chunk_(-2, -4)
+	terrain_chunk_(-2, 2)
+	terrain_chunk_(-4, 0)
+	terrain_chunk_(-4, 1)
+	terrain_chunk_(1, 1)
+	terrain_chunk_(0, 2)
+	terrain_chunk_(-3, -1)
+	terrain_chunk_(0, -2)
+	terrain_chunk_(-1, -2)
+	terrain_chunk_(-1, 2)
+	terrain_chunk_(-3, 1)
+	terrain_chunk_(3, -2)
+	MODEL: Items: 3
+	center_model
+	BASIC_SKYBOX_model
+	toggle_model
+	Log: 7
 Closing Print Stream

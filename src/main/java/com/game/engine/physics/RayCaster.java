@@ -11,16 +11,24 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import java.util.HashSet;
 import java.util.stream.Stream;
 
 public class RayCaster {
   private final Vector2f result;
   private final LambdaValue closestDistance;
+  private final HashSet<IHitListener> listeners;
 
   public RayCaster() {
     result = new Vector2f();
     closestDistance = new LambdaValue(Float.POSITIVE_INFINITY);
+    listeners = new HashSet<>();
   }
+
+  public void addListener(IHitListener listener) { listeners.add(listener); }
+
+  void emit(Hit hit) { listeners.forEach((l) -> l.onHit(hit));}
 
   public void rayCastMouseClick(
     IHitListener listener,
@@ -30,6 +38,7 @@ public class RayCaster {
     Camera camera,
     Matrix4f projection
   ) {
+    addListener(listener);
     result.set(0, 0);
     closestDistance.reset();
 
@@ -57,6 +66,6 @@ public class RayCaster {
         }
       }
     });
-    if (!all) listener.onHit(hit);
+    if (!all) emit(hit);
   }
 }

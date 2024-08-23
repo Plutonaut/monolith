@@ -1,5 +1,6 @@
 package com.game.engine.render.mesh;
 
+import com.game.engine.physics.Bounds3D;
 import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.graphics.materials.Material;
@@ -21,7 +22,7 @@ public class MeshInfoBuilder {
   protected ArrayList<String> attributes;
   protected List<VertexInfo> vertices;
   protected ValueStore indices;
-  protected Vector3f origin;
+  protected Bounds3D bounds;
   protected Material material;
   protected String name;
 
@@ -29,7 +30,7 @@ public class MeshInfoBuilder {
     attributes = new ArrayList<>();
     vertices = new ArrayList<>();
     indices = new ValueStore();
-    origin = new Vector3f();
+    bounds = null;
     material = null;
     name = null;
   }
@@ -90,12 +91,20 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfoBuilder origin(float x, float y, float z) {
-    this.origin.set(x, y, z);
+    if (bounds == null) bounds(new Bounds3D());
+    this.bounds.origin().set(x, y, z);
     return this;
   }
 
   public MeshInfoBuilder origin(Vector3f origin) {
-    this.origin.set(origin);
+    if (bounds == null) bounds(new Bounds3D());
+    this.bounds.origin().set(origin);
+    return this;
+  }
+
+  public MeshInfoBuilder bounds(Bounds3D bounds) {
+    this.bounds = new Bounds3D();
+    this.bounds.set(bounds);
     return this;
   }
 
@@ -256,7 +265,7 @@ public class MeshInfoBuilder {
     }
     meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material);
-    if (origin != null) meshInfo.origin().set(origin);
+    if (bounds != null) meshInfo.bounds(bounds);
     dispose();
 
     return meshInfo;
@@ -266,7 +275,7 @@ public class MeshInfoBuilder {
     attributes.clear();
     vertices.clear();
     indices.clear();
-    origin = new Vector3f();
+    bounds = null;
     material = null;
     name = null;
   }
