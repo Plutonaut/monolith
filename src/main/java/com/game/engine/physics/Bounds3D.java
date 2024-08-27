@@ -68,4 +68,12 @@ public class Bounds3D {
     return "Bounds 3D" + "\nOrigin: " + PrettifyUtils.prettify(origin) + " Min Vertex: " + PrettifyUtils.prettify(
       minVertex()) + " Max Vertex: " + PrettifyUtils.prettify(maxVertex());
   }
+
+  public Bounds2D boundsXY() {
+    return new Bounds2D(
+      new Vector2f(origin.x(), origin.y()),
+      new Vector2f(min.x(), min.y()),
+      new Vector2f(max.x(), max.y())
+    );
+  }
 }

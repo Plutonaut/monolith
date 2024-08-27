@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 public class Texture implements IGraphics {
   protected final int glId;
   protected final String path;
+  protected final int target;
   protected int width;
   protected int height;
 
@@ -21,11 +22,16 @@ public class Texture implements IGraphics {
   }
 
   public Texture(String path, int width, int height) {
+    this(path, width, height, GL46.GL_TEXTURE_2D);
+  }
+
+  public Texture(String path, int width, int height, int target) {
     glId = GL46.glGenTextures();
 
     this.path = path;
     this.width = width;
     this.height = height;
+    this.target = target;
   }
 
   @Override
@@ -39,7 +45,7 @@ public class Texture implements IGraphics {
 
   @Override
   public void bind() {
-    GL46.glBindTexture(GL46.GL_TEXTURE_2D, glId);
+    GL46.glBindTexture(target, glId);
   }
 
   @Override
@@ -86,9 +92,14 @@ public class Texture implements IGraphics {
     parameter(GL46.GL_TEXTURE_MAG_FILTER, value);
   }
 
+  public void upload1D(int internalFormat, int format, int glType, float[] data) {
+    GL46.glTexImage1D(target, 0, internalFormat, width, 0, format, glType, data);
+    GL46.glGenerateMipmap(target);
+  }
+
   public void upload(int internalFormat, int format, int glType, ByteBuffer image) {
     GL46.glTexImage2D(
-      GL46.GL_TEXTURE_2D,
+      target,
       0,
       internalFormat,
       width,
@@ -98,7 +109,7 @@ public class Texture implements IGraphics {
       glType,
       image
     );
-    GL46.glGenerateMipmap(GL46.GL_TEXTURE_2D);
+    GL46.glGenerateMipmap(target);
   }
 
   @Override

@@ -35,33 +35,30 @@ public class Quad extends MeshDefinition {
   };
 
   public Quad() {
-    super();
+    super("QUAD");
   }
 
-  public Quad(float width, float height) {
-    this(new Vector2f(), width, height);
+  public Quad(String name, float width, float height) {
+    this(name, new Vector2f(), width, height);
   }
 
-  public Quad(Vector2f offset, float width, float height) {
-    this(new Bounds2D(
+  public Quad(String name, Vector2f offset, float width, float height) {
+    this(name, new Bounds2D(
       new Vector2f(),
       new Vector2f(-offset.x(), height + offset.y()),
       new Vector2f(width + offset.x(), -offset.y())
     ));
   }
 
-  public Quad(Bounds2D bounds) {
+  public Quad(String name, Bounds2D bounds) {
+    super(name, false);
+
     builder = new MeshInfoBuilder();
     ValueStore positionStore = VertexUtils.scalePositionVertices2D(bounds);
     positions(positionStore.asArray())
       .textureCoordinates(TEXTURE_COORDINATES)
       .colors(COLORS)
       .indices(INDICES);
-  }
-
-  @Override
-  public String name() {
-    return "QUAD";
   }
 
   @Override

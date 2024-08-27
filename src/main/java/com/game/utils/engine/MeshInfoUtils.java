@@ -18,29 +18,17 @@ import java.nio.IntBuffer;
 public class MeshInfoUtils {
   public static final int MAX_VERTEX_DATA = 9;
 
-  public static MeshInfo clone(MeshInfo info, String cloneName) {
-    MeshInfo clone = new MeshInfo(cloneName);
-    info.vertices().forEach(clone::addVertices);
-    clone.indices().add(info.indices());
-    clone.material(info.material());
-    clone.vertexCount(info.vertexCount());
-    return clone;
-  }
-
   public static Bounds3D calculateBounds(VertexInfo info) {
     Vector3f min = new Vector3f(Float.MAX_VALUE);
     Vector3f max = new Vector3f(Float.MIN_VALUE);
 
-    ValueStore vertices = info.vertices();
-    float[] values = vertices.asArray();
-    int vertexSize = info.totalSize();
     int vertexCount = info.totalVertexCount();
 
     for (int i = 0; i < vertexCount; i++) {
-      int index = i * vertexSize;
-      float x = values[index];
-      float y = values[index + 1];
-      float z = values[index + 2];
+      float[] values = info.getAttributeVertex(i, EAttribute.POS.getValue());
+      float x = values[0];
+      float y = values[1];
+      float z = values[2];
       Vector3f vertex = new Vector3f(x, y, z);
       min.min(vertex);
       max.max(vertex);

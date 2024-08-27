@@ -1,6 +1,7 @@
 package com.game.engine.render.mesh.vertices;
 
 import com.game.graphics.IGL;
+import com.game.graphics.shaders.Program;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.lwjgl.opengl.GL46;
@@ -14,6 +15,7 @@ import java.nio.IntBuffer;
 public class VertexBufferObject implements IGL {
   protected final int target;
   protected final int glId;
+  protected VertexAttributeArray attributes;
 
   public VertexBufferObject() {
     this(GL46.GL_ARRAY_BUFFER);
@@ -23,6 +25,22 @@ public class VertexBufferObject implements IGL {
     this.target = target;
 
     glId = GL46.glGenBuffers();
+  }
+
+  public void enable() {
+    if (attributes != null) attributes.enable();
+  }
+
+  public void point(Program program) {
+    if (attributes != null) attributes.point(program);
+  }
+
+  public void point(String attribute, Program program) {
+    if (attributes != null) attributes.point(attribute, program);
+  }
+
+  public void disable() {
+    if (attributes != null) attributes.disable();
   }
 
   public void buffer(float[] values, int usage) {

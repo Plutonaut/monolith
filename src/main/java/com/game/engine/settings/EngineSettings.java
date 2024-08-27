@@ -34,6 +34,10 @@ public class EngineSettings {
   private float hudBorder;
   private float hudTextScale;
   private Vector3f hudTextColor;
+  private int maxParticles;
+  private int particleSeed;
+  private float[] particleLifetimes;
+  private Vector3f particleVelocity;
 
   public EngineSettings() {
     load();
@@ -69,6 +73,11 @@ public class EngineSettings {
     hudBorder = hud.getFloat("hudBorder");
     hudTextScale = hud.getFloat("hudTextScale");
     hudTextColor = hud.getVector3f("hudTextColor");
+    ValueMap particles = model.modelSection("particles");
+    maxParticles = particles.getInt("maxParticles");
+    particleSeed = particles.getInt("particleSeed");
+    particleVelocity = particles.getVector3f("particleVelocity");
+    particleLifetimes = particles.getFloatArr("particleLifetimes");
     return this;
   }
 }

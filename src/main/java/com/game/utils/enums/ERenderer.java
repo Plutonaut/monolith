@@ -11,13 +11,15 @@ import java.util.List;
 @Getter
 public enum ERenderer {
   BASIC("render", "basic", "basic.vert", "basic.frag", null, null),
-  GUI("render", "gui", "gui.vert", "gui.frag", null, null),
-  PARTICLE("render", "instanced", "instanced.vert","instanced.frag", null, null),
+//  GUI("render", "gui", "gui.vert", "gui.frag", null, null),
+  INSTANCED("render", "instanced", "instanced.vert","instanced.frag", null, null),
+  PARTICLE("render", "particle", "particle.vert",null, "particle.geom", null),
   SPRITE("render", "sprite", "sprite.vert", "sprite.frag", null, null),
   MESH("render", "mesh", "mesh.vert", "mesh.frag", null, null),
   SCENE("render", "scene", "scene.vert", "scene.frag", null, null),
   TERRAIN("render", "terrain", "terrain.vert", "terrain.frag", null, null),
   FONT("render", "font", "font.vert", "font.frag", null, null),
+  BILLBOARD("render", "billboard", "billboard.vert", "billboard.frag", "billboard.geom", null),
   SKYBOX("render", "skybox", "skybox.vert", "skybox.frag", null, null);
 
   private final String type;
@@ -40,19 +42,11 @@ public enum ERenderer {
     List<String> paths = new ArrayList<>();
 
     if (vertex != null) paths.add(path(vertex));
-    if (fragment != null) paths.add(path(fragment));
     if (geometry != null) paths.add(path(geometry));
+    if (fragment != null) paths.add(path(fragment));
     if (compute != null) paths.add(path(compute));
 
     return paths;
-  }
-
-  public String vertexPath() {
-    return path(vertex);
-  }
-
-  public String fragmentPath() {
-    return path(fragment);
   }
 
   String path(String shader) {

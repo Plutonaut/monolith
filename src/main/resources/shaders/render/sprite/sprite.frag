@@ -13,7 +13,9 @@ struct Material
 in vec4 vColor;
 in vec2 vTextureCoord;
 
+uniform float time;
 uniform sampler2D textureSampler;
+uniform sampler1D randomSampler;
 uniform Material material;
 
 out vec4 fragColor;
@@ -22,4 +24,13 @@ void main() {
     vec4 color = vColor;
     if (material.hasTexture == 1) color = texture(textureSampler, vTextureCoord);
     fragColor = color;
+    fragColor += texture(randomSampler, time);
+
+    if (all(equal(fragColor.xyz, vec3(0)))) {
+        discard;
+    }
+
+    if (fragColor.w == 0.0) {
+        discard;
+    }
 }

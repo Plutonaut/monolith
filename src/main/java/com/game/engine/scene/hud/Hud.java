@@ -1,19 +1,27 @@
 package com.game.engine.scene.hud;
 
+import com.game.caches.GlobalCache;
+import com.game.engine.physics.Bounds2D;
 import com.game.engine.physics.Hit;
 import com.game.engine.render.mesh.Mesh;
+import com.game.engine.render.mesh.MeshInfo;
+import com.game.engine.render.mesh.definitions.Quad;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.controllers.EntityInteractionController;
 import com.game.engine.scene.entities.controllers.EntityTextController;
 import com.game.engine.settings.EngineSettings;
+import com.game.graphics.shaders.Program;
 import com.game.utils.engine.ColorUtils;
+import com.game.utils.engine.TextureUtils;
 import com.game.utils.enums.EGUIEvent;
+import com.game.utils.enums.EMaterialColor;
 import com.game.utils.enums.ERenderer;
 import com.game.utils.logging.PrettifyUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
@@ -30,10 +38,12 @@ public class Hud {
   private static final String SEL_DFLT_TEXT = "<Please reselect an entity>";
 
   private final HashMap<String, Entity> hudEntityMap;
+  private final Bounds2D toggleDiagnosticsButtonBounds;
   private final Scene scene;
 
   private EntityTextController toggleDiagnosticsTextController;
   private EntityInteractionController toggleDiagnosticsInteractionController;
+  private Mesh toggleDiagnosticsBGMesh;
 
   private boolean diagnosticsVisible;
   @Getter
@@ -44,6 +54,9 @@ public class Hud {
   private Vector4f color;
   @Getter
   @Setter
+  private Vector4f hoverColor;
+  @Getter
+  @Setter
   private float textScale;
 
   public Hud(Scene scene, EngineSettings settings) {
@@ -51,6 +64,8 @@ public class Hud {
     this.border = settings.hudBorder();
     this.textScale = settings.hudTextScale();
     this.color = ColorUtils.normalize(settings.hudTextColor());
+    this.hoverColor = ColorUtils.convert(Color.decode("#038C8C"));
+    this.toggleDiagnosticsButtonBounds = new Bounds2D();
     hudEntityMap = new HashMap<>();
   }
 
@@ -67,23 +82,27 @@ public class Hud {
       .interaction();
     toggleDiagnosticsInteractionController.listen(this::handleMouseInput);
     toggleDiagnosticsTextController.setColor(color);
+
+    Bounds2D bounds = toggleDiagnosticsTextController.bounds();
+    MeshInfo backgroundMeshInfo = new Quad(
+      "hud_toggle_bg",
+      new Vector2f(border, border),
+      bounds.size().x,
+      bounds.size().y
+    )
+      .diffuseTexture(TextureUtils.GUI_BG)
+      .diffuseColor(ColorUtils.convert(Color.white))
+      .createMeshInfo();
+    Program program = GlobalCache.instance().program(ERenderer.FONT.key());
+    toggleDiagnosticsBGMesh = GlobalCache.instance().mesh(
+      backgroundMeshInfo.name(),
+      (name) -> backgroundMeshInfo.create(program)
+    );
+    toggleDiagnosticsButtonBounds.set(toggleDiagnosticsBGMesh.bounds().boundsXY());
+    toggleDiagnosticsButtonBounds.origin().set(border);
+    toggleDiagnosticsButtonEntity.addMesh(toggleDiagnosticsBGMesh);
     scene.bind(toggleDiagnosticsButtonEntity);
     scene.window().mouse().addListener(GLFW.GLFW_MOUSE_BUTTON_1, this::handleLeftMouseClick);
-  }
-
-  public void onInput() {
-    toggleDiagnosticsInteractionController.onMouseInput(
-      scene.window().mouse(),
-      toggleDiagnosticsTextController.bounds()
-    );
-    if (diagnosticsVisible) redrawText(CAM, scene.camera().toString());
-  }
-
-  public void handleLeftMouseClick(int action) {
-    if (action == GLFW.GLFW_PRESS) {
-      if (toggleDiagnosticsInteractionController.isHover()) onDiagnosticsToggled();
-      else scene.rayCastMouseClick(false, this::onHit);
-    }
   }
 
   public void updateCenterText(String text) {
@@ -96,12 +115,41 @@ public class Hud {
   }
 
   public void showCenterText() {
-
     scene.bind(ERenderer.FONT, CTR);
   }
 
   public void hideCenterText() {
     scene.unbind(ERenderer.FONT, CTR);
+  }
+
+  public void onInput() {
+    toggleDiagnosticsInteractionController.onMouseInput(
+      scene.window().mouse(),
+      toggleDiagnosticsButtonBounds
+    );
+    if (diagnosticsVisible) redrawText(CAM, scene.camera().toString());
+  }
+
+  public void handleLeftMouseClick(int action) {
+    if (action == GLFW.GLFW_PRESS) {
+      if (toggleDiagnosticsInteractionController.isHover()) onDiagnosticsToggled();
+      else scene.rayCastMouseClick(false, this::onHit);
+    }
+  }
+
+  // TODO: Abstract this out into an interface that gets called directly by the Mouse input device.
+  void onMouseOver(Vector4f c) {
+    toggleDiagnosticsTextController.setColor(c);
+    toggleDiagnosticsBGMesh.material().color(EMaterialColor.DIF.getValue(), c);
+  }
+
+  void handleMouseInput(EGUIEvent event) {
+    if (toggleDiagnosticsTextController == null) return;
+
+    switch (event) {
+      case EGUIEvent.ENTER -> onMouseOver(hoverColor);
+      case EGUIEvent.EXIT -> onMouseOver(color);
+    }
   }
 
   void onHit(Hit hit) {
@@ -139,20 +187,11 @@ public class Hud {
     return toggleButtonText + " Diagnostics";
   }
 
-  void handleMouseInput(EGUIEvent event) {
-    if (toggleDiagnosticsTextController == null) return;
-
-    switch (event) {
-      case EGUIEvent.ENTER -> toggleDiagnosticsTextController.setColor(Color.decode("#038C8C"));
-      case EGUIEvent.EXIT -> toggleDiagnosticsTextController.setColor(color);
-    }
-  }
-
   void onDiagnosticsToggled() {
     diagnosticsVisible = !diagnosticsVisible;
     redrawText(TOG, currentDiagnosticsButtonLabel());
     if (diagnosticsVisible) {
-      redrawEntity(DIA, scene.diagnostics().getPreviousRenderDiagnostics(), border, border + 30f);
+      redrawEntity(DIA, scene.diagnostics().getPreviousRenderDiagnostics(), border, border + 50f);
       redrawEntity(CAM, scene.camera().toString(), border, scene.window().height() - (border * 4));
       redrawEntity(
         SEL,

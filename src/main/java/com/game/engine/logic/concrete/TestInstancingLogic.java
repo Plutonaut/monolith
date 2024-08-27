@@ -55,7 +55,7 @@ public class TestInstancingLogic extends AbstractLogic {
     );
     backgroundMaterial.color(EMaterialColor.DIF.getValue(), new Vector4f(1));
 
-    MeshInfo info = new Quad(new Vector2f(textController.borderSize()),
+    MeshInfo info = new Quad("gui_bg", new Vector2f(textController.borderSize()),
                              textController.bounds().size().x(),
                              textController.bounds().size().y()
     ).meshInfo();

@@ -14,12 +14,17 @@ public class VertexInfo {
   protected final ValueStore vertices;
   protected final int glType;
   protected final int glUsage;
+  protected String customName;
+  protected int transformFeedback = -1;
 
-  public VertexInfo(float[] vertices, String attribute, int size, int dimensions, int divisor, int glUsage) {
+  public VertexInfo(
+    float[] vertices, String attribute, int size, int dimensions, int divisor, int glUsage
+  ) {
     AttribInfo attrib = new AttribInfo(attribute, size, dimensions, divisor);
     this.vertices = new ValueStore();
     this.vertices.add(vertices);
     this.glUsage = glUsage;
+    this.customName = null;
 
     glType = GL46.GL_FLOAT;
     attributes = new HashMap<>();
@@ -32,7 +37,33 @@ public class VertexInfo {
     this.vertices = vertices;
 
     this.attributes = new HashMap<>();
+    this.customName = null;
     addAttributes(attributes);
+  }
+
+  public float[] getAttributeVertex(int i, String attribute) {
+    AttribInfo info = getAttribute(attribute);
+    int vertexSize = totalSize();
+    int attrSize = info.size();
+    float[] result = new float[attrSize];
+    int index = vertexSize * i;
+    for (AttribInfo value : attributes.values()) {
+      if (value.key.equalsIgnoreCase(info.key())) {
+        float[] vertexArr = vertices.asArray();
+        try {
+          System.arraycopy(vertexArr, index, result, 0, attrSize);
+        } catch (IndexOutOfBoundsException e) {
+          String str = "Index out of bounds" + e.getMessage() + "\nAttribute: " + attribute +
+            "\nParam index: " + i + "\nCurrent index: " + index +
+            "\nTotal size: " + totalSize() + "\nTotal vertex count: " +
+            totalVertexCount() + "\nTotal value count: " + vertexArr.length;
+          throw new IllegalStateException(str);
+        }
+        break;
+      }
+      index += value.size();
+    }
+    return result;
   }
 
   public int totalVertexCount() {
@@ -40,7 +71,7 @@ public class VertexInfo {
   }
 
   public int totalDimensions() {
-    return attributes().values().stream().mapToInt(AttribInfo::dimensions).sum();
+    return attributes().values().stream().mapToInt(AttribInfo::dimensions).max().orElse(1);
   }
 
   public int totalSize() {
@@ -52,7 +83,7 @@ public class VertexInfo {
   }
 
   public String getAttributeKey() {
-    return attributes.keySet().stream().findFirst().orElse(null);
+    return customName == null ? attributes.keySet().stream().findFirst().orElse(null) : customName;
   }
 
   public boolean hasAttribute(String key) { return getAttribute(key) != null; }
