@@ -1,7 +1,10 @@
 package com.game.caches.shaders;
 
 import lombok.extern.slf4j.Slf4j;
+import org.lwjgl.opengl.GL46;
+import org.lwjgl.system.MemoryStack;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +32,22 @@ public abstract class AbstractShaderCache {
     return cache.containsKey(key) || glLocation(key) >= 0;
   }
 
+  protected List<String> listOf(String type, int glType, IShaderGetter getter) {
+    int count = GL46.glGetProgrami(programId, glType);
+    log.debug("Active {}: {}", type, count);
+
+    List<String> list = new ArrayList<>();
+    try (MemoryStack stack = MemoryStack.stackPush()) {
+      for (int i = 0; i < count; i++) {
+        IntBuffer size = stack.mallocInt(1);
+        IntBuffer dataType = stack.mallocInt(1);
+        String name = getter.get(i, size, dataType);
+        list.add("\n" + name.concat(": (size - %d type - %d)").formatted(size.get(0), dataType.get(0)));
+      }
+    }
+    return list;
+  }
+
   protected abstract int glLocation(String key);
 
   protected int check(int location, String type, String value) {
@@ -44,5 +63,9 @@ public abstract class AbstractShaderCache {
       missingKeys.add(value);
     } else if (location >= 0) missingKeys.remove(value);
     return location;
+  }
+
+  public static interface IShaderGetter {
+    String get(int index, IntBuffer size, IntBuffer dataType);
   }
 }

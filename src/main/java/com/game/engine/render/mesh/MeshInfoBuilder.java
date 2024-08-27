@@ -5,6 +5,7 @@ import com.game.engine.render.mesh.vertices.AttribInfo;
 import com.game.engine.render.mesh.vertices.VertexInfo;
 import com.game.graphics.materials.Material;
 import com.game.utils.application.values.ValueStore;
+import com.game.utils.engine.ColorUtils;
 import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.EMaterialColor;
 import com.game.utils.enums.EMaterialTexture;
@@ -25,6 +26,7 @@ public class MeshInfoBuilder {
   protected Bounds3D bounds;
   protected Material material;
   protected String name;
+  protected int drawMode;
 
   public MeshInfoBuilder() {
     attributes = new ArrayList<>();
@@ -33,6 +35,7 @@ public class MeshInfoBuilder {
     bounds = null;
     material = null;
     name = null;
+    drawMode = -1;
   }
 
   public MeshInfoBuilder use(String name) {
@@ -67,7 +70,8 @@ public class MeshInfoBuilder {
   }
 
   public MeshInfoBuilder materialTexture(int textureType, String texturePath) {
-    if (material != null && texturePath != null && !texturePath.isEmpty())
+    if (material == null) material = new Material(name + "_mat");
+    if (texturePath != null && !texturePath.isEmpty())
       material.texture(textureType, texturePath);
     return this;
   }
@@ -84,8 +88,13 @@ public class MeshInfoBuilder {
     return materialColor(EMaterialColor.AMB.getValue(), colorValue);
   }
 
+  public MeshInfoBuilder materialColor(String type, Color colorValue) {
+    return materialColor(type, ColorUtils.convert(colorValue));
+  }
+
   public MeshInfoBuilder materialColor(String colorType, Vector4f colorValue) {
-    if (material != null && colorType != null && !colorType.isEmpty() && colorValue != null)
+    if (material == null) material = new Material(name + "_mat");
+    if (colorType != null && !colorType.isEmpty() && colorValue != null)
       material.color(colorType, colorValue);
     return this;
   }
@@ -244,6 +253,11 @@ public class MeshInfoBuilder {
     return this;
   }
 
+  public MeshInfoBuilder drawMode(int drawMode) {
+    this.drawMode = drawMode;
+    return this;
+  }
+
   public MeshInfo build() {
     final MeshInfo meshInfo = new MeshInfo(name);
     return constructMeshInfo(meshInfo);
@@ -263,6 +277,7 @@ public class MeshInfoBuilder {
       VertexInfo info = meshInfo.getVerticesByAttribute(EAttribute.POS);
       vertexCount = info.totalVertexCount();
     }
+    if (drawMode >= 0) meshInfo.drawMode(drawMode);
     meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material);
     if (bounds != null) meshInfo.bounds(bounds);

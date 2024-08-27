@@ -18,8 +18,8 @@ public class RenderManager implements IRenderer {
     ERenderer.SPRITE,
     ERenderer.MESH,
     ERenderer.TERRAIN,
+    ERenderer.BILLBOARD,
     ERenderer.SCENE,
-    ERenderer.GUI,
     ERenderer.FONT
   );
 
@@ -31,15 +31,15 @@ public class RenderManager implements IRenderer {
 
   protected AbstractRenderer create(ERenderer shader) {
     return switch (shader) {
-      case GUI -> new GUIRenderer();
       case MESH -> new MeshRenderer();
       case SCENE -> new SceneRenderer();
       case TERRAIN -> new TerrainRenderer();
       case SKYBOX -> new SkyBoxRenderer();
       case SPRITE -> new SpriteRenderer();
       case FONT -> new FontRenderer();
-      case PARTICLE -> new ParticleRenderer();
+      case INSTANCED, PARTICLE -> new ParticleRenderer();
       case BASIC -> new BasicRenderer();
+      case BILLBOARD -> new BillboardRenderer();
     };
   }
 

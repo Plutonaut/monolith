@@ -1,5 +1,6 @@
 package com.game.engine.physics;
 
+import com.game.utils.logging.PrettifyUtils;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -29,5 +30,17 @@ public class Bounds2D {
 
   public Vector2f maxVertex() {
     return new Vector2f(max).add(origin);
+  }
+
+  public void set(Bounds2D bounds) {
+    this.origin.set(bounds.origin());
+    this.min.set(bounds.min());
+    this.max.set(bounds.max());
+  }
+
+  @Override
+  public String toString() {
+    return "Bounds 2D" + "\nOrigin: " + PrettifyUtils.prettify(origin) + " Min Vertex: " + PrettifyUtils.prettify(
+      minVertex()) + " Max Vertex: " + PrettifyUtils.prettify(maxVertex());
   }
 }

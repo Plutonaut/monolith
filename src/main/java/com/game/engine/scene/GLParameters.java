@@ -34,12 +34,17 @@ public class GLParameters {
       case BLEND -> this::blend;
       case DEPTH -> this::depth;
       case WIREFRAME -> this::wireframe;
+      case DISCARD_RAST -> this::rasterizerDiscard;
     };
   }
 
   void wireframe(boolean enabled) {
     int mode = enabled ? GL46.GL_LINE : GL46.GL_FILL;
     GL46.glPolygonMode(GL46.GL_FRONT_AND_BACK, mode);
+  }
+
+  void rasterizerDiscard(boolean enabled) {
+    toggleGl(GL46.GL_RASTERIZER_DISCARD, enabled);
   }
 
   // Support for culling back faces

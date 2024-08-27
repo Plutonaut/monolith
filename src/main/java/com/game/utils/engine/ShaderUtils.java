@@ -7,7 +7,9 @@ import com.game.utils.application.LoaderUtils;
 import com.game.utils.enums.ERenderer;
 import org.lwjgl.opengl.GL46;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 public class ShaderUtils {
   public static ERenderer getShaderEnumFromKey(String key) {
@@ -52,5 +54,21 @@ public class ShaderUtils {
       case "frag", "fg" -> GL46.GL_FRAGMENT_SHADER;
       default -> GL46.GL_COMPUTE_SHADER;
     };
+  }
+
+  public static List<VaryingRecord> shaderTransformVarryings(String shader) {
+    List<VaryingRecord> varyings = new ArrayList<>();
+    if (shader.equals(ERenderer.PARTICLE.key())) varyings.add(new VaryingRecord(
+      true,
+      "type1",
+      "position1",
+      "velocity1",
+      "age1"
+    ));
+
+    return varyings;
+  }
+
+  public record VaryingRecord(boolean interleaved, String... varyings) {
   }
 }

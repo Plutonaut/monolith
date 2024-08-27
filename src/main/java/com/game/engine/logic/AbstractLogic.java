@@ -78,7 +78,7 @@ public abstract class AbstractLogic implements ILogic {
   }
 
   @Override
-  public void preRender() {}
+  public void preRender(float delta) {}
 
   @Override
   public void render(int fps) {

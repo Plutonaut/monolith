@@ -68,7 +68,7 @@ public class TestRenderLogic extends AbstractLogic {
   }
 
   private void setupShader() {
-    program = new Program(ERenderer.BASIC);
+    program = new Program(ERenderer.BASIC.key());
   }
 
   private void setupGl() {

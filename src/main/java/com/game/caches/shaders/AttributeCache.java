@@ -7,6 +7,7 @@ import com.game.utils.application.LambdaCounter;
 import org.lwjgl.opengl.GL46;
 
 import java.util.Collection;
+import java.util.List;
 
 public class AttributeCache extends AbstractShaderCache {
   public AttributeCache(int programId) {
@@ -19,6 +20,14 @@ public class AttributeCache extends AbstractShaderCache {
     return check(location, "Attribute", key);
   }
 
+  public List<String> getAttributeList() {
+    return listOf(
+      "Attributes",
+      GL46.GL_ACTIVE_ATTRIBUTES,
+      (i, s, t) -> GL46.glGetActiveAttrib(programId, i, s, t)
+    );
+  }
+
   public VertexAttributeArray point(VertexInfo info) {
     Collection<AttribInfo> attributes = info.attributes().values();
     VertexAttributeArray vertexAttributeArray = new VertexAttributeArray(
@@ -26,7 +35,7 @@ public class AttributeCache extends AbstractShaderCache {
       info.totalSize()
     );
     LambdaCounter lambdaOffset = new LambdaCounter();
-    attributes.forEach(attribute -> {
+    attributes.stream().sorted((a, b) -> get(a.key()) - get(b.key())).forEach(attribute -> {
       String attributeName = attribute.key();
       int location = get(attributeName);
       if (location < 0) return;

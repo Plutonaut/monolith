@@ -1,7 +1,9 @@
 package com.game.engine.scene.generators;
 
 import com.game.utils.application.values.ValueMap;
+import com.game.utils.application.values.ValueStore;
 import org.apache.commons.lang3.StringUtils;
+import org.joml.Vector3f;
 
 import java.awt.*;
 
@@ -34,6 +36,10 @@ public class GeneratorParameterBuilder {
 
   public GeneratorParameterBuilder asSprite() {
     return type("sprite");
+  }
+
+  public GeneratorParameterBuilder asBillboard() {
+    return type("billboard");
   }
 
   public GeneratorParameterBuilder asText() {
@@ -81,6 +87,20 @@ public class GeneratorParameterBuilder {
 
   public GeneratorParameterBuilder antiAlias(boolean antiAlias) {
     map.setBool("antiAlias", antiAlias);
+    return this;
+  }
+
+  public GeneratorParameterBuilder position(Vector3f position) {
+    map.setVector3f("position", position);
+    return this;
+  }
+
+  public GeneratorParameterBuilder positions(ValueStore store) {
+    return positions(store.asArray());
+  }
+
+  public GeneratorParameterBuilder positions(float... positions) {
+    map.setFloats("positions", positions);
     return this;
   }
 
@@ -134,6 +154,11 @@ public class GeneratorParameterBuilder {
 
   public GeneratorParameterBuilder strategy(String strategy) {
     map.set("strategy", strategy);
+    return this;
+  }
+
+  public GeneratorParameterBuilder spawners(String... spawners) {
+    map.setArray("spawners", spawners);
     return this;
   }
 

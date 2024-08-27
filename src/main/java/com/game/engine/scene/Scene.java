@@ -4,6 +4,7 @@ import com.game.caches.GlobalCache;
 import com.game.engine.audio.AudioManager;
 import com.game.engine.physics.IHitListener;
 import com.game.engine.physics.RayCaster;
+import com.game.engine.render.mesh.Mesh;
 import com.game.engine.render.models.Model;
 import com.game.engine.render.pipeline.packets.PacketManager;
 import com.game.engine.scene.audio.AudioSource;
@@ -13,13 +14,14 @@ import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.entities.EntityManager;
 import com.game.engine.scene.generators.ModelGenerator;
 import com.game.engine.scene.lighting.LightingManager;
+import com.game.engine.scene.particles.ParticleManager;
 import com.game.engine.scene.projection.Projection;
+import com.game.engine.scene.terrain.TerrainChunk;
+import com.game.engine.scene.terrain.TerrainChunkManager;
 import com.game.engine.settings.EngineSettings;
 import com.game.engine.window.Window;
 import com.game.utils.application.values.ValueMap;
 import com.game.utils.engine.TextureUtils;
-import com.game.utils.engine.terrain.procedural.TerrainChunk;
-import com.game.utils.engine.terrain.procedural.TerrainChunkManager;
 import com.game.utils.enums.EGLParam;
 import com.game.utils.enums.EProjection;
 import com.game.utils.enums.ERenderer;
@@ -30,6 +32,7 @@ import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Accessors(fluent = true)
@@ -47,6 +50,7 @@ public class Scene {
   private final SceneDiagnosticsHelper diagnostics;
   private final RayCaster raycaster;
   private final TerrainChunkManager terrain;
+  private final ParticleManager particles;
 
   public Scene(EngineSettings settings, String name) {
     window = new Window(
@@ -74,6 +78,12 @@ public class Scene {
     diagnostics = new SceneDiagnosticsHelper(settings.diagnostics());
     raycaster = new RayCaster(); // TODO: pass in max distance.
     terrain = new TerrainChunkManager();
+    particles = new ParticleManager(
+      settings.maxParticles(),
+      settings.particleVelocity(),
+      settings.particleSeed(),
+      settings.particleLifetimes()
+    );
   }
 
   public AudioSource audio(String key, String path) {
@@ -135,6 +145,26 @@ public class Scene {
     );
   }
 
+  public Entity createBillboard(String id, String path, float[] positions) {
+    ValueMap map = models
+      .builder()
+      .id(id)
+      .path(path)
+      .positions(positions)
+      .diffuseColor(Color.white)
+      .asBillboard()
+      .build();
+
+    return createEntity(
+      id,
+      map,
+      ERenderer.BILLBOARD,
+      EProjection.PERSPECTIVE,
+      EGLParam.BLEND,
+      EGLParam.DEPTH
+    );
+  }
+
   public Entity createSprite(String id, String path, boolean useAtlas) {
     ValueMap map = models
       .builder()
@@ -149,7 +179,7 @@ public class Scene {
       id,
       map,
       ERenderer.SPRITE,
-      EProjection.ORTHOGRAPHIC_FONT_2D,
+      EProjection.ORTHOGRAPHIC_CENTER_2D,
       EGLParam.BLEND,
       EGLParam.DEPTH,
       EGLParam.CULL
@@ -168,29 +198,6 @@ public class Scene {
     );
   }
 
-  public Entity createTerrain(String id, int size) {
-    ValueMap map = models
-      .builder()
-      .id(id)
-      .width(size)
-      .height(size)
-      .minVertexHeight(0)
-      .maxVertexHeight(0.25f)
-      .asTerrain()
-      .heightMapTexturePath(TextureUtils.MOSS_HGHT_TEXTURE_PATH)
-      .diffuseTexturePath(TextureUtils.MOSS_DIFF_TEXTURE_PATH)
-      .build();
-    return createEntity(
-      id,
-      map,
-      ERenderer.SCENE,
-      EProjection.PERSPECTIVE,
-      EGLParam.BLEND,
-      EGLParam.CULL,
-      EGLParam.DEPTH
-    );
-  }
-
   public Entity generateTerrain(String id, String terrainName) {
     Model model = terrain.loadFromFile(terrainName);
     return createEntity(
@@ -201,6 +208,26 @@ public class Scene {
       EGLParam.CULL,
       EGLParam.DEPTH,
       EGLParam.BLEND
+    );
+  }
+
+  public Entity createParticles(String id, Vector3f position) {
+    ValueMap map = models
+      .builder()
+      .id(id)
+      .spawners(id + "_spawner")
+      .position(position)
+      .diffuseTexturePath(TextureUtils.TREE_A_BILLBOARD)
+      .build();
+    Model model = particles.generate(map);
+    return createEntity(
+      id,
+      model,
+      ERenderer.PARTICLE,
+      EProjection.PERSPECTIVE,
+      EGLParam.BLEND,
+      EGLParam.DEPTH,
+      EGLParam.DISCARD_RAST
     );
   }
 
@@ -218,6 +245,15 @@ public class Scene {
     EGLParam... params
   ) {
     return entities.create(id, model, shader, projection, params);
+  }
+
+  public Entity addEntity(
+    String id, List<Mesh> meshes,
+    ERenderer shader,
+    EProjection projection,
+    EGLParam... params
+  ) {
+    return entities.create(id, meshes, shader, projection, params);
   }
 
   public Scene bind(ERenderer shader, String... entityIds) {
@@ -281,8 +317,12 @@ public class Scene {
     return modelWorldSpaceMat(entity, projectionMat(entity.projection()));
   }
 
+  public Matrix4f viewProjectionMat3D(Entity entity) {
+    return new Matrix4f(projectionMat(entity.projection())).mul(camera.view3D());
+  }
+
   Matrix4f modelWorldSpaceMat(Entity entity, Matrix4f mat) {
-    return new Matrix4f().set(mat).mul(entity.transform().worldModelMat());
+    return new Matrix4f(mat).mul(entity.transform().worldModelMat());
   }
 
   public Matrix4f projectionMat(EProjection type) {

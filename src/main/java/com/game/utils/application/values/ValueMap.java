@@ -5,8 +5,10 @@ import com.game.utils.enums.ELogic;
 import org.apache.commons.lang3.StringUtils;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +68,16 @@ public class ValueMap {
     return new Vector3f(x, y, z);
   }
 
+  public Vector4f getVector4f(String key) {
+    float[] values = getFloatArr(key);
+    float x = values[0];
+    float y = values[1];
+    float z = values[2];
+    float w = values[3];
+
+    return new Vector4f(x, y, z, w);
+  }
+
   public float[] getFloatArr(String key) {
     String[] values = getArr(key);
     int l = values.length;
@@ -112,6 +124,10 @@ public class ValueMap {
     section.put(key, Float.toString(value));
   }
 
+  public void setFloats(String key, float... values) {
+    section.put(key, fromFloatArr(values));
+  }
+
   public void setVector3f(String key, Vector3f value) {
     section.put(key, fromFloatArr(value.x(), value.y(), value.z()));
   }
@@ -146,6 +162,10 @@ public class ValueMap {
   }
 
   public void set(String key, String value) { section.put(key, value); }
+
+  public void setArray(String key, String... values) {
+    section.put(key, Arrays.toString(values));
+  }
 
   public void copy(ValueMap map) {
     copy(map.section);

@@ -27,13 +27,22 @@ public abstract class MeshDefinition {
   protected float[] weights;
   protected int[] indices;
 
-  public MeshDefinition() {
+  protected final String name;
+
+  public MeshDefinition(String name) {
+    this.name = name;
     builder = new MeshInfoBuilder();
 
     init();
   }
 
-  public abstract String name();
+  public MeshDefinition(String name, boolean init) {
+    this.name = name;
+    if (init) {
+      builder = new MeshInfoBuilder();
+      init();
+    }
+  }
 
   protected abstract void init();
 

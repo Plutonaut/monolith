@@ -17,7 +17,8 @@ public class SpriteRenderer extends AbstractLitRenderer {
   @Override
   protected void render(IRenderable item, Scene scene) {
     Entity entity = (Entity) item;
-    program.uniforms().set(EUniform.PROJECTION.value(), scene.modelProjectionMat(entity));
+    program.uniforms().set(EUniform.MODEL_PROJECTION.value(), scene.modelProjectionMat(entity));
+
     entity.meshes().forEach(mesh -> {
       Material material = mesh.material();
       setMaterialUniform(material);

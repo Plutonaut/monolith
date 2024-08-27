@@ -128,7 +128,7 @@ public class TextureLoader {
   }
 
   static Texture create(String path, int width, int height, ByteBuffer buffer) {
-    Texture texture = new Texture(path, width, height);
+    Texture texture = new Texture(path, width, height, GL46.GL_TEXTURE_2D);
     texture.bind();
     texture.store();
     texture.nearest();

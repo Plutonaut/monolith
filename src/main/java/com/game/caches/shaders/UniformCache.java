@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL46;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
+import java.util.List;
 
 public class UniformCache extends AbstractShaderCache {
   public UniformCache(int programId) {
@@ -17,6 +18,14 @@ public class UniformCache extends AbstractShaderCache {
   protected int glLocation(String key) {
     int location = GL46.glGetUniformLocation(programId, key);
     return check(location, "Uniform", key);
+  }
+
+  public List<String> getUniformList() {
+    return listOf(
+      "Uniforms",
+      GL46.GL_ACTIVE_UNIFORMS,
+      (i, s, t) -> GL46.glGetActiveUniform(programId, i, s, t)
+    );
   }
 
   public void set(String uniform, boolean value) {
