@@ -20,6 +20,10 @@ public class LambdaValue {
     return this.value;
   }
 
+  public void add(float value) {
+    set(this.value + value);
+  }
+
   public void reset() {
     this.value = initialValue;
   }

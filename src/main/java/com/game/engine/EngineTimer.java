@@ -31,6 +31,10 @@ public class EngineTimer {
     return (float) updates * interval;
   }
 
+  public float alphaTime() {
+    return (float)step * interval;
+  }
+
   public float deltaTime() {
     double now = getTime();
     double delta = Math.min(maxStepSize, now - time);

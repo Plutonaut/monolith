@@ -10,7 +10,7 @@ public class ShaderCache extends AbstractGraphicsCache {
   protected Shader generate(String key) {
     if (key.isEmpty()) return null;
 
-    log.info("Generating shader {}", key);
+    log.debug("Generating shader {}", key);
     return new Shader(key);
   }
 }

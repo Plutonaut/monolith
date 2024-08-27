@@ -7,10 +7,10 @@ layout (location = 2) in vec2 texcoord;
 out vec4 vColor;
 out vec2 vTextureCoord;
 
-uniform mat4 projection;
+uniform mat4 modelprojection;
 
 void main() {
     vColor          = vec4(color, 1.0);
     vTextureCoord   = texcoord;
-    gl_Position     = projection * vec4(position, 1.0);
+    gl_Position     = modelprojection * vec4(position, 1.0);
 }	

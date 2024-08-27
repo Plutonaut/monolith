@@ -32,6 +32,7 @@ public class EngineLogicRunner {
     String logic = settings.logic();
     return switch (logic) {
       case "genTerrain" -> new TerrainGenerationLogic(settings);
+      case "testPS" -> new TestParticleSystemLogic(settings);
       case "testTerrain" -> new TestTerrainLogic(settings);
       case "testInstancing" -> new TestInstancingLogic(settings);
       case "testRender" -> new TestRenderLogic(settings);

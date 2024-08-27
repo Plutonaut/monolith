@@ -36,7 +36,7 @@ public class Projection {
   public Matrix4f centerOrthographic2D(Window window) {
     float halfWidth = window.width() / 2f;
     float halfHeight = window.height() / 2f;
-    return transform.identity().ortho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
+    return transform.identity().ortho2D(-halfWidth, halfWidth, halfHeight, -halfHeight);
   }
 
   public Matrix4f perspective(Window window) {

@@ -2,6 +2,7 @@ package com.game.engine.scene.diagnostics;
 
 import com.game.caches.GlobalCache;
 import com.game.engine.render.mesh.Mesh;
+import com.game.engine.render.mesh.vertices.VertexAttributeArray;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
 import com.game.graphics.materials.Material;
@@ -122,12 +123,17 @@ public class SceneDiagnosticsHelper {
         diagnostics.row("Material", material.name());
         material.textures().pack().values().forEach(diagnostics::row);
         material.colors().colors().forEach(diagnostics::row);
-        mesh.vaas().forEach(v -> {
-          diagnostics.row("Vertex Attribute Array").row("Stride", v.stride());
-          v.attributes().forEach(a -> diagnostics.row("Attribute", a.key()).row(
-            "Location",
-            a.location()
-          ).row("Size", a.size()).row("Offset", a.offset()).row("Divisor", a.divisor()));
+        mesh.vboAttributeKeyMap().values().forEach(vbo -> {
+          VertexAttributeArray v = vbo.attributes();
+          if (v == null)
+            diagnostics.message("Vertex buffer %d has no attributes".formatted(vbo.glId()));
+          else {
+            diagnostics.row("Vertex Attribute Array").row("Stride", v.stride());
+            v.attributes().forEach(a -> diagnostics.row("Attribute", a.key()).row(
+              "Location",
+              a.location()
+            ).row("Size", a.size()).row("Offset", a.offset()).row("Divisor", a.divisor()));
+          }
         });
       });
     });

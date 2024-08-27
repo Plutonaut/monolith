@@ -12,6 +12,7 @@ import com.game.utils.enums.EAttribute;
 import com.game.utils.enums.ECache;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.lwjgl.opengl.GL46;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class MeshInfo implements IModel {
   protected Bounds3D bounds;
   protected int vertexCount;
   protected int instances;
+  protected int drawMode;
 
   public MeshInfo(String name) {
     this.name = name;
@@ -36,6 +38,7 @@ public class MeshInfo implements IModel {
     bounds = null;
     instances = 1;
     vertexCount = 0;
+    drawMode = GL46.GL_TRIANGLES;
   }
 
   @Override
@@ -43,16 +46,23 @@ public class MeshInfo implements IModel {
 
   public Mesh create(Program program) {
     Mesh mesh = instances > 1 ? new InstancedMesh(name, instances) : new Mesh(name);
+    if (drawMode != mesh.drawMode()) mesh.drawMode(drawMode);
     mesh.vertexCount(vertexCount);
     mesh.isComplex = !indices.isEmpty();
     mesh.material(material);
     VertexInfo positions = getVerticesByAttribute(EAttribute.POS.getValue());
     if (positions != null) {
-      Bounds3D bounds = this.bounds == null ? MeshInfoUtils.calculateBounds(positions) : this.bounds;
+      Bounds3D bounds = this.bounds == null
+                        ? MeshInfoUtils.calculateBounds(positions)
+                        : this.bounds;
       mesh.bounds().set(bounds);
     }
     mesh.redrawAttributes(this, program);
     return mesh;
+  }
+
+  public List<Integer> transformBuffers() {
+    return vertices.stream().map(VertexInfo::transformFeedback).filter(index -> index >= 0).distinct().toList();
   }
 
   public VertexInfo getVerticesByAttribute(String key) {

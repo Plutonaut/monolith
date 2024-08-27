@@ -7,17 +7,13 @@ import com.game.engine.scene.entities.Entity;
 import com.game.graphics.shaders.Program;
 import com.game.utils.enums.ERenderer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class AbstractRenderer implements IRenderer {
   protected final Program program;
-  protected final List<String> entityIds;
 
   public AbstractRenderer() {
     program = GlobalCache.instance().program(type().key());
-    entityIds = new ArrayList<>();
   }
 
   public abstract ERenderer type();

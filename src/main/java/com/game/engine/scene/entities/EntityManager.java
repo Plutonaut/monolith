@@ -45,6 +45,22 @@ public class EntityManager {
   }
 
   public Entity create(
+    String entityName, List<Mesh> meshes,
+    ERenderer shader,
+    EProjection projection,
+    EGLParam... params
+  ) {
+    EntityRenderParameters parameters = new EntityRenderParameters(
+      shader,
+      projection,
+      EGLParam.bitmap(params)
+    );
+    Entity entity = new Entity(entityName, parameters);
+    entity.addMeshes(meshes);
+    return add(entity);
+  }
+
+  public Entity create(
     String entityName,
     Model model,
     ERenderer shader,

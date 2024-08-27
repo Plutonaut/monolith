@@ -25,6 +25,7 @@ public class ModelGenerator {
       case "text" -> new TextModelGenerator();
       case "terrain" -> new ProceduralTerrainModelGenerator();
       case "object" -> new ObjectResourceModelGenerator();
+      case "billboard" -> new BillboardModelGenerator();
       default -> null;
     });
   }

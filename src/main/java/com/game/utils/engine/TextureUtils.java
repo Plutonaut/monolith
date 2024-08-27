@@ -14,6 +14,10 @@ public class TextureUtils {
     .diffuse(MOSS_DIFF_TEXTURE_PATH)
     .normal(MOSS_NORM_TEXTURE_PATH)
     .height(MOSS_HGHT_TEXTURE_PATH);
+  public static final String GUI_BG = TEXTURE_DIRECTORY + "gui/gui_bg_01.png";
+  public static final String TREE_A_BILLBOARD = TEXTURE_DIRECTORY + "billboards/tree_a.jpg";
+  public static final String TREE_B_BILLBOARD = TEXTURE_DIRECTORY + "billboards/tree_B.png";
+  public static final String TREE_C_BILLBOARD = TEXTURE_DIRECTORY + "billboards/tree_C.png";
   public static final String HDRI_DIRECTORY = TEXTURE_DIRECTORY + "hdri/";
   public static final String HDRI_A = HDRI_DIRECTORY + "dikhololo_night_4k.hdr";
   public static final String HDRI_B = HDRI_DIRECTORY + "kloppenheim_02_4k.hdr";

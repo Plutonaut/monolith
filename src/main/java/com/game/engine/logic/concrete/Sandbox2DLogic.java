@@ -48,8 +48,7 @@ public class Sandbox2DLogic extends AbstractLogic {
     textInteractionController.listen(this::handleMouseInput);
     bounds = textEntity.controllers().text().bounds();
 
-    iggySprite = scene.createSprite(ESprite.IGGY.atlasName(), ESprite.IGGY.path(), false).scale(5);
-    iggySprite.move2D(scene.window().width() / 2f, scene.window().height() / 2f);
+    iggySprite = scene.createSprite(ESprite.IGGY.atlasName(), ESprite.IGGY.path(), true).scale(5);
 
     scene.window().mouse().addListener(GLFW.GLFW_MOUSE_BUTTON_1, this::handleLeftMouseClick);
     scene.bind(textEntity);

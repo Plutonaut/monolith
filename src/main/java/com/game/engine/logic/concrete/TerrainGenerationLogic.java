@@ -5,7 +5,9 @@ import com.game.engine.physics.Hit;
 import com.game.engine.render.mesh.Mesh;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.settings.EngineSettings;
-import com.game.utils.engine.terrain.procedural.TerrainChunk;
+import com.game.utils.application.values.ValueStore;
+import com.game.utils.engine.TextureUtils;
+import com.game.engine.scene.terrain.TerrainChunk;
 import com.game.utils.enums.EModel;
 import com.game.utils.logging.PrettifyUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +56,7 @@ public class TerrainGenerationLogic extends AbstractLogic {
   }
 
   @Override
-  public void preRender() {
+  public void preRender(float delta) {
     scene.updateTerrainOnCameraMovement();
   }
 
@@ -68,7 +70,13 @@ public class TerrainGenerationLogic extends AbstractLogic {
       .createSkyBox(EModel.BASIC_SKYBOX.name(), EModel.BASIC_SKYBOX.path())
       .scale(100);
     terrainEntity = scene.generateTerrain("moss_terrain", "noiseTerrain_A").addPhysics();
-    scene.bind(terrainEntity, skyBoxEntity);
+    ValueStore positionStore = scene.terrain().spawnPoints();
+    Entity billboardEntity = scene.createBillboard(
+      "trees",
+      TextureUtils.TREE_C_BILLBOARD,
+      positionStore.asArray()
+    );
+    scene.bind(terrainEntity).bind(skyBoxEntity, billboardEntity);
   }
 
   @Override

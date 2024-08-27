@@ -8,7 +8,7 @@ import com.game.engine.render.renderers.AbstractLitRenderer;
 import com.game.engine.scene.Scene;
 import com.game.engine.scene.entities.Entity;
 import com.game.engine.scene.lighting.LightingManager;
-import com.game.utils.engine.terrain.procedural.TerrainChunk;
+import com.game.engine.scene.terrain.TerrainChunk;
 import com.game.utils.enums.ERenderer;
 import com.game.utils.enums.EUniform;
 import org.joml.Matrix4f;

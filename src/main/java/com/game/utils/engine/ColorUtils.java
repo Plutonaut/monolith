@@ -8,6 +8,8 @@ import org.lwjgl.assimp.AIColor4D;
 import java.awt.*;
 
 public class ColorUtils {
+  public static final Vector4f WHITE = convert(Color.white);
+
   public static Vector4f convert(Color color) {
     float x = normalizei(color.getRed());
     float y = normalizei(color.getGreen());

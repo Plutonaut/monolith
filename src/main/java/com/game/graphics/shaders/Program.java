@@ -5,13 +5,13 @@ import com.game.caches.shaders.UniformCache;
 import com.game.graphics.IGraphics;
 import com.game.utils.engine.ShaderUtils;
 import com.game.utils.enums.ECache;
-import com.game.utils.enums.ERenderer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.opengl.GL46;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Accessors(fluent = true)
 @Data
@@ -31,14 +31,10 @@ public class Program implements IGraphics {
     uniforms = new UniformCache(glId);
   }
 
-  public Program(ERenderer type) {
-    this(type.key());
-
-    link(ShaderUtils.getShaders(type));
-  }
-
-  public void link(Shader... shaders) {
+  public void link(String key, Shader... shaders) {
     Arrays.stream(shaders).forEach(this::attach);
+    List<ShaderUtils.VaryingRecord> transformVaryings = ShaderUtils.shaderTransformVarryings(key);
+    transformVaryings.forEach(this::varyings);
     GL46.glLinkProgram(glId);
     status(GL46.GL_LINK_STATUS, "Failed to link shader code", true, shaders);
     Arrays.stream(shaders).forEach(this::detach);
@@ -46,12 +42,17 @@ public class Program implements IGraphics {
   }
 
   void attach(Shader shader) {
-    log.info("Program {} attaching shader {}", key, shader.key);
+    log.debug("Program {} attaching shader {}", key, shader.key);
     GL46.glAttachShader(glId, shader.glId());
   }
 
+  public void varyings(ShaderUtils.VaryingRecord varying) {
+    int bufferMode = varying.interleaved() ? GL46.GL_INTERLEAVED_ATTRIBS : GL46.GL_SEPARATE_ATTRIBS;
+    GL46.glTransformFeedbackVaryings(glId, varying.varyings(), bufferMode);
+  }
+
   void detach(Shader shader) {
-    log.info("Program {} detaching shader {}", key, shader.key);
+    log.debug("Program {} detaching shader {}", key, shader.key);
     GL46.glDetachShader(glId, shader.glId());
   }
 

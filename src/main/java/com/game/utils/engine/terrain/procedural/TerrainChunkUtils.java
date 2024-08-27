@@ -1,5 +1,7 @@
 package com.game.utils.engine.terrain.procedural;
 
+import com.game.engine.scene.terrain.TerrainChunk;
+import com.game.engine.scene.terrain.TerrainChunkCoordinate;
 import org.joml.Vector3f;
 
 public class TerrainChunkUtils {

@@ -12,6 +12,10 @@ public record VertexAttribute(String key, int location, int size, int offset, in
   }
 
   public void point(int stride, int glType) {
+    point(stride, glType, location);
+  }
+
+  public void point(int stride, int glType, int location) {
     int glBytes = glBytes(glType);
 
     int glStride = stride * glBytes;
