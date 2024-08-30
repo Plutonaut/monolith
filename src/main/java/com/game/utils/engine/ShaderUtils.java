@@ -12,6 +12,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class ShaderUtils {
+  static final String PARENT_DIR = "render";
+  static final String SHADER_VERS = "#version 460 core";
   public static ERenderer getShaderEnumFromKey(String key) {
     return EnumSet
       .allOf(ERenderer.class)
@@ -42,6 +44,10 @@ public class ShaderUtils {
   }
 
   static Shader getShader(String path) { return GlobalCache.instance().shader(path); }
+
+  public static String parentDirFromShaderType(int type) {
+    return type == GL46.GL_COMPUTE_SHADER ? "compute" : PARENT_DIR;
+  }
 
   public static int shaderTypeFromFileType(String fileType) {
     String type = fileType;

@@ -1,5 +1,6 @@
 package com.game.engine.scene.entities;
 
+import com.game.engine.compute.Instruction;
 import com.game.engine.physics.Ray;
 import com.game.engine.render.IRenderable;
 import com.game.engine.render.mesh.Mesh;
@@ -26,6 +27,7 @@ public class Entity implements IRenderable {
   protected final ModelTransform transform;
   // TODO: Convert to hashmap, perform check for duplicates prior to adding mesh
   protected final ArrayList<Mesh> meshes;
+  protected final ArrayList<Instruction> instructions;
   protected final String name;
   protected final int id;
 
@@ -47,6 +49,7 @@ public class Entity implements IRenderable {
     this.meshes = new ArrayList<>();
     this.parameters = parameters;
 
+    instructions = new ArrayList<>();
     transform = new ModelTransform();
     controllers = new EntityControllerManager(this::controllerMeshCallback);
 
@@ -56,6 +59,10 @@ public class Entity implements IRenderable {
   @Override
   public int glParamFlags() {
     return parameters.glParamFlags;
+  }
+
+  public Instruction instruction(String name) {
+    return instructions.stream().filter(i -> i.name().equals(name)).findFirst().orElse(null);
   }
 
   public Mesh mesh() {

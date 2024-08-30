@@ -104,6 +104,14 @@ public class ValueStore {
     if (addZ) add(value.z());
   }
 
+  public void fill(int count) {
+    fill(count, 0);
+  }
+
+  public void fill(int count, float value) {
+    for (int i = 0; i < count; i++) add(value);
+  }
+
   public void clear() {
     values.clear();
   }

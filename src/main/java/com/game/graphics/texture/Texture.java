@@ -58,6 +58,18 @@ public class Texture implements IGraphics {
     GL46.glPixelStorei(GL46.GL_UNPACK_ALIGNMENT, 1);
   }
 
+  public void storage(int levels, int internalFormat) {
+    GL46.glTexStorage2D(target, levels, internalFormat, width, height);
+  }
+
+  public void write(int index, int format) {
+    access(index, GL46.GL_WRITE_ONLY, format);
+  }
+
+  public void access(int unit, int operation, int format) {
+    GL46.glBindImageTexture(unit, glId, 0, false, 0, operation, format);
+  }
+
   public void parameter(int name, int value) {
     GL46.glTexParameteri(GL46.GL_TEXTURE_2D, name, value);
   }

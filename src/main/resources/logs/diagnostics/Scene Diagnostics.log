@@ -3,11 +3,11 @@
 #	Scene
 ======================================================================================
 
-	Timestamp: 08-26-2024-20-55-55
+	Timestamp: 08-30-2024-14-50-28
 	Log: 1
 
 ======================================================================================
-#	Particle System (0) OpenGL GL Version {4}.{6}
+#	Raytracing test! OpenGL GL Version {4}.{6}
 ======================================================================================
 
 	width: 1280
@@ -19,7 +19,7 @@
 ======================================================================================
 
 	Position: { x: 0, y: 0, z: 2 }
-	Rotation: { x: 0, y: 0, z: 0 }
+	Rotation: { x: -11.4, y: 100.2, z: 0 }
 	Mouse Sensitivity: : 0.2
 	Camera Speed: : 0.1
 	Log: 3
@@ -35,189 +35,29 @@
 ======================================================================================
 
 	------------------------------------------------------------------------------
-	toggle: 1473298099
-	------------------------------------------------------------------------------
-	Position: { x: 25, y: 25, z: 0 }
-	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.75
-	Shader: font
-	Projection: ORTHOGRAPHIC_FONT_2D
-	Meshes
-	------------------------------------------------------------------------------
-	toggle: 1
-	Vertex Count: 96
-	------------------------------------------------------------------------------
-	Is Complex: true
-	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 156, y: 24, z: 0 }
-	Material: toggle_mat
-	src\main\resources\textures\fonts\Arial.png
-	$clr.diffuse: { x: 0.95, y: 0.13, z: 0.06, w: 1 }
-	Message: Vertex buffer 3 has no attributes
-	Vertex Attribute Array
-	Stride: 2
-	Attribute: texcoord
-	Location: 1
-	Size: 2
-	Offset: 0
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 3
-	Attribute: position
-	Location: 0
-	Size: 3
-	Offset: 0
-	Divisor: 0
-	------------------------------------------------------------------------------
-	hud_toggle_bg: 2
-	Vertex Count: 6
-	------------------------------------------------------------------------------
-	Is Complex: true
-	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: -25, y: -25, z: 0 } Max Vertex: { x: 181, y: 49, z: 0 }
-	Material: hud_toggle_bg_mat
-	src/main/resources/textures/gui/gui_bg_01.png
-	$clr.diffuse: { x: 1, y: 1, z: 1, w: 1 }
-	Message: Vertex buffer 7 has no attributes
-	Vertex Attribute Array
-	Stride: 3
-	Vertex Attribute Array
-	Stride: 2
-	Attribute: texcoord
-	Location: 1
-	Size: 2
-	Offset: 0
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 3
-	Attribute: position
-	Location: 0
-	Size: 3
-	Offset: 0
-	Divisor: 0
-	------------------------------------------------------------------------------
-	simple: 358222095
+	screen_quad: 1545520420
 	------------------------------------------------------------------------------
 	Position: { x: 0, y: 0, z: 0 }
 	Rotation: { x: 0, y: 0, z: 0, w: 1 }
 	Scale: 1
-	Shader: particle
-	Projection: PERSPECTIVE
+	Shader: framebuffer
+	Projection: ORTHOGRAPHIC_CENTER_2D
 	Meshes
 	------------------------------------------------------------------------------
-	[simple_spawner]: 3
-	Vertex Count: 512
+	screen_quad: 1
+	Vertex Count: 6
 	------------------------------------------------------------------------------
 	Is Complex: false
 	Bounds 3D
 Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 0, y: 0, z: 0 }
-	Material: simple_mat
-	src/main/resources/textures/billboards/tree_a.jpg
+	Material: screen_quad_mat
+	compute_test.png
 	Vertex Attribute Array
-	Stride: 8
-	Attribute: type
+	Stride: 2
+	Attribute: texcoord
 	Location: 0
-	Size: 1
+	Size: 2
 	Offset: 0
-	Divisor: 0
-	Attribute: age
-	Location: 3
-	Size: 1
-	Offset: 7
-	Divisor: 0
-	Attribute: velocity
-	Location: 2
-	Size: 3
-	Offset: 4
-	Divisor: 0
-	Attribute: position
-	Location: 1
-	Size: 3
-	Offset: 1
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 8
-	Attribute: type
-	Location: 0
-	Size: 1
-	Offset: 0
-	Divisor: 0
-	Attribute: age
-	Location: 3
-	Size: 1
-	Offset: 7
-	Divisor: 0
-	Attribute: velocity
-	Location: 2
-	Size: 3
-	Offset: 4
-	Divisor: 0
-	Attribute: position
-	Location: 1
-	Size: 3
-	Offset: 1
-	Divisor: 0
-	------------------------------------------------------------------------------
-	render: 1752103566
-	------------------------------------------------------------------------------
-	Position: { x: 0, y: 0, z: 0 }
-	Rotation: { x: 0, y: 0, z: 0, w: 1 }
-	Scale: 0.1
-	Shader: billboard
-	Projection: PERSPECTIVE
-	Meshes
-	------------------------------------------------------------------------------
-	[simple_spawner]: 3
-	Vertex Count: 512
-	------------------------------------------------------------------------------
-	Is Complex: false
-	Bounds 3D
-Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 0, y: 0, z: 0 }
-	Material: simple_mat
-	src/main/resources/textures/billboards/tree_a.jpg
-	Vertex Attribute Array
-	Stride: 8
-	Attribute: type
-	Location: 0
-	Size: 1
-	Offset: 0
-	Divisor: 0
-	Attribute: age
-	Location: 3
-	Size: 1
-	Offset: 7
-	Divisor: 0
-	Attribute: velocity
-	Location: 2
-	Size: 3
-	Offset: 4
-	Divisor: 0
-	Attribute: position
-	Location: 1
-	Size: 3
-	Offset: 1
-	Divisor: 0
-	Vertex Attribute Array
-	Stride: 8
-	Attribute: type
-	Location: 0
-	Size: 1
-	Offset: 0
-	Divisor: 0
-	Attribute: age
-	Location: 3
-	Size: 1
-	Offset: 7
-	Divisor: 0
-	Attribute: velocity
-	Location: 2
-	Size: 3
-	Offset: 4
-	Divisor: 0
-	Attribute: position
-	Location: 1
-	Size: 3
-	Offset: 1
 	Divisor: 0
 	Log: 5
 
@@ -234,35 +74,18 @@ Origin: { x: 0, y: 0, z: 0 } Min Vertex: { x: 0, y: 0, z: 0 } Max Vertex: { x: 0
 #	Global Cache
 ======================================================================================
 
-	MESH: Items: 3
-	[simple_spawner]
-	hud_toggle_bg
-	toggle
-	MESH_INFO: Items: 2
-	[simple_spawner]_mesh_info
-	toggle_mesh_info
-	PROGRAM: Items: 4
-	particle
-	billboard
-	terrain
-	font
-	MODEL: Items: 1
-	toggle_model
-	FONT_INFO: Items: 1
-	Arial
-	SHADER: Items: 9
-	render\particle\particle.geom
-	render\terrain\terrain.vert
-	render\font\font.vert
-	render\particle\particle.vert
-	render\billboard\billboard.vert
-	render\billboard\billboard.geom
-	render\terrain\terrain.frag
-	render\font\font.frag
-	render\billboard\billboard.frag
-	TEXTURE: Items: 3
-	src/main/resources/textures/billboards/tree_a.jpg
-	src/main/resources/textures/gui/gui_bg_01.png
-	src\main\resources\textures\fonts\Arial.png
+	MESH_INFO: Items: 1
+	screen_quad_mesh_info
+	SHADER: Items: 3
+	\framebuffer\framebuffer.frag
+	\raytrace\raytrace.glsl
+	\framebuffer\framebuffer.vert
+	PROGRAM: Items: 2
+	framebuffer
+	raytrace
+	TEXTURE: Items: 1
+	compute_test.png
+	MESH: Items: 1
+	screen_quad
 	Log: 7
 Closing Print Stream

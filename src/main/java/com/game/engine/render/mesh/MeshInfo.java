@@ -44,6 +44,11 @@ public class MeshInfo implements IModel {
   @Override
   public ECache type() { return ECache.MESH_INFO; }
 
+  public int calculateVertexCount() {
+    return indices().isEmpty() ? vertices.stream().mapToInt(VertexInfo::totalVertexCount).filter(
+      vCount -> vCount > 0).findFirst().orElse(0) : indices.size();
+  }
+
   public Mesh create(Program program) {
     Mesh mesh = instances > 1 ? new InstancedMesh(name, instances) : new Mesh(name);
     if (drawMode != mesh.drawMode()) mesh.drawMode(drawMode);
@@ -62,15 +67,17 @@ public class MeshInfo implements IModel {
   }
 
   public List<Integer> transformBuffers() {
-    return vertices.stream().map(VertexInfo::transformFeedback).filter(index -> index >= 0).distinct().toList();
+    return vertices
+      .stream()
+      .map(VertexInfo::transformFeedback)
+      .filter(index -> index >= 0)
+      .distinct()
+      .toList();
   }
 
   public VertexInfo getVerticesByAttribute(String key) {
-    return vertices
-      .stream()
-      .filter(vertexInfo -> vertexInfo.hasAttribute(key))
-      .findFirst()
-      .orElse(null);
+    return vertices.stream().filter(vertexInfo -> vertexInfo.hasAttribute(key)).findFirst().orElse(
+      null);
   }
 
   public VertexInfo getVerticesByAttribute(EAttribute key) {
@@ -78,8 +85,8 @@ public class MeshInfo implements IModel {
   }
 
   public void addVertices(VertexInfo vertexInfo) {
-    if (vertexInfo != null && vertices.size() < MeshInfoUtils.MAX_VERTEX_DATA)
-      this.vertices.add(vertexInfo);
+    if (vertexInfo != null && vertices.size() < MeshInfoUtils.MAX_VERTEX_DATA) this.vertices.add(
+      vertexInfo);
   }
 
   public MeshInfo addVertices(

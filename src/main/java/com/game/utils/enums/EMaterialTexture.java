@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 public enum EMaterialTexture {
   NON(Assimp.aiTextureType_NONE, null),
+  OUT(999, EUniform.FRAME_BUFFER),
   DIF(Assimp.aiTextureType_DIFFUSE, EUniform.TEXTURE_SAMPLER),
   NRM(Assimp.aiTextureType_NORMALS, EUniform.NORMAL_SAMPLER),
   HGT(Assimp.aiTextureType_HEIGHT, EUniform.HEIGHT_SAMPLER),
@@ -32,6 +33,7 @@ public enum EMaterialTexture {
 
   public static EUniform getUniformByType(int type) {
     return switch (type) {
+      case 999 -> OUT.uniform;
       case Assimp.aiTextureType_DIFFUSE -> DIF.uniform;
       case Assimp.aiTextureType_NORMALS -> NRM.uniform;
       case Assimp.aiTextureType_HEIGHT -> HGT.uniform;

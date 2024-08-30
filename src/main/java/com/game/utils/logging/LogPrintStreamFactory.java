@@ -10,6 +10,10 @@ import java.util.List;
 
 public class LogPrintStreamFactory {
   public static PrintStream create(
+    String logFileName, String directory, String fileType) {
+    return create(logFileName, directory, fileType, 0, false);
+  }
+  public static PrintStream create(
     String logFileName,
     String directory,
     String fileType,
@@ -17,7 +21,7 @@ public class LogPrintStreamFactory {
     boolean appendDate
   ) {
     try {
-      prune(directory, maxLogFiles);
+      if (maxLogFiles > 0) prune(directory, maxLogFiles);
       StringBuilder builder = new StringBuilder(directory)
         .append(File.separator)
         .append(logFileName);

@@ -37,7 +37,6 @@ public class TerrainChunkManager {
   protected final HashSet<TerrainChunk> active;
   @Getter
   protected final ValueStore spawnPoints;
-  protected final Program terrainShader;
   protected final Vector3f lastPosition;
   protected TerrainChunk current;
 
@@ -49,7 +48,6 @@ public class TerrainChunkManager {
   protected int numChunksVisible;
 
   public TerrainChunkManager() {
-    terrainShader = GlobalCache.instance().program(ERenderer.TERRAIN.key());
     lastPosition = new Vector3f();
     spawnPoints = new ValueStore();
     chunks = new HashMap<>();
@@ -164,6 +162,7 @@ public class TerrainChunkManager {
     if (info == null) return;
 
     Mesh mesh = GlobalCache.instance().mesh(chunk.coordinates().toString());
+    Program terrainShader = GlobalCache.instance().program(ERenderer.TERRAIN.key());
     if (mesh.vboAttributeKeyMap().isEmpty()) mesh.redrawAttributes(info, terrainShader);
     else mesh.redraw(info, (v) -> { });
   }
