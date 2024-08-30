@@ -62,6 +62,8 @@ public enum EUniform {
   ANIMATED("isAnimated"),
   BONE_MATRICES("boneMatrices"),
   SCREEN_WIDTH("screenwidth"),
+  FRAME_BUFFER("frameBuffer"),
+  IMG_OUTPUT("img_output"),
   OUT_IMAGE("outimage"),
   ZOOM("zoom"),
   TIME_STEP("timestep"),

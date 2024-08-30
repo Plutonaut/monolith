@@ -272,13 +272,9 @@ public class MeshInfoBuilder {
   MeshInfo constructMeshInfo(MeshInfo meshInfo) {
     vertices.forEach(meshInfo::addVertices);
     meshInfo.indices.set(indices);
-    int vertexCount = indices.size();
-    if (vertexCount == 0) {
-      VertexInfo info = meshInfo.getVerticesByAttribute(EAttribute.POS);
-      vertexCount = info.totalVertexCount();
-    }
+    int vertexCount = meshInfo.calculateVertexCount();
+    if (vertexCount > 0) meshInfo.vertexCount(vertexCount);
     if (drawMode >= 0) meshInfo.drawMode(drawMode);
-    meshInfo.vertexCount(vertexCount);
     if (material != null) meshInfo.material(material);
     if (bounds != null) meshInfo.bounds(bounds);
     dispose();

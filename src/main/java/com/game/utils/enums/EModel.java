@@ -13,6 +13,9 @@ public enum EModel {
   BLUE_SHAPE("src/main/resources/models/blender/blue_shape/blue_shape.obj", false),
   TREE_A("src/main/resources/models/blender/environment/treeA/tree_1A_fix.obj", false),
   RAILWAY_PART("src/main/resources/models/blender/railway_part/railway_part.obj", false),
+  ROLY_POLY_BLACK("src/main/resources/models/blender/roly_polys/black/roly_poly.ob", false),
+  ROLY_POLY_RED("src/main/resources/models/blender/roly_polys/red/roly_poly.ob", false),
+  ROLY_POLY_WHITE("src/main/resources/models/blender/roly_polys/white/roly_poly.ob", false),
   BOB("src/main/resources/models/blender/bob/bob_lamp_update.md5mesh", true);
 
   private final String path;

@@ -80,6 +80,7 @@ public class Program implements IGraphics {
   }
 
   public void dispose() {
+    GL46.glMemoryBarrier(GL46.GL_ALL_BARRIER_BITS);
     unbind();
     GL46.glDeleteProgram(glId);
   }

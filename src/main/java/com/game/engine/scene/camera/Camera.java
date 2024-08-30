@@ -10,6 +10,7 @@ import org.joml.Vector4f;
 @Accessors(fluent = true)
 @Getter
 public class Camera {
+  final ViewVectors vectors;
   final Matrix4f view;
   final Vector3f position;
   final Vector3f rotation;
@@ -23,6 +24,7 @@ public class Camera {
     this.rotation = rotation;
     this.mouseSensitivity = mouseSensitivity;
     this.cameraSpeed = cameraSpeed;
+    this.vectors = new ViewVectors(new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f());
   }
 
   public void move(float x, float y, float z) {
@@ -54,6 +56,10 @@ public class Camera {
     return new Vector4f(point).mul(view3D().invert());
   }
 
+  public ViewVectors viewVectors() {
+    return vectors.update(view3D()).normalize();
+  }
+
   public Matrix4f view3D() {
     return view(false);
   }
@@ -70,6 +76,25 @@ public class Camera {
       .rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
       .rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
     return view.translate(negatedPosition);
+  }
+
+  public record ViewVectors(Vector3f position, Vector3f forwards, Vector3f right, Vector3f up) {
+    public ViewVectors update(Matrix4f view) {
+      view.getColumn(0, right);
+      view.getColumn(1, up);
+      view.getColumn(2, forwards);
+      view.getColumn(3, position);
+
+      return this;
+    }
+
+    public ViewVectors normalize() {
+      forwards.normalize();
+      right.normalize();
+      up.normalize();
+
+      return this;
+    }
   }
 
   @Override

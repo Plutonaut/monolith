@@ -38,6 +38,10 @@ public class Quad extends MeshDefinition {
     super("QUAD");
   }
 
+  public Quad(String name) {
+    this(name, 1f, 1f);
+  }
+
   public Quad(String name, float width, float height) {
     this(name, new Vector2f(), width, height);
   }

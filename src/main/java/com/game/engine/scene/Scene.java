@@ -51,21 +51,20 @@ public class Scene {
   private final RayCaster raycaster;
   private final TerrainChunkManager terrain;
   private final ParticleManager particles;
+  private final ContextManager context;
 
   public Scene(EngineSettings settings, String name) {
-    window = new Window(
-      settings.width(),
-      settings.height(),
-      name,
-      settings.debug(),
-      true,
-      settings.vsync()
+    window = new Window(settings.width(),
+                        settings.height(),
+                        name,
+                        settings.debug(),
+                        true,
+                        settings.vsync()
     );
-    camera = new Camera(
-      settings.cameraPosition(),
-      new Vector3f(),
-      settings.mouseSensitivity(),
-      settings.movementSpeed()
+    camera = new Camera(settings.cameraPosition(),
+                        new Vector3f(),
+                        settings.mouseSensitivity(),
+                        settings.movementSpeed()
     );
     projection = new Projection(settings.fov(), settings.zNear(), settings.zFar());
 
@@ -78,12 +77,12 @@ public class Scene {
     diagnostics = new SceneDiagnosticsHelper(settings.diagnostics());
     raycaster = new RayCaster(); // TODO: pass in max distance.
     terrain = new TerrainChunkManager();
-    particles = new ParticleManager(
-      settings.maxParticles(),
-      settings.particleVelocity(),
-      settings.particleSeed(),
-      settings.particleLifetimes()
+    particles = new ParticleManager(settings.maxParticles(),
+                                    settings.particleVelocity(),
+                                    settings.particleSeed(),
+                                    settings.particleLifetimes()
     );
+    context = new ContextManager();
   }
 
   public AudioSource audio(String key, String path) {
@@ -112,14 +111,13 @@ public class Scene {
 
   public Entity createObject(String id, String path) {
     ValueMap map = models.builder().id(id).path(path).animated(false).build();
-    return createEntity(
-      id,
-      map,
-      ERenderer.SCENE,
-      EProjection.PERSPECTIVE,
-      EGLParam.BLEND,
-      EGLParam.DEPTH,
-      EGLParam.CULL
+    return createEntity(id,
+                        map,
+                        ERenderer.SCENE,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH,
+                        EGLParam.CULL
     );
   }
 
@@ -135,13 +133,12 @@ public class Scene {
       .fontSize(20)
       .fontColor(Color.white)
       .build();
-    return createEntity(
-      id,
-      map,
-      ERenderer.FONT,
-      EProjection.ORTHOGRAPHIC_FONT_2D,
-      EGLParam.BLEND,
-      EGLParam.DEPTH
+    return createEntity(id,
+                        map,
+                        ERenderer.FONT,
+                        EProjection.ORTHOGRAPHIC_FONT_2D,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH
     );
   }
 
@@ -155,59 +152,48 @@ public class Scene {
       .asBillboard()
       .build();
 
-    return createEntity(
-      id,
-      map,
-      ERenderer.BILLBOARD,
-      EProjection.PERSPECTIVE,
-      EGLParam.BLEND,
-      EGLParam.DEPTH
+    return createEntity(id,
+                        map,
+                        ERenderer.BILLBOARD,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH
     );
   }
 
   public Entity createSprite(String id, String path, boolean useAtlas) {
-    ValueMap map = models
-      .builder()
-      .id(id)
-      .path(path)
-      .animated(false)
-      .clamped(false)
-      .strategy(useAtlas ? "atlas" : "")
-      .asSprite()
-      .build();
-    return createEntity(
-      id,
-      map,
-      ERenderer.SPRITE,
-      EProjection.ORTHOGRAPHIC_CENTER_2D,
-      EGLParam.BLEND,
-      EGLParam.DEPTH,
-      EGLParam.CULL
+    ValueMap map = models.builder().id(id).path(path).animated(false).clamped(false).strategy(
+      useAtlas ? "atlas" : "").asSprite().build();
+    return createEntity(id,
+                        map,
+                        ERenderer.SPRITE,
+                        EProjection.ORTHOGRAPHIC_CENTER_2D,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH,
+                        EGLParam.CULL
     );
   }
 
   public Entity createSkyBox(String id, String path) {
     ValueMap map = models.builder().id(id).path(path).animated(false).build();
-    return createEntity(
-      id,
-      map,
-      ERenderer.SKYBOX,
-      EProjection.PERSPECTIVE,
-      EGLParam.BLEND,
-      EGLParam.DEPTH
+    return createEntity(id,
+                        map,
+                        ERenderer.SKYBOX,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH
     );
   }
 
   public Entity generateTerrain(String id, String terrainName) {
     Model model = terrain.loadFromFile(terrainName);
-    return createEntity(
-      id,
-      model,
-      ERenderer.TERRAIN,
-      EProjection.PERSPECTIVE,
-      EGLParam.CULL,
-      EGLParam.DEPTH,
-      EGLParam.BLEND
+    return createEntity(id,
+                        model,
+                        ERenderer.TERRAIN,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.CULL,
+                        EGLParam.DEPTH,
+                        EGLParam.BLEND
     );
   }
 
@@ -220,14 +206,13 @@ public class Scene {
       .diffuseTexturePath(TextureUtils.TREE_A_BILLBOARD)
       .build();
     Model model = particles.generate(map);
-    return createEntity(
-      id,
-      model,
-      ERenderer.PARTICLE,
-      EProjection.PERSPECTIVE,
-      EGLParam.BLEND,
-      EGLParam.DEPTH,
-      EGLParam.DISCARD_RAST
+    return createEntity(id,
+                        model,
+                        ERenderer.PARTICLE,
+                        EProjection.PERSPECTIVE,
+                        EGLParam.BLEND,
+                        EGLParam.DEPTH,
+                        EGLParam.DISCARD_RAST
     );
   }
 
@@ -238,20 +223,13 @@ public class Scene {
   }
 
   public Entity createEntity(
-    String id,
-    Model model,
-    ERenderer shader,
-    EProjection projection,
-    EGLParam... params
+    String id, Model model, ERenderer shader, EProjection projection, EGLParam... params
   ) {
     return entities.create(id, model, shader, projection, params);
   }
 
   public Entity addEntity(
-    String id, List<Mesh> meshes,
-    ERenderer shader,
-    EProjection projection,
-    EGLParam... params
+    String id, List<Mesh> meshes, ERenderer shader, EProjection projection, EGLParam... params
   ) {
     return entities.create(id, meshes, shader, projection, params);
   }
@@ -286,14 +264,17 @@ public class Scene {
     return packets.contains(shader);
   }
 
+  public boolean hasContext(ERenderer shader) {
+    return context.contains(shader);
+  }
+
   public void rayCastMouseClick(boolean all, IHitListener listener) {
-    raycaster.rayCastMouseClick(
-      listener,
-      all,
-      boundEntities(),
-      window,
-      camera,
-      projectionMat(EProjection.PERSPECTIVE)
+    raycaster.rayCastMouseClick(listener,
+                                all,
+                                boundEntities(),
+                                window,
+                                camera,
+                                projectionMat(EProjection.PERSPECTIVE)
     );
   }
 

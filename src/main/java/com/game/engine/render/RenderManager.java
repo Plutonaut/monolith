@@ -12,6 +12,8 @@ import java.util.List;
 public class RenderManager implements IRenderer {
   // The order of each renderer matters
   protected static final List<ERenderer> orderedShaderRenderArray = List.of(
+    ERenderer.RAYTRACE,
+    ERenderer.FRAMEBUFFER,
     ERenderer.BASIC,
     ERenderer.SKYBOX,
     ERenderer.PARTICLE,
@@ -40,6 +42,8 @@ public class RenderManager implements IRenderer {
       case INSTANCED, PARTICLE -> new ParticleRenderer();
       case BASIC -> new BasicRenderer();
       case BILLBOARD -> new BillboardRenderer();
+      case FRAMEBUFFER -> new FrameBufferRenderer();
+      case RAYTRACE -> new RaytraceRenderer();
     };
   }
 

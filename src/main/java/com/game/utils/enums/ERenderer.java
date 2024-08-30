@@ -10,27 +10,27 @@ import java.util.List;
 @Accessors(fluent = true)
 @Getter
 public enum ERenderer {
-  BASIC("render", "basic", "basic.vert", "basic.frag", null, null),
+  BASIC("basic", "basic.vert", "basic.frag", null, null),
 //  GUI("render", "gui", "gui.vert", "gui.frag", null, null),
-  INSTANCED("render", "instanced", "instanced.vert","instanced.frag", null, null),
-  PARTICLE("render", "particle", "particle.vert",null, "particle.geom", null),
-  SPRITE("render", "sprite", "sprite.vert", "sprite.frag", null, null),
-  MESH("render", "mesh", "mesh.vert", "mesh.frag", null, null),
-  SCENE("render", "scene", "scene.vert", "scene.frag", null, null),
-  TERRAIN("render", "terrain", "terrain.vert", "terrain.frag", null, null),
-  FONT("render", "font", "font.vert", "font.frag", null, null),
-  BILLBOARD("render", "billboard", "billboard.vert", "billboard.frag", "billboard.geom", null),
-  SKYBOX("render", "skybox", "skybox.vert", "skybox.frag", null, null);
+  INSTANCED("instanced", "instanced.vert","instanced.frag", null, null),
+  PARTICLE("particle", "particle.vert",null, "particle.geom", null),
+  SPRITE("sprite", "sprite.vert", "sprite.frag", null, null),
+  MESH("mesh", "mesh.vert", "mesh.frag", null, null),
+  SCENE("scene", "scene.vert", "scene.frag", null, null),
+  TERRAIN("terrain", "terrain.vert", "terrain.frag", null, null),
+  FONT("font", "font.vert", "font.frag", null, null),
+  BILLBOARD("billboard", "billboard.vert", "billboard.frag", "billboard.geom", null),
+  RAYTRACE("raytrace", null, null, null, "raytrace.glsl"),
+  FRAMEBUFFER("framebuffer", "framebuffer.vert", "framebuffer.frag", null, null),
+  SKYBOX("skybox", "skybox.vert", "skybox.frag", null, null);
 
-  private final String type;
   private final String key;
   private final String vertex;
   private final String fragment;
   private final String geometry;
   private final String compute;
 
-  ERenderer(String type, String key, String vertex, String fragment, String geometry, String compute) {
-    this.type = type;
+  ERenderer(String key, String vertex, String fragment, String geometry, String compute) {
     this.key = key;
     this.vertex = vertex;
     this.fragment = fragment;
@@ -52,6 +52,6 @@ public enum ERenderer {
   String path(String shader) {
     if (shader == null || shader.isEmpty()) return shader;
 
-    return type + File.separator + key + File.separator + shader;
+    return File.separator + key + File.separator + shader;
   }
 }
